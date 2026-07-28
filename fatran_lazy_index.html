@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboard Comercial — Fatran</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js" integrity="sha384-iU8HYtnGQ8Cy4zl7gbNMOhsDTTKX02BTXptVP/vqAWIaTfM7isw76iyZCsjL2eVi" crossorigin="anonymous"></script>
+<style>
+  :root{
+    color-scheme: light;
+    --navy:#0C2442; --steel:#4F7492; --bronze:#A67F3C; --gold:#DBBC60; --gold-light:#E2CD81;
+    --bg:#F4F6F8; --card:#FFFFFF; --text:#1C2733; --muted:#6B7A8B; --danger:#B3432E; --ok:#2E7D5B;
+  }
+  *{box-sizing:border-box;}
+  body{ margin:0; background:var(--bg); color:var(--text); font-family:Arial,Helvetica,sans-serif; }
+  .wrap{max-width:1240px; margin:0 auto; padding:12px 20px 40px;}
+  .titlebar{
+    display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:8px; margin-bottom:10px;
+  }
+  .titlebar h1{ font-weight:800; font-size:16px; margin:0; color:var(--navy); letter-spacing:.3px;}
+  .titlebar .meta{font-size:11.5px; color:var(--muted);}
+  .titlebar .meta b{color:var(--bronze);}
+
+  /* Bloco 1 - filtros */
+  .filters{
+    background:var(--card); border:1px solid #E4E8EC; border-radius:12px; padding:14px 16px; margin-bottom:16px;
+    display:grid; grid-template-columns:repeat(6,1fr) auto; gap:12px; align-items:end;
+  }
+  @media (max-width:950px){ .filters{grid-template-columns:repeat(2,1fr);} }
+  .dd{position:relative;}
+  .dd-btn{
+    width:100%; font-size:13px; padding:8px 10px; border-radius:7px; border:1px solid #D6DCE2;
+    background:#fff; color:var(--navy); font-weight:700; cursor:pointer; text-align:left; transition:border-color .2s;
+  }
+  .dd-btn:hover{border-color:var(--gold);}
+  .dd-menu{
+    display:none; position:absolute; z-index:50; top:calc(100% + 4px); left:0; min-width:250px;
+    background:#fff; border:1px solid #D6DCE2; border-radius:10px; padding:10px; box-shadow:0 8px 24px rgba(12,36,66,.15);
+  }
+  .dd.open .dd-menu{display:block;}
+  .dd-actions{display:flex; gap:8px; margin-bottom:8px;}
+  .dd-actions button{
+    flex:1; font-size:11px; padding:4px 8px; border-radius:6px; border:1px solid #D6DCE2; background:#F6F8FA;
+    color:var(--navy); font-weight:700; cursor:pointer;
+  }
+  .dd-days{display:grid; grid-template-columns:repeat(7,1fr); gap:4px;}
+  .dd-days label{
+    display:flex; align-items:center; justify-content:center; font-size:12px; padding:5px 0; border-radius:6px;
+    border:1px solid #E4E8EC; cursor:pointer; user-select:none; margin:0; text-transform:none; letter-spacing:0; color:var(--text); font-weight:600;
+  }
+  .dd-days label:hover{border-color:var(--gold);}
+  .dd-days label.on{background:var(--navy); color:var(--gold-light); border-color:var(--navy);}
+  .dd-days input{display:none;}
+  .filters label{display:block; font-size:10.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.4px; margin-bottom:4px; font-weight:700;}
+  .filters select{
+    width:100%; font-size:13px; padding:8px 10px; border-radius:7px; border:1px solid #D6DCE2;
+    background:#fff; color:var(--navy); font-weight:700; cursor:pointer; transition:border-color .2s;
+  }
+  .filters select:hover{border-color:var(--gold);}
+  .filters .reset{
+    background:var(--navy); color:var(--gold-light); border:none; border-radius:7px; padding:9px 14px; font-size:12.5px;
+    font-weight:700; cursor:pointer; transition:opacity .2s;
+  }
+  .filters .reset:hover{opacity:.85;}
+
+  /* Bloco 2 - KPIs */
+  .kpi-row{display:grid; grid-template-columns:repeat(7,1fr); gap:12px; margin-bottom:16px;}
+  @media (max-width:1100px){ .kpi-row{grid-template-columns:repeat(4,1fr);} }
+  @media (max-width:600px){ .kpi-row{grid-template-columns:repeat(2,1fr);} }
+  .kpi{
+    background:var(--card); border-radius:8px; padding:8px 12px; border:1px solid #E4E8EC;
+    box-shadow:0 1px 2px rgba(12,36,66,.04); transition:transform .2s, box-shadow .2s; animation:fadeIn .35s ease;
+    display:flex; flex-direction:column; min-height:64px;
+  }
+  .kpi:hover{transform:translateY(-2px); box-shadow:0 4px 10px rgba(12,36,66,.10);}
+  .kpi .label{font-size:9.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.3px; margin-bottom:2px; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .kpi .value{font-weight:800; font-size:16px; color:var(--navy); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  /* hint sempre no rodapé do card (margin-top:auto) — assim ele fica na mesma altura em todos os
+     cards da linha, mesmo quando um valor ou hint é mais longo que os outros (evita desalinhamento). */
+  .kpi .hint{font-size:10px; color:#9aa7b3; margin-top:auto; padding-top:2px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .value.up{color:var(--ok);} .value.down{color:var(--danger);}
+  @keyframes fadeIn{from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:none;}}
+
+  .card{
+    background:var(--card); border-radius:12px; padding:16px 18px; border:1px solid #E4E8EC;
+    box-shadow:0 1px 2px rgba(12,36,66,.04); margin-bottom:16px; animation:fadeIn .35s ease;
+  }
+  .card h3{ font-size:14px; color:var(--navy); margin:0 0 12px; display:flex; justify-content:space-between; align-items:center; font-weight:800;}
+  .card h3 span.note{font-weight:400; font-size:11px; color:var(--muted);}
+  .chart-box{position:relative; height:300px;}
+  .chart-box.xl{height:360px;}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:0;}
+  @media (max-width:900px){ .grid2{grid-template-columns:1fr;} }
+  .grid2 .card{margin-bottom:16px;}
+
+  table{width:100%; border-collapse:collapse; font-size:12.5px;}
+  th,td{text-align:left; padding:8px 10px; border-bottom:1px solid #EEF1F4;}
+  th{color:var(--muted); font-weight:700; text-transform:uppercase; font-size:10.5px; letter-spacing:.3px; background:#FAFBFC;}
+  td.num, th.num{text-align:right; font-variant-numeric:tabular-nums;}
+  tr{transition:background .15s;}
+  tbody tr:hover{background:#F6F8FA;}
+  tr.top3 td{background:#FBF7EC;}
+  tr.top3:hover td{background:#F6F0DD;}
+  .bar-mini{height:6px; background:#EDEFF2; border-radius:4px; overflow:hidden; margin-top:3px; max-width:220px;}
+  .bar-mini > div{height:100%; background:var(--gold); transition:width .5s ease;}
+  .pos{color:var(--ok); font-weight:700;} .neg{color:var(--danger); font-weight:700;} .na{color:#9aa7b3;}
+  .clickable-row{cursor:pointer;}
+  .clickable-row:hover td{background:#EFF3F7 !important;}
+  .row-active td{background:#FBF3E0 !important; font-weight:700;}
+  .row-active:hover td{background:#F6EAC8 !important;}
+
+  footer{ margin-top:8px; padding:14px 18px; background:#fff; border:1px solid #E4E8EC; border-radius:10px; font-size:11px; color:var(--muted); line-height:1.6;}
+  .empty{padding:30px; text-align:center; color:var(--muted); font-size:13px;}
+
+  /* Bloco de análise */
+  .alert{ border-radius:8px; padding:10px 13px; font-size:12.5px; line-height:1.5; border-left:4px solid var(--bronze); background:#FBF3E7; color:#5A4423; animation:fadeIn .35s ease;}
+  .alert.danger{border-left-color:var(--danger); background:#FBEAE6; color:#7A2E1F;}
+  .alert.ok{border-left-color:var(--ok); background:#EAF5EF; color:#1F5C42;}
+  .alert b{color:inherit;}
+  .ana-grid{display:grid; grid-template-columns:1fr 1fr; gap:18px;}
+  @media (max-width:900px){ .ana-grid{grid-template-columns:1fr;} }
+  .ana-col .alert{margin-bottom:8px;}
+  .ana-h{font-size:12px; margin:0 0 10px; text-transform:uppercase; letter-spacing:.4px; font-weight:800;}
+  .ana-h.danger{color:var(--danger);} .ana-h.ok{color:var(--ok);}
+
+  /* Busca de cliente (autocomplete) */
+  .cli-menu{max-height:280px; overflow-y:auto; min-width:280px;}
+  .cli-item{padding:7px 9px; border-radius:6px; cursor:pointer; font-size:12.5px; color:var(--text);}
+  .cli-item:hover{background:#F0F3F6;}
+  .cli-item.sel{background:var(--navy); color:#fff; font-weight:700;}
+  .cli-item.muted{color:var(--muted); cursor:default;}
+  .cli-item.muted:hover{background:transparent;}
+  #cliInput{cursor:text;}
+
+  /* Bloco de Implantados (pipeline) */
+  .implant-row{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:16px;}
+  @media (max-width:1000px){ .implant-row{grid-template-columns:repeat(2,1fr);} }
+  .kpi.implant{border-top:3px solid var(--bronze);}
+  .kpi.implant .value{color:var(--bronze);}
+  .kpi.implant.ok-tone .value{color:var(--ok);}
+  .kpi.implant.danger-tone .value{color:var(--danger);}
+
+  /* Bloco de histórico do cliente */
+  .cli-summary{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:14px;}
+  @media (max-width:900px){ .cli-summary{grid-template-columns:repeat(2,1fr);} }
+  .cli-stat{background:#FAFBFC; border:1px solid #EEF1F4; border-radius:8px; padding:10px 12px;}
+  .cli-stat-label{font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.3px; font-weight:700; margin-bottom:4px;}
+  .cli-stat-val{font-size:16px; font-weight:800; color:var(--navy);}
+  .cli-stat-val.pos{color:var(--ok);} .cli-stat-val.neg{color:var(--danger);}
+
+  /* Tour guiado */
+  .tour-btn{
+    background:var(--navy); color:var(--gold-light); border:none; border-radius:7px; padding:7px 12px;
+    font-size:12px; font-weight:700; cursor:pointer; transition:opacity .2s; white-space:nowrap;
+  }
+  .tour-btn:hover{opacity:.85;}
+  .tour-backdrop{position:fixed; inset:0; background:rgba(12,36,66,.35); z-index:900;}
+  .tour-highlight{
+    position:relative; z-index:901; border-radius:10px;
+    box-shadow:0 0 0 4px var(--gold), 0 0 0 9999px rgba(12,36,66,.55) !important;
+  }
+  .tour-tooltip{
+    position:fixed; z-index:902; max-width:320px; background:#fff; border-radius:12px; padding:16px 18px;
+    box-shadow:0 12px 32px rgba(12,36,66,.25); border:1px solid #E4E8EC; animation:fadeIn .2s ease;
+  }
+  .tour-step-count{font-size:10px; color:var(--muted); text-transform:uppercase; font-weight:700; letter-spacing:.4px; margin-bottom:4px;}
+  .tour-tooltip h4{margin:0 0 8px; font-size:14px; color:var(--navy); font-weight:800;}
+  .tour-tooltip p{margin:0 0 14px; font-size:12.5px; line-height:1.5; color:var(--text);}
+  .tour-actions{display:flex; gap:8px; justify-content:flex-end; flex-wrap:wrap;}
+  .tour-btn-primary{background:var(--navy); color:var(--gold-light); border:none; border-radius:7px; padding:7px 14px; font-size:12px; font-weight:700; cursor:pointer;}
+  .tour-btn-primary:hover{opacity:.85;}
+  .tour-btn-secondary{background:#F6F8FA; color:var(--navy); border:1px solid #D6DCE2; border-radius:7px; padding:7px 14px; font-size:12px; font-weight:700; cursor:pointer;}
+  .tour-btn-secondary:hover{border-color:var(--gold);}
+  .tour-welcome-backdrop{position:fixed; inset:0; background:rgba(12,36,66,.45); z-index:950; display:flex; align-items:center; justify-content:center; animation:fadeIn .25s ease;}
+  .tour-welcome-card{background:#fff; border-radius:14px; padding:28px 26px; max-width:360px; text-align:center; box-shadow:0 16px 40px rgba(12,36,66,.3);}
+  .tour-welcome-emoji{font-size:34px; margin-bottom:6px;}
+  .tour-welcome-card h3{margin:0 0 8px; font-size:16px; color:var(--navy); font-weight:800;}
+  .tour-welcome-card p{margin:0 0 18px; font-size:12.5px; line-height:1.5; color:var(--muted);}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="titlebar">
+    <h1>DASHBOARD COMERCIAL — FATRAN</h1>
+    <div style="display:flex; align-items:center; gap:10px;">
+      <button type="button" id="btnTour" class="tour-btn">🧭 Tour guiado</button>
+      <div class="meta" id="metaBox"></div>
+    </div>
+  </div>
+
+  <!-- Bloco 1: Filtros -->
+  <div class="filters">
+    <div><label>Cliente</label>
+      <div class="dd" id="cliWrap">
+        <input type="text" id="cliInput" class="dd-btn" placeholder="Buscar por nome..." autocomplete="off">
+        <div class="dd-menu cli-menu" id="cliMenu"></div>
+      </div>
+    </div>
+    <div><label>Mês</label><select id="fMes"></select></div>
+    <div><label>Dia(s) do mês</label>
+      <div class="dd" id="ddWrap">
+        <button type="button" class="dd-btn" id="ddBtn">Todos os dias ▾</button>
+        <div class="dd-menu" id="ddMenu">
+          <div class="dd-actions"><button type="button" id="ddAll">Todos</button><button type="button" id="ddClear">Nenhum</button></div>
+          <div class="dd-days" id="ddDays"></div>
+        </div>
+      </div>
+    </div>
+    <div><label>Ano</label><select id="fAno"></select></div>
+    <div><label>Vendedor</label><select id="fVend"></select></div>
+    <div><label>Segmento</label><select id="fSeg"></select></div>
+    <button class="reset" id="btnReset">Limpar filtros</button>
+  </div>
+
+  <!-- Bloco 2: Métricas principais -->
+  <div class="kpi-row" id="kpiRow"></div>
+
+  <!-- Bloco 2a: Pipeline de Implantados (aba IMPLANTADOS) -->
+  <div class="implant-row" id="implantRow"></div>
+
+  <!-- Bloco 2b: Histórico do cliente selecionado (só aparece com filtro de cliente ativo) -->
+  <div class="card" id="cliDetailCard" style="display:none;">
+    <h3>Histórico do cliente <span class="note" id="noteCliDetail"></span></h3>
+    <div id="cliDetailZone"></div>
+  </div>
+
+  <!-- Bloco 3: Evolução anual (largura total) -->
+  <div class="card">
+    <h3>Evolução do faturamento — 12 meses <span class="note" id="noteEvol"></span></h3>
+    <div class="chart-box xl"><canvas id="chartEvol"></canvas></div>
+  </div>
+
+  <!-- Bloco 4: Segmento (tabela, largura total) -->
+  <div class="card">
+    <h3>Faturamento por segmento <span class="note" id="noteSeg"></span></h3>
+    <div id="tblSeg"></div>
+  </div>
+
+  <!-- Bloco 5: Região e Frota lado a lado -->
+  <div class="grid2">
+    <div class="card"><h3>Faturamento por região <span class="note" id="noteReg"></span></h3><div class="chart-box"><canvas id="chartReg"></canvas></div></div>
+    <div class="card"><h3>Frota própria x terceiros <span class="note" id="noteFrota"></span></h3><div class="chart-box"><canvas id="chartFrota"></canvas></div></div>
+  </div>
+
+  <!-- Bloco 6: Top 10 clientes (largura total) -->
+  <div class="card">
+    <h3>Top 10 clientes <span class="note" id="noteCli"></span></h3>
+    <div id="tblCli"></div>
+  </div>
+
+  <!-- Bloco 7: Top 10 terceiros (largura total) -->
+  <div class="card">
+    <h3>Top 10 terceiros (contratados) <span class="note" id="noteTerc"></span></h3>
+    <div id="tblTerc"></div>
+  </div>
+
+  <!-- Bloco 8: Análise do período -->
+  <div class="card">
+    <h3>Análise do período <span class="note" id="noteAna"></span></h3>
+    <div class="ana-grid" id="anaZone"></div>
+  </div>
+
+  <footer>
+    Fonte: aba "Base Estudos" — "AA - Historico de Faturamento.xlsx" (dados reais, jan/2022 a jun/2026). Volume/peso: coluna "Total Ton" (AS).
+    <b>Faturamento</b> = Total Frete Cobrado − Avaria − Descarga − Reembolso (Pedágio da frota não é abatido do faturamento); CT-es do tipo Anulação e Substituto entram como abatimento (valor negativo, sobre o Total Frete Cobrado). Quando um CT-e é transportado em 2 pernas (mesmo NumCTRC, mesmo valor cobrado e mesma tonelagem, motoristas/CTRB diferentes), a receita e a tonelagem contam uma única vez.
+    Ticket/Ton = faturamento líquido ÷ toneladas. Nas tabelas, "OUTROS" agrega todo o faturamento fora do top 10 exibido — top 10 + OUTROS = 100% do total do período.
+    O filtro de Cliente permite buscar e selecionar qualquer cliente da base — ao selecionar um, o painel exibe o histórico completo dele. Clicar numa linha da tabela de segmento ou de clientes, ou num mês do gráfico de evolução, tem o mesmo efeito de usar os campos de filtro.
+    Quando a planilha não tem Grupo Cliente preenchido, o nome do Pagador é usado no lugar; quando esse nome de Pagador já corresponde a um grupo existente (ex.: "EFTEC" e "Grupo EFTEC"), as duas entradas são unificadas em uma só.
+    O bloco "Análise do período" compara sempre os últimos 90 dias contra os 90 dias anteriores (janela móvel, não ano-a-ano) — respeita filtro de vendedor/segmento; com um cliente selecionado, mostra a tendência de 90 dias específica dele.
+    A tabela de terceiros responde aos filtros de Ano e Mês (os demais filtros não se aplicam a essa dimensão).
+    <b>Pipeline (aba IMPLANTADOS):</b> Total Implantado = toneladas de TODAS as cargas programadas no período (ativo + cancelado + postergado, o pool bruto). Total Cancelado/Postergado = pelo campo Situação — Postergado é exibido apenas como informação (já está contido no Total Implantado, não é um bucket à parte nem entra em nenhuma subtração). <b>Saldo disponível a faturar</b> (cards do topo) = Total Implantado − Cancelado − já faturado no período, para a frota inteira, mesmo critério do BI oficial. As tabelas por segmento e por cliente detalham esse mesmo saldo célula a célula (cliente dentro de cada segmento, nunca abaixo de zero em cada célula) para que nenhum cliente "empreste" saldo a outro — por isso, quando algum cliente já faturou mais do que lhe restava de implantado no período, a soma das tabelas pode ficar um pouco ACIMA do card do topo (a diferença é sempre esse excedente pontual, nunca um erro de conta). Cada célula é precificada pelo ticket médio histórico DAQUELE cliente. <b>Projeção de faturamento</b> = faturado no período + saldo do pipeline daquele recorte — por isso a projeção de uma linha nunca é menor que o faturamento já daquela linha; quando o saldo é zero, a projeção fica igual ao próprio faturado. Todos os cards e a projeção respeitam os filtros de Ano/Mês/Dias/Cliente/Segmento ativos no painel. É uma estimativa, não um valor contratado.
+  </footer>
+</div>
+
+<script>
+let DATA = null;
+
+const MESES = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+const MESES_FULL = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+const NAVY='#0C2442', STEEL='#4F7492', BRONZE='#A67F3C', GOLD='#DBBC60', GOLDL='#E2CD81';
+const PALETTE=[NAVY,GOLD,STEEL,BRONZE,GOLDL,'#7C93A6','#C9A96E','#324B66'];
+// facts: [ano,mes,dia,cliIdx,vendIdx,segIdx,frotaIdx,regIdx,tercIdx(-1 se frota própria),fat,ton]
+const F={ANO:0,MES:1,DIA:2,CLI:3,VEND:4,SEG:5,FROTA:6,REG:7,TERC:8,FAT:9,TON:10};
+
+let SEL = {cli:-1, mes:6, ano:2026, vend:-1, seg:-1, dias:new Set()}; // -1 = todos; dias vazio = todos
+let CHARTS = {};
+
+function brl(v){ return (v||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL',maximumFractionDigits:0}); }
+function ton(v){ return (v||0).toLocaleString('pt-BR',{maximumFractionDigits:0})+' t'; }
+function pct(v){ return (v>=0?'+':'')+(v*100).toLocaleString('pt-BR',{maximumFractionDigits:1})+'%'; }
+function makeChart(id,cfg){ if(CHARTS[id])CHARTS[id].destroy(); CHARTS[id]=new Chart(document.getElementById(id),cfg); }
+
+let anos = [];
+let lastFact = null;
+let MAXDATE = new Date(2000,0,1);
+
+// data real de cada fato + data mais recente da base — usado pela Análise (janela móvel de 90 dias)
+function factDate(r){ return new Date(r[F.ANO], r[F.MES]-1, r[F.DIA]); }
+function addDays(d,n){ const r=new Date(d); r.setDate(r.getDate()+n); return r; }
+function fmtDate(d){ return String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+d.getFullYear(); }
+// calcula tudo que depende de DATA -- so pode rodar DEPOIS do fetch/decompressao dos dados
+function computeDerived(){
+  anos = [...new Set(DATA.facts.map(r=>r[F.ANO]))].sort();
+  lastFact = DATA.facts.reduce((a,b)=> (b[F.ANO]*100+b[F.MES] > a[F.ANO]*100+a[F.MES])? b:a);
+  SEL.ano = lastFact[F.ANO]; SEL.mes = lastFact[F.MES];
+  MAXDATE = DATA.facts.reduce((m,r)=>{ const d=factDate(r); return d>m?d:m; }, new Date(2000,0,1));
+}
+
+function fillSelect(id, options, selValue){
+  const el = document.getElementById(id);
+  el.innerHTML = options.map(o=>'<option value="'+o.v+'"'+(String(o.v)===String(selValue)?' selected':'')+'>'+o.t+'</option>').join('');
+}
+function initFilters(){
+  setupCliAutocomplete();
+  fillSelect('fMes', [{v:0,t:'Ano completo'}].concat(MESES_FULL.map((m,i)=>({v:i+1,t:m}))), SEL.mes);
+  fillSelect('fAno', anos.map(a=>({v:a,t:a})), SEL.ano);
+  fillSelect('fVend', [{v:-1,t:'Todos os vendedores'}].concat(DATA.dims.vendedores.map((c,i)=>({v:i,t:c}))), SEL.vend);
+  fillSelect('fSeg', [{v:-1,t:'Todos os segmentos'}].concat(DATA.dims.segmentos.map((c,i)=>({v:i,t:c}))), SEL.seg);
+  document.getElementById('fMes').onchange = e=>{SEL.mes=+e.target.value; render();};
+  document.getElementById('fAno').onchange = e=>{SEL.ano=+e.target.value; render();};
+  document.getElementById('fVend').onchange = e=>{SEL.vend=+e.target.value; render();};
+  document.getElementById('fSeg').onchange = e=>{SEL.seg=+e.target.value; render();};
+  document.getElementById('btnReset').onclick = ()=>{
+    SEL = {cli:-1, mes:lastFact[F.MES], ano:lastFact[F.ANO], vend:-1, seg:-1, dias:new Set()};
+    initFilters(); render();
+  };
+  initDias();
+}
+
+// ---- Busca de cliente (autocomplete) ----
+function setupCliAutocomplete(){
+  const input = document.getElementById('cliInput');
+  const menu = document.getElementById('cliMenu');
+  const wrap = document.getElementById('cliWrap');
+  input.value = SEL.cli===-1? '' : DATA.dims.clientes[SEL.cli];
+  function paint(filterTxt){
+    const f = (filterTxt||'').toLocaleLowerCase('pt-BR').trim();
+    let opts = [{v:-1,t:'Todos os clientes'}].concat(DATA.dims.clientes.map((c,i)=>({v:i,t:c})));
+    if(f) opts = opts.filter(o=>o.v===-1 || o.t.toLocaleLowerCase('pt-BR').includes(f));
+    const shown = opts.slice(0,60);
+    menu.innerHTML = shown.map(o=>'<div class="cli-item'+(o.v===SEL.cli?' sel':'')+'" data-v="'+o.v+'">'+o.t+'</div>').join('')
+      + (opts.length>60? '<div class="cli-item muted">+ '+(opts.length-60)+' resultados — refine a busca</div>' : '')
+      + (opts.length===0? '<div class="cli-item muted">Nenhum cliente encontrado</div>' : '');
+    menu.querySelectorAll('.cli-item[data-v]').forEach(el=>{
+      el.onclick = e=>{
+        e.stopPropagation();
+        SEL.cli = +el.dataset.v;
+        input.value = SEL.cli===-1? '' : DATA.dims.clientes[SEL.cli];
+        wrap.classList.remove('open');
+        render();
+      };
+    });
+  }
+  input.oninput = ()=>{ wrap.classList.add('open'); paint(input.value); };
+  input.onfocus = ()=>{ wrap.classList.add('open'); paint(input.value); };
+  input.onclick = e=> e.stopPropagation();
+  menu.onclick = e=> e.stopPropagation();
+  document.addEventListener('click', ()=> wrap.classList.remove('open'));
+  paint('');
+}
+
+function diasLabel(){
+  if(SEL.dias.size===0) return 'Todos os dias ▾';
+  const d = [...SEL.dias].sort((a,b)=>a-b);
+  return (d.length<=4? 'Dia '+d.join(', ') : d.length+' dias') + ' ▾';
+}
+function initDias(){
+  const wrap = document.getElementById('ddWrap');
+  const btn = document.getElementById('ddBtn');
+  const days = document.getElementById('ddDays');
+  btn.textContent = diasLabel();
+  days.innerHTML = Array.from({length:31},(_,i)=>{
+    const d = i+1, on = SEL.dias.has(d);
+    return '<label class="'+(on?'on':'')+'" data-d="'+d+'">'+d+'</label>';
+  }).join('');
+  btn.onclick = e=>{ e.stopPropagation(); wrap.classList.toggle('open'); };
+  days.querySelectorAll('label').forEach(l=>{
+    l.onclick = e=>{
+      e.stopPropagation();
+      const d = +l.dataset.d;
+      if(SEL.dias.has(d)) SEL.dias.delete(d); else SEL.dias.add(d);
+      l.classList.toggle('on');
+      btn.textContent = diasLabel();
+      render();
+    };
+  });
+  document.getElementById('ddAll').onclick = e=>{ e.stopPropagation(); SEL.dias = new Set(); initDias(); wrap.classList.add('open'); render(); };
+  document.getElementById('ddClear').onclick = e=>{ e.stopPropagation(); SEL.dias = new Set(); initDias(); wrap.classList.add('open'); render(); };
+  document.addEventListener('click', ()=> wrap.classList.remove('open'));
+  document.getElementById('ddMenu').onclick = e=> e.stopPropagation();
+}
+
+// subset respecting cli/vend/seg (not ano/mes)
+function baseSubset(){
+  return DATA.facts.filter(r=>
+    (SEL.cli===-1 || r[F.CLI]===SEL.cli) &&
+    (SEL.vend===-1 || r[F.VEND]===SEL.vend) &&
+    (SEL.seg===-1 || r[F.SEG]===SEL.seg));
+}
+function diaOk(r){ return SEL.dias.size===0 || SEL.dias.has(r[F.DIA]); }
+function periodRows(sub, ano, mes){ return sub.filter(r=> r[F.ANO]===ano && (mes===0 || r[F.MES]===mes) && diaOk(r)); }
+function sumFat(rows){ return rows.reduce((s,r)=>s+r[F.FAT],0); }
+function sumTon(rows){ return rows.reduce((s,r)=>s+r[F.TON],0); }
+
+// ---- Implantados (pipeline) — aba IMPLANTADOS ----
+// facts: [ano, mes, dia, cli_idx, seg_idx, total_ton, cancelado_ton, postergado_ton]
+// total_ton = TODAS as situações somadas (ativo + cancelado + postergado) — é o pool bruto implantado.
+// "Já faturado" NÃO vem de um cruzamento dia-a-dia entre as duas bases (isso subestimava o faturado
+// e inflava o saldo pendente); usa-se o volume REAL já faturado no mesmo período/filtro, tirado
+// diretamente da Base Estudos (a mesma tonelada que já aparece no resto do painel).
+const IF = {ANO:0, MES:1, DIA:2, CLI:3, SEG:4, TOTAL:5, CANC:6, POST:7};
+function implantAll(){ return (DATA.implantados && DATA.implantados.facts) || []; }
+function implantSubset(){
+  return implantAll().filter(r=>
+    (SEL.cli===-1 || r[IF.CLI]===SEL.cli) &&
+    (SEL.seg===-1 || r[IF.SEG]===SEL.seg));
+}
+function implantPeriodRows(sub, ano, mes){
+  return sub.filter(r=> r[IF.ANO]===ano && (mes===0 || r[IF.MES]===mes) && (SEL.dias.size===0 || SEL.dias.has(r[IF.DIA])));
+}
+function implantCur(){ return implantPeriodRows(implantSubset(), SEL.ano, SEL.mes); }
+function implantTotais(rows){
+  return rows.reduce((a,r)=>{ a.total+=r[IF.TOTAL]; a.canc+=r[IF.CANC]; a.post+=r[IF.POST]; return a; }, {total:0,canc:0,post:0});
+}
+function implantSaldo(rows, jaFaturadoTon){
+  const t = implantTotais(rows);
+  return Math.max(0, t.total - t.canc - (jaFaturadoTon||0));
+}
+function ticketMedioGeral(){ return (DATA.implantados && DATA.implantados.ticket_medio_geral) || 0; }
+function ticketMedioCliente(cliIdx){
+  const arr = DATA.implantados && DATA.implantados.ticket_por_cliente;
+  return (arr && arr[cliIdx]!=null) ? arr[cliIdx] : ticketMedioGeral();
+}
+function ticketMedioSegmento(segIdx){
+  const arr = DATA.implantados && DATA.implantados.ticket_por_segmento;
+  return (arr && arr[segIdx]!=null) ? arr[segIdx] : ticketMedioGeral();
+}
+// ---- Modelo atômico (cliente × segmento) — garante que card do topo, tabela de segmento e tabela de
+// cliente SEMPRE somem exatamente igual. Antes, cada visão clampava o saldo (mínimo zero) em momentos
+// diferentes — uma vez pra frota inteira, outra vez por segmento — e isso fazia o total de uma tabela
+// divergir do card do topo (um cliente que já faturou mais do que tinha de saldo não pode "emprestar"
+// esse excesso pra reduzir o saldo de outro cliente/segmento; por isso o clamp tem que ser feito no
+// nível mais granular que existe — cliente dentro de segmento — e nunca desfeito depois, só somado).
+// Cada célula (cliente,segmento) tem seu saldo calculado uma única vez e sempre precificada pelo ticket
+// médio DAQUELE CLIENTE (não do segmento nem da frota) — assim, segmento e cliente são só duas formas
+// diferentes de somar os MESMOS números, e a soma de qualquer uma bate com o card do topo.
+function implantAtomos(){
+  // uma célula por (cliente,segmento) dentro do período/filtros correntes
+  const g = {};
+  implantCur().forEach(r=>{
+    const key = r[IF.CLI]+'_'+r[IF.SEG];
+    const a = g[key] || (g[key] = {cli:r[IF.CLI], seg:r[IF.SEG], total:0, canc:0, post:0, fat:0});
+    a.total += r[IF.TOTAL]; a.canc += r[IF.CANC]; a.post += r[IF.POST];
+  });
+  return g;
+}
+// calcula, para o período/filtros atuais: soma de saldo(ton) e projeção(R$) atômicos, e mapas auxiliares
+// pra somar por cliente ou por segmento sem precisar refazer o cruzamento a cada linha da tabela.
+function implantCalculo(cur, jaFaturadoTonReal){
+  const atomos = implantAtomos();
+  const fatAtom = {};
+  cur.forEach(r=>{ const key=r[F.CLI]+'_'+r[F.SEG]; fatAtom[key]=(fatAtom[key]||0)+r[F.TON]; });
+  let saldoTonTotal = 0, projRsTotal = 0, totalImplant = 0, totalCanc = 0;
+  const porCliente = {}, porSegmento = {};
+  Object.entries(atomos).forEach(([key,a])=>{
+    totalImplant += a.total; totalCanc += a.canc;
+    const jaFat = fatAtom[key] || 0;
+    // Postergado NAO entra na subtracao do saldo: e so informativo, ja esta contido no Total
+    // (ajuste de 27/07 -- o BI oficial desconta apenas Cancelado do Total, nao Postergado).
+    const saldoTon = Math.max(0, a.total - a.canc - jaFat);
+    const rs = saldoTon * ticketMedioCliente(a.cli);
+    saldoTonTotal += saldoTon; projRsTotal += rs;
+    porCliente[a.cli] = (porCliente[a.cli]||0) + rs;
+    porSegmento[a.seg] = (porSegmento[a.seg]||0) + rs;
+  });
+  // saldoTonGlobal: mesmo critério do BI oficial e da conta simples do Valmor -- Total implantado da
+  // frota inteira menos Cancelado da frota inteira menos TODO o faturado real do período (não só o
+  // faturado que casa cliente×segmento com um registro implantado), floor uma única vez no final.
+  // Alimenta só os cards do topo (Saldo disponível / Projeção de faturamento).
+  // Pode ficar abaixo da soma das tabelas por segmento/cliente (que usam o modelo por célula) em dois
+  // casos: (1) cliente/segmento que já faturou mais do que lhe restava no período -- esse excedente
+  // não pode "emprestar" saldo a outro cliente na tabela por célula, mas abate o total da frota; e
+  // (2) faturamento cujo par cliente×segmento não tem registro correspondente em IMPLANTADOS naquele
+  // período -- não reduz nenhuma célula específica, mas reduz o card do topo. A diferença nunca é erro.
+  const jf = jaFaturadoTonReal || 0;
+  const saldoTonGlobal = Math.max(0, totalImplant - totalCanc - jf);
+  const ticketFrotaAtual = saldoTonTotal>0 ? (projRsTotal/saldoTonTotal) : ticketMedioGeral();
+  const projRsGlobal = saldoTonGlobal * ticketFrotaAtual;
+  return {saldoTonTotal, projRsTotal, porCliente, porSegmento, saldoTonGlobal, projRsGlobal};
+}
+
+function periodLabel(){
+  let l = SEL.mes===0? ('Ano '+SEL.ano) : (MESES_FULL[SEL.mes-1]+'/'+SEL.ano);
+  if(SEL.dias.size>0){
+    const d = [...SEL.dias].sort((a,b)=>a-b);
+    l += ' · dia'+(d.length>1?'s':'')+' '+d.join(', ');
+  }
+  return l;
+}
+
+function render(){
+  const sub = baseSubset();
+  const cur = periodRows(sub, SEL.ano, SEL.mes);
+  const fat = sumFat(cur), tons = sumTon(cur);
+
+  // comparações
+  const sameLY = periodRows(sub, SEL.ano-1, SEL.mes);
+  const fatLY = sumFat(sameLY);
+  const yoy = fatLY? (fat-fatLY)/fatLY : null;
+
+  let mom = null;
+  if(SEL.mes!==0){
+    const pmAno = SEL.mes===1? SEL.ano-1 : SEL.ano, pmMes = SEL.mes===1? 12 : SEL.mes-1;
+    const prevM = periodRows(sub, pmAno, pmMes);
+    const fatPM = sumFat(prevM);
+    mom = fatPM? (fat-fatPM)/fatPM : null;
+  }
+
+  const ytdRows = SEL.mes===0? periodRows(sub, SEL.ano, 0) : sub.filter(r=>r[F.ANO]===SEL.ano && r[F.MES]<=SEL.mes && diaOk(r));
+  const ytd = sumFat(ytdRows);
+
+  document.getElementById('metaBox').innerHTML =
+    'Base: '+DATA.periodo.inicio+' a '+DATA.periodo.fim+' · Período: <b>'+periodLabel()+'</b> · Atualizado em '+DATA.gerado_em;
+
+  // Bloco 2 — KPIs
+  // Projeção de faturamento = faturado até agora no período + saldo do pipeline (modelo atômico
+  // cliente×segmento — ver implantCalculo). Esse mesmo cálculo alimenta as tabelas de cliente e
+  // segmento, então a soma delas SEMPRE bate com este card — não são mais contas independentes.
+  const implCalc = DATA.implantados? implantCalculo(cur, tons) : null;
+  // Cards do topo usam o saldo GLOBAL da frota (Total - Cancelado - já faturado, floor único),
+  // igual ao critério do BI oficial. As tabelas por segmento/cliente usam o modelo por célula
+  // (implCalc.porSegmento/porCliente), que pode somar um pouco mais que este card quando algum
+  // cliente já faturou mais do que lhe restava no período (ver comentário em implantCalculo).
+  const saldoRsAtual = implCalc? implCalc.projRsGlobal : null;
+  const projAtual = saldoRsAtual==null? null : fat + saldoRsAtual;
+  const kpis = [
+    {label:(SEL.mes===0?'Faturamento no ano':'Faturamento no mês'), value:brl(fat)},
+    {label:'Projeção de faturamento', value: projAtual==null?'—':brl(projAtual), hint: projAtual==null?'sem dados de pipeline':'faturado + saldo do pipeline ('+brl(saldoRsAtual)+')'},
+    {label:'Volume (toneladas)', value:ton(tons)},
+    {label:'Ticket médio (R$/ton)', value: tons? brl(fat/tons):'—'},
+    {label:'vs mesmo período '+(SEL.ano-1), value: yoy==null?'—':pct(yoy), cls: yoy==null?'':(yoy>=0?'up':'down'), hint: fatLY? brl(fatLY)+' em '+(SEL.ano-1):'sem base'},
+    {label:'vs mês anterior', value: mom==null?'—':pct(mom), cls: mom==null?'':(mom>=0?'up':'down'), hint: SEL.mes===0?'selecione um mês':''},
+    {label:'Acumulado no ano', value:brl(ytd), hint:'jan a '+(SEL.mes===0?'dez':MESES[SEL.mes-1])+'/'+SEL.ano},
+  ];
+  document.getElementById('kpiRow').innerHTML = kpis.map(k=>
+    '<div class="kpi"><div class="label">'+k.label+'</div><div class="value '+(k.cls||'')+'">'+k.value+'</div>'+
+    (k.hint?'<div class="hint">'+k.hint+'</div>':'')+'</div>').join('');
+
+  renderImplantRow(implCalc, tons);
+  renderEvol(sub);
+  renderSegTable(sub, cur, fat, implCalc);
+  renderRegChart(cur);
+  renderFrota(sub, cur);
+  renderTblClientes(sub, cur, fat, implCalc);
+  renderTerceiros(sub, cur);
+  renderClienteDetalhe();
+
+  // Análise sempre em janela móvel de 90 dias (não YoY) — com cliente selecionado, mostra a
+  // tendência de 90 dias específica dele; sem cliente, mostra o ranking de movimentos do portfólio.
+  if(SEL.cli!==-1){
+    renderAnaliseCliente(sub);
+  } else {
+    renderAnalise(sub);
+  }
+}
+
+function renderImplantRow(implCalc, jaFaturadoTon){
+  const zone = document.getElementById('implantRow');
+  if(!DATA.implantados){ zone.innerHTML=''; return; }
+  const rows = implantCur();
+  const t = implantTotais(rows);
+  // saldo aqui é o GLOBAL da frota (Total - Cancelado - já faturado, floor único) -- mesmo critério
+  // do BI oficial. Pode ficar levemente abaixo da soma das tabelas de segmento/cliente quando algum
+  // cliente já faturou mais do que lhe restava no período (ver implantCalculo).
+  const totSaldo = implCalc? implCalc.saldoTonGlobal : 0;
+  const cards = [
+    {label:'Total implantado', value: ton(t.total), tone:''},
+    {label:'Total cancelado', value: ton(t.canc), tone:'danger-tone'},
+    {label:'Total postergado', value: ton(t.post), tone:''},
+    {label:'Saldo disponível a faturar', value: ton(totSaldo), tone:'ok-tone'},
+  ];
+  zone.innerHTML = cards.map(c=>
+    '<div class="kpi implant '+c.tone+'"><div class="label">'+c.label+'</div><div class="value">'+c.value+'</div></div>').join('')+
+    '<div class="hint" style="grid-column:1/-1;margin-top:-6px;color:#8895a1;font-size:12px;">Total implantado = bruto (todas as situações) · já faturado no período considerado: '+ton(jaFaturadoTon||0)+'</div>';
+}
+
+function renderClienteDetalhe(){
+  const card = document.getElementById('cliDetailCard');
+  if(SEL.cli===-1){ card.style.display='none'; return; }
+  card.style.display='';
+  const nome = DATA.dims.clientes[SEL.cli];
+
+  // respeita vendedor/segmento mas não o próprio filtro de cliente (senão não há o que comparar)
+  const subCtx = DATA.facts.filter(r=>(SEL.vend===-1||r[F.VEND]===SEL.vend) && (SEL.seg===-1||r[F.SEG]===SEL.seg));
+  const rowsCli = subCtx.filter(r=>r[F.CLI]===SEL.cli);
+  const totalHist = sumFat(rowsCli);
+
+  // ranking no período atual e no mesmo período do ano anterior (entre todos os clientes, no mesmo contexto de filtros)
+  function rankingNoPeriodo(ano){
+    const rows = periodRows(subCtx, ano, SEL.mes);
+    const porCli = {};
+    rows.forEach(r=>{ porCli[r[F.CLI]]=(porCli[r[F.CLI]]||0)+r[F.FAT]; });
+    const ranked = Object.entries(porCli).sort((a,b)=>b[1]-a[1]).map(([k])=>+k);
+    return {pos: ranked.indexOf(SEL.cli)+1, total: ranked.length, fat: porCli[SEL.cli]||0};
+  }
+  const rkCur = rankingNoPeriodo(SEL.ano);
+  const rkPrev = rankingNoPeriodo(SEL.ano-1);
+  const yoyCli = rkPrev.fat? (rkCur.fat-rkPrev.fat)/rkPrev.fat : null;
+
+  // tabela ano a ano (histórico completo, sem filtro de mês/dia)
+  const porAno = {};
+  rowsCli.forEach(r=>{ porAno[r[F.ANO]]=porAno[r[F.ANO]]||{fat:0,ton:0}; porAno[r[F.ANO]].fat+=r[F.FAT]; porAno[r[F.ANO]].ton+=r[F.TON]; });
+  const anosOrd = Object.keys(porAno).sort();
+  let tabelaAno = '<table><thead><tr><th>Ano</th><th class="num">Faturamento</th><th class="num">Volume (ton)</th><th class="num">Ticket/Ton</th><th class="num">vs ano anterior</th></tr></thead><tbody>';
+  anosOrd.forEach(a=>{
+    const v = porAno[a], prev = porAno[String(+a-1)];
+    const d = prev? (v.fat-prev.fat)/prev.fat : null;
+    tabelaAno += '<tr><td>'+a+'</td><td class="num">'+brl(v.fat)+'</td><td class="num">'+ton(v.ton)+'</td>'+
+      '<td class="num">'+(v.ton?brl(v.fat/v.ton):'—')+'</td>'+
+      '<td class="num '+(d==null?'na':(d>=0?'pos':'neg'))+'">'+(d==null?'—':pct(d))+'</td></tr>';
+  });
+  tabelaAno += '</tbody></table>';
+
+  // evolução mensal — últimos 24 meses com faturamento
+  const porMes = {};
+  rowsCli.forEach(r=>{ const k=r[F.ANO]*100+r[F.MES]; porMes[k]=(porMes[k]||0)+r[F.FAT]; });
+  const chaves = Object.keys(porMes).map(Number).sort((a,b)=>a-b);
+  const last24 = chaves.slice(-24);
+  const labels = last24.map(k=>MESES[(k%100)-1]+'/'+String(Math.floor(k/100)).slice(2));
+  const serieVals = last24.map(k=>porMes[k]);
+
+  document.getElementById('noteCliDetail').textContent = nome;
+  document.getElementById('cliDetailZone').innerHTML =
+    '<div class="cli-summary">'+
+      '<div class="cli-stat"><div class="cli-stat-label">Faturamento histórico total</div><div class="cli-stat-val">'+brl(totalHist)+'</div></div>'+
+      '<div class="cli-stat"><div class="cli-stat-label">Posição no período selecionado</div><div class="cli-stat-val">'+(rkCur.pos? '#'+rkCur.pos+' de '+rkCur.total : '—')+'</div></div>'+
+      '<div class="cli-stat"><div class="cli-stat-label">Posição no mesmo período '+(SEL.ano-1)+'</div><div class="cli-stat-val">'+(rkPrev.pos? '#'+rkPrev.pos+' de '+rkPrev.total : 'não faturou')+'</div></div>'+
+      '<div class="cli-stat"><div class="cli-stat-label">Faturamento no período vs '+(SEL.ano-1)+'</div><div class="cli-stat-val '+(yoyCli==null?'':(yoyCli>=0?'pos':'neg'))+'">'+(yoyCli==null?'sem base':pct(yoyCli))+'</div></div>'+
+    '</div>'+
+    '<div class="chart-box" style="height:220px;margin-bottom:14px;"><canvas id="chartCliDetail"></canvas></div>'+
+    tabelaAno;
+
+  makeChart('chartCliDetail', { type:'bar',
+    data:{labels, datasets:[{label:nome, data:serieVals, backgroundColor:GOLD}]},
+    options:{responsive:true, maintainAspectRatio:false, animation:{duration:400},
+      plugins:{legend:{display:false}, tooltip:{callbacks:{label:c=>brl(c.raw)}}},
+      scales:{y:{ticks:{callback:v=>'R$ '+(v/1e3).toFixed(0)+'k'}}}}
+  });
+}
+
+function renderEvol(sub){
+  const serie = ano => MESES.map((_,i)=> sumFat(sub.filter(r=>r[F.ANO]===ano && r[F.MES]===i+1 && diaOk(r))) || null);
+  const curS = serie(SEL.ano), prevS = serie(SEL.ano-1);
+  const ptColors = MESES.map((_,i)=> (SEL.mes!==0 && i+1===SEL.mes)? BRONZE : NAVY);
+  const ptRadius = MESES.map((_,i)=> (SEL.mes!==0 && i+1===SEL.mes)? 7 : 3);
+  document.getElementById('noteEvol').textContent = SEL.ano+' x '+(SEL.ano-1)+' · filtros aplicados · clique num mês do gráfico pra filtrar';
+  makeChart('chartEvol', { type:'line',
+    data:{labels:MESES, datasets:[
+      {label:String(SEL.ano), data:curS, borderColor:NAVY, pointBackgroundColor:ptColors, pointRadius:ptRadius, backgroundColor:'rgba(12,36,66,.06)', fill:true, tension:.28, spanGaps:true},
+      {label:String(SEL.ano-1), data:prevS, borderColor:GOLD, backgroundColor:GOLD, borderDash:[5,3], tension:.28, spanGaps:true, pointRadius:2},
+    ]},
+    options:{responsive:true, maintainAspectRatio:false, animation:{duration:500},
+      interaction:{mode:'index', intersect:false},
+      onHover:(e,els)=>{ e.native.target.style.cursor = els.length? 'pointer':'default'; },
+      onClick:(e,els)=>{
+        if(!els.length) return;
+        const idx = els[0].index; // 0-11 = mês
+        SEL.mes = (SEL.mes===idx+1)? 0 : idx+1; // clicar de novo no mesmo mês volta pra "ano completo"
+        document.getElementById('fMes').value = String(SEL.mes);
+        render();
+      },
+      plugins:{legend:{position:'bottom'}, tooltip:{callbacks:{label:c=>c.dataset.label+': '+brl(c.raw)}}},
+      scales:{y:{ticks:{callback:v=>'R$ '+(v/1e6).toFixed(1)+'M'}}}}
+  });
+}
+
+function groupSum(rows, idxFn, names){
+  const g = {};
+  rows.forEach(r=>{ const k = names[idxFn(r)]; g[k]=(g[k]||0)+r[F.FAT]; });
+  return Object.entries(g).sort((a,b)=>b[1]-a[1]);
+}
+
+function renderSegTable(sub, cur, fatPeriodo, implCalc){
+  document.getElementById('noteSeg').textContent = periodLabel()+' · representatividade sobre o total do período (soma 100%) · clique numa linha pra filtrar';
+  const total = fatPeriodo || 1;
+  const g = {};
+  cur.forEach(r=>{ const k=r[F.SEG]; g[k]=g[k]||{fat:0,ton:0}; g[k].fat+=r[F.FAT]; g[k].ton+=r[F.TON]; });
+  const prev = {};
+  periodRows(sub, SEL.ano-1, SEL.mes).forEach(r=>{ prev[r[F.SEG]]=(prev[r[F.SEG]]||0)+r[F.FAT]; });
+  const rows = Object.entries(g).map(([k,v])=>({
+    idx:+k, nome: DATA.dims.segmentos[k], fat:v.fat, ton:v.ton,
+    share: v.fat/total,
+    yoy: prev[k]? (v.fat-prev[k])/prev[k] : null,
+    active: +k===SEL.seg,
+    projecao: v.fat + (implCalc? (implCalc.porSegmento[k]||0) : 0),
+  })).sort((a,b)=>b.fat-a.fat);
+  // segmentos com pipeline mas ZERO faturamento no período (ex.: N/D) não aparecem em `g` — sem essa
+  // linha extra, a soma da tabela ficaria menor que o card do topo. Inclui pra soma sempre fechar.
+  if(implCalc){
+    Object.keys(implCalc.porSegmento).forEach(k=>{
+      if(!(k in g) && implCalc.porSegmento[k]){
+        rows.push({idx:+k, nome: DATA.dims.segmentos[k], fat:0, ton:0, share:0, yoy:null, active:+k===SEL.seg, projecao: implCalc.porSegmento[k]});
+      }
+    });
+  }
+  document.getElementById('tblSeg').innerHTML = buildTable(rows, {firstCol:'Segmento', shareBase:'período', prevLabel:(SEL.mes===0?String(SEL.ano-1):MESES[SEL.mes-1]+'/'+(SEL.ano-1)), showProjecao:true});
+  document.querySelectorAll('#tblSeg tr[data-idx]').forEach(tr=>{
+    tr.onclick = ()=>{
+      const idx = +tr.dataset.idx;
+      SEL.seg = (SEL.seg===idx)? -1 : idx;
+      document.getElementById('fSeg').value = String(SEL.seg);
+      render();
+    };
+  });
+}
+
+function renderRegChart(cur){
+  document.getElementById('noteReg').textContent = periodLabel()+' · filtros aplicados';
+  const regE = groupSum(cur, r=>r[F.REG], DATA.dims.regioes);
+  makeChart('chartReg', { type:'bar',
+    data:{labels:regE.map(e=>e[0]), datasets:[{data:regE.map(e=>e[1]), backgroundColor:regE.map((_,i)=>PALETTE[(i+1)%PALETTE.length])}]},
+    options:{indexAxis:'y', responsive:true, maintainAspectRatio:false, animation:{duration:500},
+      plugins:{legend:{display:false}, tooltip:{callbacks:{label:c=>brl(c.raw)}}},
+      scales:{x:{ticks:{callback:v=>'R$ '+(v/1e6).toFixed(1)+'M'}}}}
+  });
+}
+
+function buildTable(rows, opts){
+  // rows: [{nome, fat, ton, share, yoy, idx?, active?, projecao?}] — OUTROS sempre por último; idx presente = linha clicável
+  if(!rows.length) return '<div class="empty">Sem dados para o período/filtros selecionados.</div>';
+  const normais = rows.filter(r=>r.nome!=='OUTROS');
+  const outros = rows.filter(r=>r.nome==='OUTROS');
+  const ordered = normais.concat(outros);
+  const maxV = Math.max(1,...ordered.map(r=>r.fat));
+  const showProj = !!opts.showProjecao;
+  let h = '<table><thead><tr><th>'+opts.firstCol+'</th><th class="num">Faturamento</th><th class="num">Volume (ton)</th><th class="num">Ticket/Ton</th><th class="num">Represent. (% '+opts.shareBase+')</th><th class="num">vs '+opts.prevLabel+'</th>'+
+    (showProj? '<th class="num">Projeção (faturado + pipeline)</th>':'')+'</tr></thead><tbody>';
+  ordered.forEach((r,i)=>{
+    const isOutros = r.nome==='OUTROS';
+    const classes = [];
+    if(!isOutros && i<3) classes.push('top3');
+    if(r.idx!=null) classes.push('clickable-row');
+    if(r.active) classes.push('row-active');
+    const attrs = (classes.length?' class="'+classes.join(' ')+'"':'') +
+      (r.idx!=null?' data-idx="'+r.idx+'"':'') +
+      (isOutros?' style="color:#8895a1;font-style:italic"':'');
+    h += '<tr'+attrs+'>'+
+      '<td>'+r.nome+'<div class="bar-mini"><div style="width:'+(r.fat/maxV*100)+'%"></div></div></td>'+
+      '<td class="num">'+brl(r.fat)+'</td>'+
+      '<td class="num">'+ton(r.ton)+'</td>'+
+      '<td class="num">'+(r.ton? brl(r.fat/r.ton):'—')+'</td>'+
+      '<td class="num">'+(r.share*100).toFixed(1)+'%</td>'+
+      '<td class="num '+(r.yoy==null?'na':(r.yoy>=0?'pos':'neg'))+'">'+(r.yoy==null?'—':pct(r.yoy))+'</td>'+
+      (showProj? '<td class="num">'+(r.projecao?brl(r.projecao):'—')+'</td>':'')+
+      '</tr>';
+  });
+  // linha de total — soma faturamento/volume/projeção de todas as linhas exibidas (fecha 100% do período)
+  const totFat = ordered.reduce((s,r)=>s+r.fat,0);
+  const totTon = ordered.reduce((s,r)=>s+r.ton,0);
+  const totProj = ordered.reduce((s,r)=>s+(r.projecao||0),0);
+  const totShare = ordered.reduce((s,r)=>s+r.share,0);
+  h += '<tr style="font-weight:700;border-top:2px solid var(--bronze,#8a6d3b)">'+
+    '<td>TOTAL</td>'+
+    '<td class="num">'+brl(totFat)+'</td>'+
+    '<td class="num">'+ton(totTon)+'</td>'+
+    '<td class="num">'+(totTon? brl(totFat/totTon):'—')+'</td>'+
+    '<td class="num">'+(totShare*100).toFixed(1)+'%</td>'+
+    '<td class="num">—</td>'+
+    (showProj? '<td class="num">'+(totProj?brl(totProj):'—')+'</td>':'')+
+    '</tr>';
+  return h+'</tbody></table>';
+}
+
+function renderTblClientes(sub, cur, fatPeriodo, implCalc){
+  document.getElementById('noteCli').textContent = periodLabel()+' · top 10 + OUTROS = 100% do faturamento do período · clique numa linha pra filtrar';
+  const total = fatPeriodo || 1;
+  const totalTon = sumTon(cur);
+  const prevRows = periodRows(sub, SEL.ano-1, SEL.mes);
+  const prevTotal = sumFat(prevRows);
+  const g = {};
+  cur.forEach(r=>{ const k=r[F.CLI]; g[k]=g[k]||{fat:0,ton:0}; g[k].fat+=r[F.FAT]; g[k].ton+=r[F.TON]; });
+  const prev = {};
+  prevRows.forEach(r=>{ const k=r[F.CLI]; prev[k]=(prev[k]||0)+r[F.FAT]; });
+  const top10 = Object.entries(g)
+    .map(([k,v])=>({idx:+k, nome:DATA.dims.clientes[k], fat:v.fat, ton:v.ton,
+      share:v.fat/total, yoy: prev[k]? (v.fat-prev[k])/prev[k] : null, active:+k===SEL.cli,
+      projecao: v.fat + (implCalc? (implCalc.porCliente[k]||0) : 0)}))
+    .sort((a,b)=>b.fat-a.fat).slice(0,10);
+  // OUTROS = tudo que não está no top 10, fechando 100%
+  const topFat = top10.reduce((s,r)=>s+r.fat,0), topTon = top10.reduce((s,r)=>s+r.ton,0);
+  const outrosFat = total - topFat, outrosTon = totalTon - topTon;
+  const prevTop = top10.reduce((s,r)=>s+(prev[r.idx]||0),0);
+  const prevOutros = prevTotal - prevTop;
+  // projeção do OUTROS: pega o total atômico (implCalc.projRsTotal, o mesmo do card do topo) e
+  // subtrai a soma do que já foi atribuído ao top 10 — garante que top10+OUTROS feche exatamente
+  // com o card, sem refazer nenhuma conta nova.
+  const top10Idx = new Set(top10.map(r=>r.idx));
+  const top10ProjPipeline = top10.reduce((s,r)=> s + (implCalc? (implCalc.porCliente[r.idx]||0) : 0), 0);
+  const outrosProjPipeline = implCalc? Math.max(0, implCalc.projRsTotal - top10ProjPipeline) : 0;
+  const outrosProjecao = outrosFat + outrosProjPipeline;
+  const rows = top10.slice();
+  if(Math.abs(outrosFat) > 1){
+    rows.push({nome:'OUTROS', fat:outrosFat, ton:outrosTon, share:outrosFat/total,
+      yoy: prevOutros? (outrosFat-prevOutros)/prevOutros : null, projecao: outrosProjecao});
+  }
+  document.getElementById('tblCli').innerHTML = buildTable(rows, {firstCol:'Cliente (grupo)', shareBase:'período', prevLabel:(SEL.mes===0?String(SEL.ano-1):MESES[SEL.mes-1]+'/'+(SEL.ano-1)), showProjecao:true});
+  document.querySelectorAll('#tblCli tr[data-idx]').forEach(tr=>{
+    tr.onclick = ()=>{
+      const idx = +tr.dataset.idx;
+      SEL.cli = (SEL.cli===idx)? -1 : idx;
+      document.getElementById('cliInput').value = SEL.cli===-1? '' : DATA.dims.clientes[SEL.cli];
+      render();
+    };
+  });
+}
+
+function renderFrota(sub, cur){
+  document.getElementById('noteFrota').textContent = periodLabel()+' x mesmo período '+(SEL.ano-1)+' · filtros aplicados';
+  const names = DATA.dims.frotas;
+  const curG = {}, prevG = {};
+  cur.forEach(r=>{ const k=names[r[F.FROTA]]; curG[k]=(curG[k]||0)+r[F.FAT]; });
+  periodRows(sub, SEL.ano-1, SEL.mes).forEach(r=>{ const k=names[r[F.FROTA]]; prevG[k]=(prevG[k]||0)+r[F.FAT]; });
+  const labels = names.filter(n=> (curG[n]||0)+(prevG[n]||0) > 0);
+  makeChart('chartFrota', { type:'bar',
+    data:{labels, datasets:[
+      {label:String(SEL.ano-1), data:labels.map(l=>prevG[l]||0), backgroundColor:GOLD},
+      {label:String(SEL.ano), data:labels.map(l=>curG[l]||0), backgroundColor:NAVY},
+    ]},
+    options:{responsive:true, maintainAspectRatio:false, animation:{duration:500},
+      plugins:{legend:{position:'bottom'}, tooltip:{callbacks:{label:c=>c.dataset.label+': '+brl(c.raw)}}},
+      scales:{y:{ticks:{callback:v=>'R$ '+(v/1e6).toFixed(1)+'M'}}}}
+  });
+}
+
+function renderTerceiros(sub, cur){
+  document.getElementById('noteTerc').textContent = periodLabel()+' · top 10 + OUTROS = 100% do faturamento de terceiros · filtros aplicados';
+  const curT = cur.filter(r=>r[F.TERC]>=0);
+  const prevT = periodRows(sub, SEL.ano-1, SEL.mes).filter(r=>r[F.TERC]>=0);
+  const total = sumFat(curT) || 1;
+  const totalTon = sumTon(curT);
+  const prevTotal = sumFat(prevT);
+  const g = {};
+  curT.forEach(r=>{ const k=r[F.TERC]; g[k]=g[k]||{fat:0,ton:0}; g[k].fat+=r[F.FAT]; g[k].ton+=r[F.TON]; });
+  const prev = {};
+  prevT.forEach(r=>{ prev[r[F.TERC]]=(prev[r[F.TERC]]||0)+r[F.FAT]; });
+  const outrosIdx = DATA.dims.terceiros.indexOf('OUTROS');
+  const top10 = Object.entries(g).filter(([k])=>+k!==outrosIdx)
+    .map(([k,v])=>({idx:+k, nome:DATA.dims.terceiros[k], fat:v.fat, ton:v.ton,
+      share:v.fat/total, yoy: prev[k]? (v.fat-prev[k])/prev[k] : null}))
+    .sort((a,b)=>b.fat-a.fat).slice(0,10);
+  const topFat = top10.reduce((s,r)=>s+r.fat,0), topTon = top10.reduce((s,r)=>s+r.ton,0);
+  const outrosFat = total - topFat, outrosTon = totalTon - topTon;
+  const prevTop = top10.reduce((s,r)=>s+(prev[r.idx]||0),0);
+  const prevOutros = prevTotal - prevTop;
+  const rows = top10.slice();
+  if(Math.abs(outrosFat) > 1){
+    rows.push({nome:'OUTROS', fat:outrosFat, ton:outrosTon, share:outrosFat/total,
+      yoy: prevOutros? (outrosFat-prevOutros)/prevOutros : null});
+  }
+  document.getElementById('tblTerc').innerHTML = buildTable(rows, {firstCol:'Terceiro (contratado)', shareBase:'período (só terceiros)', prevLabel:(SEL.mes===0?String(SEL.ano-1):MESES[SEL.mes-1]+'/'+(SEL.ano-1))});
+}
+
+// janelas móveis: últimos 90 dias (até a data mais recente da base) vs os 90 dias imediatamente anteriores.
+// Sempre trailing — não usa o filtro de Mês/Ano, propositalmente, pra não misturar sazonalidade de longo
+// prazo com o que está acontecendo agora. Respeita cliente/vendedor/segmento (via "sub").
+function janelas90(){
+  const endA = MAXDATE, startA = addDays(endA,-89);
+  const endB = addDays(startA,-1), startB = addDays(endB,-89);
+  return {startA, endA, startB, endB};
+}
+function rowsNaJanela(sub, start, end){ return sub.filter(r=>{ const d=factDate(r); return d>=start && d<=end; }); }
+
+function renderAnalise(sub){
+  const {startA, endA, startB, endB} = janelas90();
+  const curRows = rowsNaJanela(sub, startA, endA);
+  const prevRows = rowsNaJanela(sub, startB, endB);
+  const total = sumFat(curRows) || 1;
+  const prevTotal = sumFat(prevRows);
+  const totalDelta = total - prevTotal;
+  const totalPct = prevTotal? totalDelta/prevTotal : null;
+
+  const gc = {}, pc = {};
+  curRows.forEach(r=>{ gc[r[F.CLI]]=(gc[r[F.CLI]]||0)+r[F.FAT]; });
+  prevRows.forEach(r=>{ pc[r[F.CLI]]=(pc[r[F.CLI]]||0)+r[F.FAT]; });
+  const nomes = DATA.dims.clientes;
+  // limiar de ruído relativo ao tamanho da janela (funciona filtrando por vendedor/segmento também,
+  // que reduzem o total e antes ficavam presos num piso fixo de R$30k)
+  const noiseFloor = Math.max(800, total*0.006, prevTotal*0.006);
+  const deltas = [];
+  new Set([...Object.keys(gc),...Object.keys(pc)]).forEach(k=>{
+    const a = gc[k]||0, p = pc[k]||0;
+    if(p < noiseFloor && a < noiseFloor) return; // ruído
+    deltas.push({nome:nomes[k], atual:a, ant:p, delta:a-p, share: a/total, churn: a===0 && p>0});
+  });
+  const MAX_PONTOS = 6;
+  const quedas = deltas.filter(d=>d.delta<0).sort((a,b)=>a.delta-b.delta).slice(0,MAX_PONTOS);
+  const ganhos = deltas.filter(d=>d.delta>0).sort((a,b)=>b.delta-a.delta).slice(0,MAX_PONTOS);
+
+  const fmt = d => (d.churn?'<span style="text-transform:uppercase;font-size:10px;letter-spacing:.3px;">⛔ cliente zerou —</span> ':'')+'<b>'+d.nome+'</b>: '+(d.delta<0?'−':'+')+brl(Math.abs(d.delta)).replace('R$','R$ ')+' vs os 90 dias anteriores'+
+    ' ('+(d.ant? pct(d.delta/d.ant):'novo')+') · representa '+(d.share*100).toFixed(1)+'% da janela';
+
+  // headline: tendência geral do portfólio nos últimos 90 dias (recomendação adicional —
+  // dá o pulso do negócio antes de entrar no detalhe por cliente). grid-column:1/-1 pra ocupar
+  // as duas colunas do #anaZone (que já é um grid de 2 colunas) em vez de disputar espaço com elas.
+  let headline = '<div class="alert '+(totalPct==null?'':(totalPct>=0?'ok':'danger'))+'" style="grid-column:1/-1; margin-bottom:2px;">'+
+    '<b>Tendência geral — últimos 90 dias:</b> '+brl(total)+' ('+(totalPct==null?'sem base de comparação':pct(totalPct))+' vs '+brl(prevTotal)+' nos 90 dias anteriores)'+
+    '</div>';
+
+  let html = '';
+  if(quedas.length){
+    html += '<div class="ana-col"><h4 class="ana-h danger">⚠ Pontos de atenção — quedas</h4>' +
+      quedas.map(d=>'<div class="alert danger">'+fmt(d)+'</div>').join('') + '</div>';
+  } else {
+    html += '<div class="ana-col"><h4 class="ana-h danger">⚠ Pontos de atenção</h4><div class="alert">Nenhuma queda relevante de cliente nos últimos 90 dias, considerando os filtros aplicados.</div></div>';
+  }
+  let acertos = ganhos.map(d=>'<div class="alert ok">'+fmt(d)+'</div>');
+  html += '<div class="ana-col"><h4 class="ana-h ok">✔ Onde estamos acertando</h4>' +
+    (acertos.length? acertos.join('') : '<div class="alert">Nenhum crescimento relevante de cliente nos últimos 90 dias.</div>') + '</div>';
+  document.getElementById('anaZone').innerHTML = headline + html;
+  document.getElementById('noteAna').textContent = 'Últimos 90 dias ('+fmtDate(startA)+' a '+fmtDate(endA)+') vs 90 dias anteriores · filtros de vendedor/segmento aplicados · até 6 quedas e 6 acertos';
+}
+
+// quando um cliente específico está selecionado, a análise vira a leitura de tendência DELE
+// (mesma janela de 90 dias), em vez do ranking de movimentos entre clientes.
+function renderAnaliseCliente(sub){
+  const nome = DATA.dims.clientes[SEL.cli];
+  const {startA, endA, startB, endB} = janelas90();
+  const curRows = rowsNaJanela(sub, startA, endA);
+  const prevRows = rowsNaJanela(sub, startB, endB);
+  const fatA = sumFat(curRows), fatB = sumFat(prevRows);
+  const delta = fatA - fatB;
+  const pctD = fatB? delta/fatB : null;
+  const churn = fatA===0 && fatB>0;
+  const isUp = delta>=0;
+
+  const card = churn
+    ? '<div class="alert danger"><span style="text-transform:uppercase;font-size:10px;letter-spacing:.3px;">⛔ cliente zerou —</span> <b>'+nome+'</b> não faturou nos últimos 90 dias, contra '+brl(fatB)+' nos 90 dias anteriores. Vale checar o que aconteceu.</div>'
+    : '<div class="alert '+(isUp?'ok':'danger')+'"><b>'+nome+'</b>: '+(delta<0?'−':'+')+brl(Math.abs(delta)).replace('R$','R$ ')+' nos últimos 90 dias vs os 90 dias anteriores'+
+      ' ('+(pctD==null?'sem base':pct(pctD))+') · '+brl(fatA)+' vs '+brl(fatB)+'.</div>';
+
+  const html = '<div class="ana-col"><h4 class="ana-h '+(churn||!isUp?'danger':'ok')+'">'+(churn||!isUp?'⚠':'✔')+' Tendência de '+nome+'</h4>'+card+'</div>'+
+    '<div class="ana-col"><h4 class="ana-h" style="color:var(--muted);">ℹ Como ler</h4><div class="alert">Com um cliente selecionado, esta análise foca só nele — o histórico completo (todos os anos e ranking) está no painel "Histórico do cliente" acima.</div></div>';
+  document.getElementById('anaZone').innerHTML = html;
+  document.getElementById('noteAna').textContent = 'Últimos 90 dias ('+fmtDate(startA)+' a '+fmtDate(endA)+') vs 90 dias anteriores · cliente selecionado';
+}
+
+fetch('./data.b64.txt').then(r=>r.text()).then(b64=>{
+  const bin = atob(b64);
+  const bytes = new Uint8Array(bin.length);
+  for(let i=0;i<bin.length;i++) bytes[i]=bin.charCodeAt(i);
+  DATA = JSON.parse(pako.inflate(bytes, {to:'string'}));
+  computeDerived();
+  initFilters();
+  render();
+}).catch(err=>{
+  document.body.innerHTML = '<div style="padding:40px;font-family:sans-serif;color:#a00;">Erro ao carregar dados do painel: '+err+'</div>';
+});
+
+// ============ Tour guiado ============
+const TOUR_STEPS = [
+  { target:null, title:'Bem-vindo ao Painel Comercial — Fatran',
+    text:'Esse painel dá visão completa do faturamento: por cliente, segmento, região, frota e período. Em menos de 1 minuto eu mostro onde estão os principais recursos — inclusive os atalhos que a maioria não descobre sozinho.' },
+  { target:'#cliWrap', title:'Busca de cliente',
+    text:'Digite o nome de qualquer cliente aqui — são quase 800 na base, todos pesquisáveis. Ao selecionar um, o painel inteiro se ajusta: KPIs, gráfico, tabelas, e um card extra de histórico completo aparece logo abaixo dos indicadores.' },
+  { target:'.filters', title:'Filtros',
+    text:'Mês, dia(s) específicos, ano, vendedor e segmento — combine quantos quiser. Tudo reage junto: gráfico, tabelas e a análise do período.' },
+  { target:'#kpiRow', title:'Indicadores do topo',
+    text:'Faturamento líquido, projeção de faturamento (baseada no pipeline de implantados), volume em toneladas, ticket médio, e as comparações com o mesmo período do ano anterior e com o mês anterior — sempre considerando os filtros ativos.' },
+  { target:'#implantRow', title:'Pipeline de implantados',
+    text:'Total programado, cancelado, postergado e o saldo que ainda falta faturar — vem da aba IMPLANTADOS da planilha. A projeção de faturamento (lá em cima) usa esse saldo × o ticket médio histórico de cada cliente.' },
+  { target:'#chartEvol', title:'Evolução do faturamento',
+    text:'Compara o ano corrente com o anterior, mês a mês. Dica: clique num ponto do gráfico para filtrar aquele mês direto — sem precisar usar o campo de seleção. Clique de novo pra tirar o filtro.' },
+  { target:'#tblSeg', title:'Faturamento por segmento',
+    text:'Mesma lógica do gráfico: clique numa linha da tabela para filtrar só aquele segmento.' },
+  { target:'#tblCli', title:'Top 10 clientes',
+    text:'Clicar numa linha aqui tem o mesmo efeito de buscar o cliente pelo nome lá em cima — abre o histórico completo dele.' },
+  { target:'#tblTerc', title:'Terceiros contratados',
+    text:'Ranking dos transportadores terceirizados que mais faturam com a Fatran no período. Responde aos filtros de Ano e Mês.' },
+  { target:'#anaZone', title:'Análise do período',
+    text:'Compara automaticamente os últimos 90 dias com os 90 anteriores — não é ano contra ano, é o momentum recente. Com um cliente selecionado, essa análise vira a leitura de tendência específica dele.' },
+  { target:null, title:'Pronto!',
+    text:'Agora é só usar. Se quiser rever qualquer parte depois, o botão "Tour guiado" fica sempre disponível lá em cima.' },
+];
+
+let tourIdx = 0;
+
+function buildTourDOM(){
+  if(document.getElementById('tourBackdrop')) return;
+  const bd = document.createElement('div'); bd.id='tourBackdrop'; bd.className='tour-backdrop';
+  const tip = document.createElement('div'); tip.id='tourTooltip'; tip.className='tour-tooltip';
+  document.body.appendChild(bd); document.body.appendChild(tip);
+}
+function closeTour(markSeen){
+  const bd = document.getElementById('tourBackdrop'); const tip = document.getElementById('tourTooltip');
+  if(bd) bd.remove(); if(tip) tip.remove();
+  document.querySelectorAll('.tour-highlight').forEach(el=>el.classList.remove('tour-highlight'));
+  if(markSeen){ try{ localStorage.setItem('fatranTourSeen','1'); }catch(e){} }
+}
+function positionTourTooltip(step){
+  const tip = document.getElementById('tourTooltip');
+  if(!step.target){
+    tip.style.top='50%'; tip.style.left='50%'; tip.style.transform='translate(-50%,-50%)';
+    return;
+  }
+  tip.style.transform='none';
+  const el = document.querySelector(step.target);
+  if(!el){ tip.style.top='50%'; tip.style.left='50%'; tip.style.transform='translate(-50%,-50%)'; return; }
+  const r = el.getBoundingClientRect();
+  const tipH = tip.offsetHeight, tipW = tip.offsetWidth;
+  let top = r.bottom + 14;
+  if(top + tipH > window.innerHeight - 10){ top = Math.max(10, r.top - tipH - 14); }
+  let left = r.left + r.width/2 - tipW/2;
+  left = Math.max(10, Math.min(left, window.innerWidth - tipW - 10));
+  tip.style.top = top+'px';
+  tip.style.left = left+'px';
+}
+function showTourStep(i){
+  tourIdx = i;
+  const step = TOUR_STEPS[i];
+  const total = TOUR_STEPS.length;
+  const isFirst = i===0, isLast = i===total-1;
+  document.querySelectorAll('.tour-highlight').forEach(el=>el.classList.remove('tour-highlight'));
+
+  if(step.target){
+    const el = document.querySelector(step.target);
+    if(el){ el.scrollIntoView({block:'center'}); el.classList.add('tour-highlight'); }
+  }
+
+  const tip = document.getElementById('tourTooltip');
+  tip.innerHTML =
+    '<div class="tour-step-count">Passo '+(i+1)+' de '+total+'</div>'+
+    '<h4>'+step.title+'</h4>'+
+    '<p>'+step.text+'</p>'+
+    '<div class="tour-actions">'+
+      (isFirst? '' : '<button type="button" id="tourBack" class="tour-btn-secondary">← Voltar</button>')+
+      '<button type="button" id="tourSkip" class="tour-btn-secondary">'+(isLast?'Fechar':'Pular tour')+'</button>'+
+      (isLast? '' : '<button type="button" id="tourNext" class="tour-btn-primary">'+(isFirst?'Vamos lá →':'Próximo →')+'</button>')+
+    '</div>';
+
+  requestAnimationFrame(()=>positionTourTooltip(step));
+
+  document.getElementById('tourSkip').onclick = ()=> closeTour(true);
+  const nextBtn = document.getElementById('tourNext');
+  if(nextBtn) nextBtn.onclick = ()=> showTourStep(i+1);
+  const backBtn = document.getElementById('tourBack');
+  if(backBtn) backBtn.onclick = ()=> showTourStep(i-1);
+}
+function startTour(){
+  buildTourDOM();
+  showTourStep(0);
+}
+document.getElementById('btnTour').onclick = startTour;
+window.addEventListener('resize', ()=>{ if(document.getElementById('tourTooltip')) positionTourTooltip(TOUR_STEPS[tourIdx]); });
+
+// Primeira visita: pergunta se quer o tour
+(function offerTourOnFirstVisit(){
+  let seen = false;
+  try{ seen = localStorage.getItem('fatranTourSeen')==='1'; }catch(e){}
+  if(seen) return;
+  const modal = document.createElement('div');
+  modal.className = 'tour-welcome-backdrop';
+  modal.innerHTML = '<div class="tour-welcome-card">'+
+    '<div class="tour-welcome-emoji">🧭</div>'+
+    '<h3>Primeira vez por aqui?</h3>'+
+    '<p>Em menos de 1 minuto eu mostro os filtros, a busca de cliente e os atalhos de clicar direto no gráfico e nas tabelas.</p>'+
+    '<div class="tour-actions" style="justify-content:center;">'+
+      '<button type="button" id="tourWelcomeSkip" class="tour-btn-secondary">Agora não</button>'+
+      '<button type="button" id="tourWelcomeStart" class="tour-btn-primary">Fazer o tour →</button>'+
+    '</div></div>';
+  document.body.appendChild(modal);
+  document.getElementById('tourWelcomeSkip').onclick = ()=>{ modal.remove(); try{localStorage.setItem('fatranTourSeen','1');}catch(e){} };
+  document.getElementById('tourWelcomeStart').onclick = ()=>{ modal.remove(); startTour(); };
+})();
+</script>
+</body>
+</html>
