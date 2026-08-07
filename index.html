@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Dashboard Comercial — Fatran</title>
+<script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js" integrity="sha384-iU8HYtnGQ8Cy4zl7gbNMOhsDTTKX02BTXptVP/vqAWIaTfM7isw76iyZCsjL2eVi" crossorigin="anonymous"></script>
 <style>
   :root{
@@ -177,6 +177,66 @@
   .tour-welcome-emoji{font-size:34px; margin-bottom:6px;}
   .tour-welcome-card h3{margin:0 0 8px; font-size:16px; color:var(--navy); font-weight:800;}
   .tour-welcome-card p{margin:0 0 18px; font-size:12.5px; line-height:1.5; color:var(--muted);}
+
+  /* ---- Novas seções (Curva ABC, Sazonalidade, Aquisição/Churn, Vendedor) ---- */
+  .abc-resumo{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:14px;}
+  .abc-box{border-radius:10px; padding:10px 12px; font-size:12px; color:#fff;}
+  .abc-box div{margin-top:2px; font-weight:700; font-size:13px;}
+  .abc-a{background:var(--bronze);}
+  .abc-b{background:var(--gold); color:#3a2f10;}
+  .abc-c{background:var(--steel);}
+  @media (max-width:700px){ .abc-resumo{grid-template-columns:1fr;} }
+  .heat th, .heat td{padding:5px 4px; font-size:10.5px;}
+  .heat td:first-child, .heat th:first-child{text-align:left; font-size:11.5px; white-space:nowrap; padding-right:10px;}
+
+  /* ---- Botao flutuante limpar filtros ---- */
+  .btn-float-reset{position:fixed; right:22px; bottom:22px; z-index:500; background:var(--navy); color:var(--gold-light);
+    border:none; border-radius:24px; padding:12px 18px; font-size:12.5px; font-weight:700; cursor:pointer;
+    box-shadow:0 6px 18px rgba(12,36,66,.35); display:none; align-items:center; gap:6px;}
+  .btn-float-reset:hover{background:#0a1d36;}
+  @media (max-width:700px){ .btn-float-reset{right:12px; bottom:12px; padding:10px 14px; font-size:11.5px;} }
+
+  /* ---- Modal de informacao (curva ABC etc.) ---- */
+  .info-btn{display:inline-flex; align-items:center; justify-content:center; width:16px; height:16px; border-radius:50%;
+    background:var(--steel); color:#fff; font-size:10.5px; font-weight:800; cursor:pointer; margin-left:6px; vertical-align:middle;}
+  .info-btn:hover{background:var(--navy);}
+  .info-modal{position:fixed; inset:0; background:rgba(12,36,66,.5); z-index:900; display:none; align-items:center; justify-content:center; padding:20px;}
+  .info-modal-box{background:#fff; border-radius:12px; padding:22px 24px; max-width:460px; position:relative;
+    box-shadow:0 14px 44px rgba(0,0,0,.28); font-size:12.5px; line-height:1.6; color:var(--text);}
+  .info-modal-box.wide{max-width:640px; max-height:78vh; display:flex; flex-direction:column; padding-top:44px;}
+  .info-modal-box.wide #infoModalBody{overflow:auto; padding-right:4px; overscroll-behavior:contain;}
+  .info-modal-box b{color:var(--navy);}
+  .info-modal-close{position:absolute; top:8px; right:10px; width:28px; height:28px; border-radius:50%;
+    border:none; background:#fff; font-size:17px; cursor:pointer; color:var(--muted); line-height:1; z-index:20;
+    box-shadow:0 1px 4px rgba(0,0,0,.18);}
+  .info-modal-close:hover{background:#F2F4F6; color:var(--navy);}
+  .kpi.kpi-click{cursor:pointer; transition:box-shadow .15s;}
+  .kpi.kpi-click:hover{box-shadow:0 0 0 2px var(--gold) inset;}
+  .drill-table{width:100%; border-collapse:collapse; font-size:12px; margin-top:8px;}
+  .drill-table th{text-align:left; font-size:10.5px; text-transform:uppercase; letter-spacing:.3px; color:var(--muted); border-bottom:2px solid #E4E8EC; padding:6px 8px;}
+  .drill-table td{padding:6px 8px; border-bottom:1px solid #EEF1F4;}
+  .drill-table tr:hover td{background:#F7F9FB;}
+  .drill-empty{color:var(--muted); font-style:italic; padding:10px 0;}
+
+  /* ---- Margem (tabelas) ---- */
+  .margem-note{font-size:11px; color:var(--muted); margin:-6px 0 10px;}
+
+  .saz-ano-chip{display:inline-block; padding:5px 12px; margin:0 6px 6px 0; border-radius:14px; border:1px solid #D7DCE1;
+    background:#fff; color:var(--navy); font-size:11.5px; font-weight:700; cursor:pointer;}
+  .saz-ano-chip:hover{border-color:var(--gold);}
+  .saz-ano-chip.on{background:var(--navy); color:var(--gold-light); border-color:var(--navy);}
+
+  .abc-mini-filtros{display:flex; gap:14px; margin:-4px 0 10px; flex-wrap:wrap;}
+  .abc-mini-filtros label{font-size:10.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.3px; font-weight:700; display:flex; align-items:center; gap:6px;}
+  .abc-mini-filtros select{padding:5px 8px; border-radius:6px; border:1px solid #D7DCE1; font-size:12px; font-weight:700; color:var(--navy); background:#fff; cursor:pointer;}
+  .abc-legenda{margin-top:12px; padding:10px 12px; background:#FAFBFC; border-radius:8px; font-size:11.5px; color:var(--muted); line-height:1.55;}
+  .abc-legenda b{color:var(--navy);}
+
+  .kpi-row-sm{display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin-bottom:12px;}
+  @media (max-width:900px){ .kpi-row-sm{grid-template-columns:repeat(3,1fr);} }
+  @media (max-width:700px){ .kpi-row-sm{grid-template-columns:repeat(2,1fr);} }
+  .churn-bloco-label{font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.3px; font-weight:700; margin:10px 0 6px;}
+  .churn-bloco-label select{margin-left:6px; padding:4px 8px; border-radius:6px; border:1px solid #D7DCE1; font-size:11.5px; font-weight:700; color:var(--navy); background:#fff; cursor:pointer; text-transform:none; letter-spacing:0;}
 </style>
 </head>
 <body>
@@ -237,6 +297,20 @@
     <div id="tblSeg"></div>
   </div>
 
+  <!-- Bloco NOVO: Sazonalidade mensal por segmento -->
+  <div class="card">
+    <h3>Sazonalidade mensal por segmento <span class="note" id="noteSaz"></span></h3>
+    <div id="sazAnos" style="margin-bottom:10px;"></div>
+    <div id="tblSaz" style="overflow-x:auto;"></div>
+  </div>
+
+  <!-- Bloco NOVO: Margem por segmento (frota terceirizada) -->
+  <div class="card">
+    <h3>Margem por segmento <span class="info-btn" id="btnInfoMargem">?</span> <span class="note" id="noteMargemSeg"></span></h3>
+    <div class="margem-note">Considera apenas cargas com frota terceirizada — é onde existe custo de frete + pedágio lançado na planilha. Frota própria não tem custo operacional apurado aqui (diesel, manutenção etc.), por isso fica fora desta conta.</div>
+    <div id="tblMargemSeg"></div>
+  </div>
+
   <!-- Bloco 5: Região e Frota lado a lado -->
   <div class="grid2">
     <div class="card"><h3>Faturamento por região <span class="note" id="noteReg"></span></h3><div class="chart-box"><canvas id="chartReg"></canvas></div></div>
@@ -247,6 +321,35 @@
   <div class="card">
     <h3>Top 10 clientes <span class="note" id="noteCli"></span></h3>
     <div id="tblCli"></div>
+  </div>
+
+  <!-- Bloco NOVO: Curva ABC de clientes -->
+  <div class="card">
+    <h3>Curva ABC de clientes <span class="info-btn" id="btnInfoABC">?</span> <span class="note" id="noteABC"></span></h3>
+    <div class="abc-mini-filtros">
+      <label>Ano<select id="abcAno"></select></label>
+      <label>Mês<select id="abcMes"></select></label>
+    </div>
+    <div class="abc-resumo" id="abcResumo"></div>
+    <div class="chart-box xl"><canvas id="chartABC"></canvas></div>
+    <div class="abc-legenda" id="abcLegenda"></div>
+  </div>
+
+  <!-- Bloco NOVO: Aquisição de clientes (novo / inativo / reativado) -->
+  <div class="card">
+    <h3>Aquisição de clientes <span class="note" id="noteChurn"></span></h3>
+    <div class="churn-bloco-label">Mês atual — <b id="churnMesAtualLabel"></b></div>
+    <div class="kpi-row-sm" id="churnKpisAtual"></div>
+    <div class="churn-bloco-label">Comparar com <select id="churnCompMes"></select></div>
+    <div class="kpi-row-sm" id="churnKpisComp"></div>
+    <div class="chart-box" id="chartChurnBox"><canvas id="chartChurn"></canvas></div>
+    <div class="abc-legenda" id="churnLegenda"></div>
+  </div>
+
+  <!-- Bloco NOVO: Concentração de receita por vendedor -->
+  <div class="card">
+    <h3>Concentração de receita por vendedor <span class="note" id="noteVend"></span></h3>
+    <div id="tblVend"></div>
   </div>
 
   <!-- Bloco 7: Top 10 terceiros (largura total) -->
@@ -281,31 +384,93 @@ const MESES_FULL = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho
 const NAVY='#0C2442', STEEL='#4F7492', BRONZE='#A67F3C', GOLD='#DBBC60', GOLDL='#E2CD81';
 const PALETTE=[NAVY,GOLD,STEEL,BRONZE,GOLDL,'#7C93A6','#C9A96E','#324B66'];
 // facts: [ano,mes,dia,cliIdx,vendIdx,segIdx,frotaIdx,regIdx,tercIdx(-1 se frota própria),fat,ton]
-const F={ANO:0,MES:1,DIA:2,CLI:3,VEND:4,SEG:5,FROTA:6,REG:7,TERC:8,FAT:9,TON:10};
+const F={ANO:0,MES:1,DIA:2,CLI:3,VEND:4,SEG:5,FROTA:6,REG:7,TERC:8,FAT:9,TON:10,PAGO:11};
 
 let SEL = {cli:-1, mes:6, ano:2026, vend:-1, seg:-1, dias:new Set()}; // -1 = todos; dias vazio = todos
 let CHARTS = {};
+let SAZ_ANOS = null; // anos selecionados no card de Sazonalidade (default: ano atual + anterior)
 
 function brl(v){ return (v||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL',maximumFractionDigits:0}); }
 function ton(v){ return (v||0).toLocaleString('pt-BR',{maximumFractionDigits:0})+' t'; }
 function pct(v){ return (v>=0?'+':'')+(v*100).toLocaleString('pt-BR',{maximumFractionDigits:1})+'%'; }
-function makeChart(id,cfg){ if(CHARTS[id])CHARTS[id].destroy(); CHARTS[id]=new Chart(document.getElementById(id),cfg); }
+function makeChart(id,cfg){
+  // Chart.js vem de um <script src> externo (CDN); numa carga a frio (arquivo local recem aberto,
+  // cache vazio) pode a inicializacao rodar antes do CDN terminar de carregar. Sem essa guarda, um
+  // "Chart is not defined" aqui derrubava o resto do render() (inclusive os cards do topo, que vem
+  // depois no fluxo) e a pagina abria em branco ate o usuario mexer num filtro e forcar outro render().
+  if(typeof Chart==='undefined'){
+    console.warn('Chart.js ainda nao carregou -- pulando grafico '+id+' (window.load vai re-renderizar).');
+    return;
+  }
+  if(CHARTS[id])CHARTS[id].destroy();
+  CHARTS[id]=new Chart(document.getElementById(id),cfg);
+}
+function brlShort(v){ const av=Math.abs(v); if(av>=1e6) return 'R$ '+(v/1e6).toFixed(1)+'M'; if(av>=1e3) return 'R$ '+(v/1e3).toFixed(0)+'k'; return brl(v); }
+// plugin generico (sem dependencia externa) -- desenha o valor dentro (ou logo acima, se a barra for pequena)
+// de cada barra. Ativado por dataset: {showValues:true, valueFormatter:fn, labelColor:'#333', labelColorInside:'#fff'}
+const barValueLabel = {
+  id:'barValueLabel',
+  afterDatasetsDraw(chart){
+    const {ctx} = chart;
+    chart.data.datasets.forEach((ds,dsIndex)=>{
+      if(!ds.showValues) return;
+      const meta = chart.getDatasetMeta(dsIndex);
+      if(meta.type!=='bar') return;
+      ctx.save();
+      ctx.font = '700 10.5px Arial, sans-serif';
+      meta.data.forEach((el,i)=>{
+        const val = ds.data[i];
+        if(val==null) return;
+        const label = ds.valueFormatter? ds.valueFormatter(val) : String(val);
+        const horizontal = !!el.horizontal;
+        if(horizontal){
+          const inside = Math.abs(el.x-el.base) > 42;
+          ctx.textAlign = inside? 'right':'left';
+          ctx.textBaseline = 'middle';
+          ctx.fillStyle = inside? (ds.labelColorInside||'#fff') : (ds.labelColor||'#33404A');
+          ctx.fillText(label, inside? el.x-6 : el.x+6, el.y);
+        } else {
+          const inside = Math.abs(el.y-el.base) > 20;
+          ctx.textAlign = 'center';
+          ctx.textBaseline = inside? 'top':'bottom';
+          ctx.fillStyle = inside? (ds.labelColorInside||'#fff') : (ds.labelColor||'#33404A');
+          ctx.fillText(label, el.x, inside? el.y+4 : el.y-4);
+        }
+      });
+    });
+    ctx.restore();
+  }
+};
+function tentarRegistrarPluginChart(){
+  // Chart.js vem de CDN externo -- se essa linha rodar antes do CDN terminar de carregar (cache
+  // frio, 1a abertura do arquivo), "Chart" nao existe ainda e um Chart.register() direto aqui
+  // quebrava a pagina inteira (nenhum script depois dessa linha rodava -- inclusive render() e os
+  // handlers dos filtros, deixando a pagina com a aparencia de "travada"/em branco). Com a guarda,
+  // so registra quando Chart já existir; o retry acontece de novo no window.load, junto com o
+  // re-render de seguranca.
+  if(typeof Chart!=='undefined' && !Chart.__barValueLabelRegistrado){
+    Chart.register(barValueLabel);
+    Chart.__barValueLabelRegistrado = true;
+  }
+}
+tentarRegistrarPluginChart();
 
-let anos = [];
-let lastFact = null;
-let MAXDATE = new Date(2000,0,1);
 
-// data real de cada fato + data mais recente da base — usado pela Análise (janela móvel de 90 dias)
+let anos, lastFact, MAXDATE, TERC_IDX;
+// data real de cada fato — usado pela Análise (janela móvel de 90 dias)
 function factDate(r){ return new Date(r[F.ANO], r[F.MES]-1, r[F.DIA]); }
-function addDays(d,n){ const r=new Date(d); r.setDate(r.getDate()+n); return r; }
-function fmtDate(d){ return String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+d.getFullYear(); }
-// calcula tudo que depende de DATA -- so pode rodar DEPOIS do fetch/decompressao dos dados
+// DATA vem de um fetch assíncrono (data.b64.txt) nessa versão hospedada no GitHub Pages -- por isso
+// tudo que depende de DATA (inclusive esses agregados de topo) só pode rodar DEPOIS que o fetch
+// resolver, nunca direto no corpo do script (nesse ponto DATA ainda é null).
 function computeDerived(){
   anos = [...new Set(DATA.facts.map(r=>r[F.ANO]))].sort();
   lastFact = DATA.facts.reduce((a,b)=> (b[F.ANO]*100+b[F.MES] > a[F.ANO]*100+a[F.MES])? b:a);
   SEL.ano = lastFact[F.ANO]; SEL.mes = lastFact[F.MES];
   MAXDATE = DATA.facts.reduce((m,r)=>{ const d=factDate(r); return d>m?d:m; }, new Date(2000,0,1));
+  TERC_IDX = DATA.dims.frotas.indexOf('Terceiro');
 }
+function addDays(d,n){ const r=new Date(d); r.setDate(r.getDate()+n); return r; }
+function fmtDate(d){ return String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+d.getFullYear(); }
 
 function fillSelect(id, options, selValue){
   const el = document.getElementById(id);
@@ -321,11 +486,50 @@ function initFilters(){
   document.getElementById('fAno').onchange = e=>{SEL.ano=+e.target.value; render();};
   document.getElementById('fVend').onchange = e=>{SEL.vend=+e.target.value; render();};
   document.getElementById('fSeg').onchange = e=>{SEL.seg=+e.target.value; render();};
-  document.getElementById('btnReset').onclick = ()=>{
-    SEL = {cli:-1, mes:lastFact[F.MES], ano:lastFact[F.ANO], vend:-1, seg:-1, dias:new Set()};
-    initFilters(); render();
-  };
+  document.getElementById('btnReset').onclick = resetFiltros;
+  document.getElementById('btnResetFloat').onclick = resetFiltros;
   initDias();
+}
+function resetFiltros(){
+  SEL = {cli:-1, mes:lastFact[F.MES], ano:lastFact[F.ANO], vend:-1, seg:-1, dias:new Set()};
+  initFilters(); render();
+}
+function temFiltroAtivo(){
+  return SEL.cli!==-1 || SEL.vend!==-1 || SEL.seg!==-1 || SEL.dias.size>0 ||
+    !(SEL.ano===lastFact[F.ANO] && SEL.mes===lastFact[F.MES]);
+}
+function showInfo(html, wide){
+  document.getElementById('infoModalBody').innerHTML = html;
+  const box = document.querySelector('#infoModal .info-modal-box');
+  if(box) box.classList.toggle('wide', !!wide);
+  document.getElementById('infoModal').style.display = 'flex';
+}
+function fecharInfoModal(){
+  document.getElementById('infoModal').style.display='none';
+}
+function initModais(){
+  document.getElementById('infoModalClose').onclick = fecharInfoModal;
+  document.getElementById('infoModal').onclick = (e)=>{ if(e.target.id==='infoModal') fecharInfoModal(); };
+  document.addEventListener('keydown', (e)=>{
+    if(e.key==='Escape' && document.getElementById('infoModal').style.display==='flex') fecharInfoModal();
+  });
+  document.getElementById('btnInfoABC').onclick = ()=> showInfo(
+    '<b>Como ler a Curva ABC</b><br><br>'+
+    'As barras mostram o faturamento de cada cliente no período, do maior pro menor. '+
+    'A linha com marcadores é o <b>percentual acumulado</b>: soma o faturamento à medida que '+
+    'anda da esquerda pra direita, cliente por cliente.<br><br>'+
+    'Se a linha sobe muito rápido logo nos primeiros clientes e depois quase deita (fica quase reta), '+
+    'isso quer dizer que poucos clientes concentram quase toda a receita — carteira mais dependente e mais arriscada. '+
+    'Se ela sobe de forma mais gradual, a receita está mais distribuída entre os clientes.<br><br>'+
+    '<b>Classe A</b> = clientes até a linha cruzar 80% · <b>Classe B</b> = de 80% a 95% · <b>Classe C</b> = os últimos 5%.'
+  );
+  document.getElementById('btnInfoMargem').onclick = ()=> showInfo(
+    '<b>Como a margem é calculada</b><br><br>'+
+    'Margem = faturamento líquido − (valor pago ao motorista terceiro + pedágio).<br><br>'+
+    'Só entra a carga transportada por <b>terceiro</b>, porque é onde a planilha tem o custo real lançado. '+
+    'Frota própria não tem diesel, manutenção ou motorista próprio apurados aqui — por isso não é possível '+
+    'calcular a margem dela com os dados disponíveis hoje.'
+  );
 }
 
 // ---- Busca de cliente (autocomplete) ----
@@ -500,6 +704,7 @@ function periodLabel(){
 }
 
 function render(){
+  document.getElementById('btnResetFloat').style.display = temFiltroAtivo()? 'flex':'none';
   const sub = baseSubset();
   const cur = periodRows(sub, SEL.ano, SEL.mes);
   const fat = sumFat(cur), tons = sumTon(cur);
@@ -549,10 +754,15 @@ function render(){
 
   renderImplantRow(implCalc, tons);
   renderEvol(sub);
+  renderSazonalidade(sub);
   renderSegTable(sub, cur, fat, implCalc);
   renderRegChart(cur);
   renderFrota(sub, cur);
   renderTblClientes(sub, cur, fat, implCalc);
+  renderMargem(sub, cur);
+  renderCurvaABC(sub, cur);
+  renderChurn(sub);
+  renderVendTable(sub, cur, fat);
   renderTerceiros(sub, cur);
   renderClienteDetalhe();
 
@@ -719,7 +929,8 @@ function renderRegChart(cur){
   document.getElementById('noteReg').textContent = periodLabel()+' · filtros aplicados';
   const regE = groupSum(cur, r=>r[F.REG], DATA.dims.regioes);
   makeChart('chartReg', { type:'bar',
-    data:{labels:regE.map(e=>e[0]), datasets:[{data:regE.map(e=>e[1]), backgroundColor:regE.map((_,i)=>PALETTE[(i+1)%PALETTE.length])}]},
+    data:{labels:regE.map(e=>e[0]), datasets:[{data:regE.map(e=>e[1]), backgroundColor:regE.map((_,i)=>PALETTE[(i+1)%PALETTE.length]),
+      showValues:true, valueFormatter:brlShort, labelColorInside:'#fff', labelColor:'#33404A'}]},
     options:{indexAxis:'y', responsive:true, maintainAspectRatio:false, animation:{duration:500},
       plugins:{legend:{display:false}, tooltip:{callbacks:{label:c=>brl(c.raw)}}},
       scales:{x:{ticks:{callback:v=>'R$ '+(v/1e6).toFixed(1)+'M'}}}}
@@ -734,8 +945,11 @@ function buildTable(rows, opts){
   const ordered = normais.concat(outros);
   const maxV = Math.max(1,...ordered.map(r=>r.fat));
   const showProj = !!opts.showProjecao;
+  const extraCols = opts.extraCols || []; // [{header, get(row), getTotal(orderedRows)}]
   let h = '<table><thead><tr><th>'+opts.firstCol+'</th><th class="num">Faturamento</th><th class="num">Volume (ton)</th><th class="num">Ticket/Ton</th><th class="num">Represent. (% '+opts.shareBase+')</th><th class="num">vs '+opts.prevLabel+'</th>'+
-    (showProj? '<th class="num">Projeção (faturado + pipeline)</th>':'')+'</tr></thead><tbody>';
+    (showProj? '<th class="num">Projeção (faturado + pipeline)</th>':'')+
+    extraCols.map(function(c){return '<th class="num">'+c.header+'</th>';}).join('')+
+    '</tr></thead><tbody>';
   ordered.forEach((r,i)=>{
     const isOutros = r.nome==='OUTROS';
     const classes = [];
@@ -753,6 +967,7 @@ function buildTable(rows, opts){
       '<td class="num">'+(r.share*100).toFixed(1)+'%</td>'+
       '<td class="num '+(r.yoy==null?'na':(r.yoy>=0?'pos':'neg'))+'">'+(r.yoy==null?'—':pct(r.yoy))+'</td>'+
       (showProj? '<td class="num">'+(r.projecao?brl(r.projecao):'—')+'</td>':'')+
+      extraCols.map(function(c){return '<td class="num">'+c.get(r)+'</td>';}).join('')+
       '</tr>';
   });
   // linha de total — soma faturamento/volume/projeção de todas as linhas exibidas (fecha 100% do período)
@@ -768,24 +983,39 @@ function buildTable(rows, opts){
     '<td class="num">'+(totShare*100).toFixed(1)+'%</td>'+
     '<td class="num">—</td>'+
     (showProj? '<td class="num">'+(totProj?brl(totProj):'—')+'</td>':'')+
+    extraCols.map(function(c){return '<td class="num">'+(c.getTotal? c.getTotal(ordered) : '—')+'</td>';}).join('')+
     '</tr>';
   return h+'</tbody></table>';
 }
 
 function renderTblClientes(sub, cur, fatPeriodo, implCalc){
-  document.getElementById('noteCli').textContent = periodLabel()+' · top 10 + OUTROS = 100% do faturamento do período · clique numa linha pra filtrar';
+  document.getElementById('noteCli').textContent = periodLabel()+' · top 10 + OUTROS = 100% do faturamento do período · Part. Frota/3º e M. 3º consideram só o que já foi faturado · clique numa linha pra filtrar';
   const total = fatPeriodo || 1;
   const totalTon = sumTon(cur);
   const prevRows = periodRows(sub, SEL.ano-1, SEL.mes);
   const prevTotal = sumFat(prevRows);
   const g = {};
-  cur.forEach(r=>{ const k=r[F.CLI]; g[k]=g[k]||{fat:0,ton:0}; g[k].fat+=r[F.FAT]; g[k].ton+=r[F.TON]; });
+  cur.forEach(r=>{
+    const k=r[F.CLI];
+    g[k]=g[k]||{fat:0,ton:0,fatPropria:0,fatTerc:0,pagoTerc:0};
+    g[k].fat+=r[F.FAT]; g[k].ton+=r[F.TON];
+    if(r[F.FROTA]===TERC_IDX){ g[k].fatTerc+=r[F.FAT]; g[k].pagoTerc+=r[F.PAGO]; }
+    else { g[k].fatPropria+=r[F.FAT]; }
+  });
   const prev = {};
   prevRows.forEach(r=>{ const k=r[F.CLI]; prev[k]=(prev[k]||0)+r[F.FAT]; });
+  function margemCols(v){
+    const base = v.fatPropria + v.fatTerc;
+    return {
+      partFrota: base? v.fatPropria/base : null,
+      partTerc: base? v.fatTerc/base : null,
+      margemTerc: v.fatTerc? (v.fatTerc-v.pagoTerc)/v.fatTerc : null,
+    };
+  }
   const top10 = Object.entries(g)
     .map(([k,v])=>({idx:+k, nome:DATA.dims.clientes[k], fat:v.fat, ton:v.ton,
       share:v.fat/total, yoy: prev[k]? (v.fat-prev[k])/prev[k] : null, active:+k===SEL.cli,
-      projecao: v.fat + (implCalc? (implCalc.porCliente[k]||0) : 0)}))
+      projecao: v.fat + (implCalc? (implCalc.porCliente[k]||0) : 0), _m: margemCols(v)}))
     .sort((a,b)=>b.fat-a.fat).slice(0,10);
   // OUTROS = tudo que não está no top 10, fechando 100%
   const topFat = top10.reduce((s,r)=>s+r.fat,0), topTon = top10.reduce((s,r)=>s+r.ton,0);
@@ -799,12 +1029,29 @@ function renderTblClientes(sub, cur, fatPeriodo, implCalc){
   const top10ProjPipeline = top10.reduce((s,r)=> s + (implCalc? (implCalc.porCliente[r.idx]||0) : 0), 0);
   const outrosProjPipeline = implCalc? Math.max(0, implCalc.projRsTotal - top10ProjPipeline) : 0;
   const outrosProjecao = outrosFat + outrosProjPipeline;
+  // margem do OUTROS: soma bruta de fatPropria/fatTerc/pagoTerc de todos os clientes fora do top 10
+  const outrosAgg = {fatPropria:0, fatTerc:0, pagoTerc:0};
+  Object.entries(g).forEach(([k,v])=>{
+    if(!top10Idx.has(+k)){ outrosAgg.fatPropria+=v.fatPropria; outrosAgg.fatTerc+=v.fatTerc; outrosAgg.pagoTerc+=v.pagoTerc; }
+  });
   const rows = top10.slice();
   if(Math.abs(outrosFat) > 1){
     rows.push({nome:'OUTROS', fat:outrosFat, ton:outrosTon, share:outrosFat/total,
-      yoy: prevOutros? (outrosFat-prevOutros)/prevOutros : null, projecao: outrosProjecao});
+      yoy: prevOutros? (outrosFat-prevOutros)/prevOutros : null, projecao: outrosProjecao, _m: margemCols(outrosAgg)});
   }
-  document.getElementById('tblCli').innerHTML = buildTable(rows, {firstCol:'Cliente (grupo)', shareBase:'período', prevLabel:(SEL.mes===0?String(SEL.ano-1):MESES[SEL.mes-1]+'/'+(SEL.ano-1)), showProjecao:true});
+  // totais da linha TOTAL: soma bruta de TODOS os clientes do periodo (nao so top10+outros, que ja e 100%)
+  const totAgg = {fatPropria:0, fatTerc:0, pagoTerc:0};
+  Object.values(g).forEach(v=>{ totAgg.fatPropria+=v.fatPropria; totAgg.fatTerc+=v.fatTerc; totAgg.pagoTerc+=v.pagoTerc; });
+  const totM = margemCols(totAgg);
+  const extraCols = [
+    {header:'Part. Frota', get:function(r){ return r._m.partFrota==null? '—' : (r._m.partFrota*100).toFixed(0)+'%'; },
+      getTotal:function(){ return totM.partFrota==null? '—' : (totM.partFrota*100).toFixed(0)+'%'; }},
+    {header:'Part. 3º', get:function(r){ return r._m.partTerc==null? '—' : (r._m.partTerc*100).toFixed(0)+'%'; },
+      getTotal:function(){ return totM.partTerc==null? '—' : (totM.partTerc*100).toFixed(0)+'%'; }},
+    {header:'M. 3º', get:function(r){ return r._m.margemTerc==null? '—' : (r._m.margemTerc*100).toFixed(1)+'%'; },
+      getTotal:function(){ return totM.margemTerc==null? '—' : (totM.margemTerc*100).toFixed(1)+'%'; }},
+  ];
+  document.getElementById('tblCli').innerHTML = buildTable(rows, {firstCol:'Cliente (grupo)', shareBase:'período', prevLabel:(SEL.mes===0?String(SEL.ano-1):MESES[SEL.mes-1]+'/'+(SEL.ano-1)), showProjecao:true, extraCols:extraCols});
   document.querySelectorAll('#tblCli tr[data-idx]').forEach(tr=>{
     tr.onclick = ()=>{
       const idx = +tr.dataset.idx;
@@ -813,6 +1060,427 @@ function renderTblClientes(sub, cur, fatPeriodo, implCalc){
       render();
     };
   });
+}
+
+
+// ==================== NOVAS ANALISES (curva ABC, sazonalidade, aquisicao/churn, vendedor) ====================
+
+function renderCurvaABC(sub, cur){
+  fillSelect('abcAno', anos.map(a=>({v:a,t:a})), SEL.ano);
+  fillSelect('abcMes', [{v:0,t:'Ano completo'}].concat(MESES_FULL.map((m,i)=>({v:i+1,t:m}))), SEL.mes);
+  document.getElementById('abcAno').onchange = e=>{ SEL.ano=+e.target.value; document.getElementById('fAno').value=String(SEL.ano); render(); };
+  document.getElementById('abcMes').onchange = e=>{ SEL.mes=+e.target.value; document.getElementById('fMes').value=String(SEL.mes); render(); };
+  document.getElementById('abcLegenda').innerHTML =
+    '<b>Como ler:</b> as barras mostram o faturamento de cada cliente no período, do maior pro menor. '+
+    'A linha com marcadores é o percentual acumulado — soma a receita à medida que anda da esquerda pra direita, cliente por cliente. '+
+    'Quanto mais rápido ela sobe logo no início (e depois quase deita perto de 100%), mais concentrada e mais dependente de poucos clientes está a carteira. '+
+    '<b>Classe A</b> = clientes até a linha cruzar 80% da receita · <b>Classe B</b> = de 80% a 95% · <b>Classe C</b> = os últimos 5%.';
+  if(SEL.cli!==-1){
+    document.getElementById('noteABC').textContent = 'Selecione "Todos os clientes" para ver a curva de concentração da carteira';
+    document.getElementById('abcResumo').innerHTML = '';
+    if(CHARTS['chartABC']){ CHARTS['chartABC'].destroy(); delete CHARTS['chartABC']; }
+    return;
+  }
+  const g = {};
+  cur.forEach(r=>{ const k=r[F.CLI]; g[k]=(g[k]||0)+r[F.FAT]; });
+  let arr = Object.entries(g).map(([k,v])=>({idx:+k, nome:DATA.dims.clientes[k], fat:v})).filter(r=>r.fat>0.5).sort((a,b)=>b.fat-a.fat);
+  const total = arr.reduce((s,r)=>s+r.fat,0) || 1;
+  let acc=0, classA=0, classB=0, classC=0, fatA=0, fatB=0, fatC=0;
+  arr.forEach(r=>{
+    acc += r.fat;
+    const share = acc/total;
+    if(share<=0.80){ r.classe='A'; classA++; fatA+=r.fat; }
+    else if(share<=0.95){ r.classe='B'; classB++; fatB+=r.fat; }
+    else { r.classe='C'; classC++; fatC+=r.fat; }
+    r.acumulado = share;
+  });
+  document.getElementById('noteABC').textContent = periodLabel()+' · '+arr.length+' clientes com faturamento no período · clique numa barra pra filtrar';
+  if(!arr.length){
+    document.getElementById('abcResumo').innerHTML = '';
+    document.getElementById('chartABC').getContext('2d').clearRect(0,0,9999,9999);
+    return;
+  }
+  document.getElementById('abcResumo').innerHTML =
+    '<div class="abc-box abc-a"><b>Classe A</b><div>'+classA+' cliente'+(classA!==1?'s':'')+'</div><div>'+brl(fatA)+' · até 80% da receita</div></div>'+
+    '<div class="abc-box abc-b"><b>Classe B</b><div>'+classB+' cliente'+(classB!==1?'s':'')+'</div><div>'+brl(fatB)+' · próximos 15%</div></div>'+
+    '<div class="abc-box abc-c"><b>Classe C</b><div>'+classC+' cliente'+(classC!==1?'s':'')+'</div><div>'+brl(fatC)+' · últimos 5%</div></div>';
+  const shown = arr.slice(0,40);
+  const colorFor = c => c==='A'? NAVY : c==='B'? GOLD : STEEL;
+  makeChart('chartABC', { type:'bar',
+    data:{labels:shown.map(r=>r.nome), datasets:[
+      {type:'bar', label:'Faturamento', data:shown.map(r=>r.fat), backgroundColor:shown.map(r=>colorFor(r.classe)), yAxisID:'y', order:2, showValues: shown.length<=15, valueFormatter:brlShort, labelColorInside:'#fff', labelColor:'#33404A'},
+      {type:'line', label:'% acumulado', data:shown.map(r=>+(r.acumulado*100).toFixed(2)), borderColor:BRONZE, backgroundColor:BRONZE, yAxisID:'y1', pointRadius:2, borderWidth:2, tension:.2, order:1},
+    ]},
+    options:{responsive:true, maintainAspectRatio:false, animation:{duration:400},
+      onHover:(e,els)=>{ e.native.target.style.cursor = els.length? 'pointer':'default'; },
+      onClick:(e,els)=>{
+        if(!els.length) return;
+        const idx = els[0].index;
+        const cli = shown[idx];
+        if(!cli) return;
+        SEL.cli = (SEL.cli===cli.idx)? -1 : cli.idx;
+        document.getElementById('cliInput').value = SEL.cli===-1? '' : DATA.dims.clientes[SEL.cli];
+        render();
+      },
+      plugins:{legend:{position:'bottom'}, tooltip:{callbacks:{
+        title:c=>shown[c[0].dataIndex].nome+' (classe '+shown[c[0].dataIndex].classe+')',
+        label:c=> c.dataset.yAxisID==='y1'? ('Acumulado: '+c.raw.toFixed(1)+'%') : ('Faturamento: '+brl(c.raw))
+      }}},
+      scales:{
+        x:{ ticks:{display:false} },
+        y:{ ticks:{callback:v=>'R$ '+(v/1e3).toFixed(0)+'k'} },
+        y1:{ position:'right', min:0, max:100, grid:{drawOnChartArea:false}, ticks:{callback:v=>v+'%'} },
+      }
+    }
+  });
+}
+
+function renderSazonalidade(sub){
+  if(!SAZ_ANOS) SAZ_ANOS = new Set([lastFact[F.ANO], lastFact[F.ANO]-1].filter(a=>anos.includes(a)));
+  document.getElementById('sazAnos').innerHTML = anos.map(function(a){
+    const on = SAZ_ANOS.has(a);
+    return '<button type="button" class="saz-ano-chip'+(on?' on':'')+'" data-ano="'+a+'">'+a+'</button>';
+  }).join('');
+  document.querySelectorAll('#sazAnos .saz-ano-chip').forEach(function(btn){
+    btn.onclick = function(){
+      const a = +btn.dataset.ano;
+      if(SAZ_ANOS.has(a)){ if(SAZ_ANOS.size>1) SAZ_ANOS.delete(a); }
+      else SAZ_ANOS.add(a);
+      render();
+    };
+  });
+  const subAnos = sub.filter(r=>SAZ_ANOS.has(r[F.ANO]));
+  const g = {}, segTotal = {};
+  subAnos.forEach(r=>{
+    const s = r[F.SEG];
+    g[s] = g[s] || Array(12).fill(0);
+    g[s][r[F.MES]-1] += r[F.FAT];
+    segTotal[s] = (segTotal[s]||0) + r[F.FAT];
+  });
+  const segs = Object.keys(g).map(k=>+k).filter(k=>segTotal[k]>0).sort((a,b)=>segTotal[b]-segTotal[a]);
+  const anosTxt = [...SAZ_ANOS].sort().join(', ');
+  document.getElementById('noteSaz').textContent = 'anos selecionados: '+anosTxt+' · compara cada mês com a média mensal do próprio segmento — 0% é um mês típico, verde é mês forte, vermelho é mês fraco · clique numa célula pra filtrar segmento + mês';
+  if(!segs.length){ document.getElementById('tblSaz').innerHTML = '<div class="empty">Sem dados para os anos/filtros selecionados.</div>'; return; }
+  let h = '<table class="heat"><thead><tr><th>Segmento</th>'+MESES.map(m=>'<th class="num">'+m+'</th>').join('')+'</tr></thead><tbody>';
+  segs.forEach(s=>{
+    const media = segTotal[s]/12;
+    const idxs = g[s].map(v=> media>0? (v/media-1)*100 : 0);
+    let picoI=0, baixoI=0;
+    idxs.forEach((v,i)=>{ if(v>idxs[picoI]) picoI=i; if(v<idxs[baixoI]) baixoI=i; });
+    h += '<tr><td>'+DATA.dims.segmentos[s]+
+      '<div style="font-size:9.5px;color:#8895a1;font-weight:400;margin-top:2px;">pico '+MESES[picoI]+' ('+(idxs[picoI]>=0?'+':'')+idxs[picoI].toFixed(0)+'%) · fraco '+MESES[baixoI]+' ('+idxs[baixoI].toFixed(0)+'%)</div></td>';
+    idxs.forEach((v,i)=>{
+      const active = (SEL.seg===s && SEL.mes===i+1);
+      const isPico = i===picoI, isBaixo = i===baixoI && idxs[baixoI]<0;
+      const color = v>=0 ? '46,125,91' : '179,67,46';
+      const alpha = Math.min(0.85, Math.abs(v)/40);
+      const borda = isPico? 'box-shadow:inset 0 0 0 2px var(--ok);' : (isBaixo? 'box-shadow:inset 0 0 0 2px var(--danger);' : '');
+      h += '<td class="num heat-cell'+(active?' row-active':'')+'" data-seg="'+s+'" data-mes="'+(i+1)+'" style="cursor:pointer;background:rgba('+color+','+alpha.toFixed(2)+');'+borda+'">'+(v>=0?'+':'')+v.toFixed(0)+'%</td>';
+    });
+    h += '</tr>';
+  });
+  h += '</tbody></table>';
+  document.getElementById('tblSaz').innerHTML = h;
+  document.querySelectorAll('#tblSaz td.heat-cell').forEach(td=>{
+    td.onclick = ()=>{
+      const s = +td.dataset.seg, m = +td.dataset.mes;
+      if(SEL.seg===s && SEL.mes===m){ SEL.seg=-1; SEL.mes=lastFact[F.MES]; }
+      else { SEL.seg=s; SEL.mes=m; }
+      document.getElementById('fSeg').value = String(SEL.seg);
+      document.getElementById('fMes').value = String(SEL.mes);
+      render();
+    };
+  });
+}
+
+// Novo = 1a vez que o cliente fatura na base (dentro do filtro atual). Inativo = 6 meses corridos
+// sem comprar. Reativado = voltou a comprar depois de inativo. Identificação por Grupo Cliente
+// (ou CNPJ quando não há grupo cadastrado). Clientes com recorrência sazonal maior que 6 meses vão
+// aparecer entrando e saindo dessa classificação todo ano — é esperado pela regra, não é erro do painel.
+let CHURN_CTX = null;
+
+function formatCnpjCpf(v){
+  const d = String(v||'').replace(/\D/g,'');
+  if(d.length===14) return d.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/,'$1.$2.$3/$4-$5');
+  if(d.length===11) return d.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/,'$1.$2.$3-$4');
+  return v || 'N/D';
+}
+
+let CLI_SEG_DOM = null;
+function segDominantePorCliente(){
+  if(CLI_SEG_DOM) return CLI_SEG_DOM;
+  const acc = {};
+  DATA.facts.forEach(r=>{
+    if(r[F.FAT]<=0) return;
+    const cli=r[F.CLI], seg=r[F.SEG];
+    acc[cli] = acc[cli] || {};
+    acc[cli][seg] = (acc[cli][seg]||0) + r[F.FAT];
+  });
+  const out = {};
+  Object.keys(acc).forEach(cli=>{
+    let best=-1, bestV=-Infinity;
+    Object.entries(acc[cli]).forEach(([seg,v])=>{ if(v>bestV){ bestV=v; best=+seg; } });
+    out[cli]=best;
+  });
+  CLI_SEG_DOM = out;
+  return out;
+}
+
+function ultimaCompraAte(cli, mesMax, rows){
+  let melhor = null;
+  rows.forEach(r=>{
+    if(r[F.CLI]!==cli || r[F.FAT]<=0) return;
+    const k = r[F.ANO]*12+r[F.MES];
+    if(k>mesMax) return;
+    if(!melhor || k>melhor.k || (k===melhor.k && r[F.DIA]>melhor.dia)){
+      melhor = {ano:r[F.ANO], mes:r[F.MES], dia:r[F.DIA], k};
+    }
+  });
+  return melhor;
+}
+
+function renderChurn(sub){
+  document.getElementById('noteChurn').textContent = 'Novo = 1ª compra da vida · Inativo = 6 meses corridos sem comprar · Reativado = voltou a comprar depois de inativo · filtros de vendedor/segmento/cliente aplicados';
+  const activeByCli = {};
+  let minM = Infinity, maxM = -Infinity;
+  sub.forEach(r=>{
+    if(r[F.FAT]<=0) return;
+    const k = r[F.ANO]*12+r[F.MES];
+    if(k<minM) minM=k;
+    if(k>maxM) maxM=k;
+    (activeByCli[r[F.CLI]] = activeByCli[r[F.CLI]] || new Set()).add(k);
+  });
+  const box = document.getElementById('chartChurnBox');
+  if(!isFinite(minM)){
+    document.getElementById('churnKpisAtual').innerHTML=''; document.getElementById('churnKpisComp').innerHTML='';
+    box.innerHTML = '<div class="empty">Histórico insuficiente para esse filtro.</div>';
+    CHURN_CTX = null;
+    return;
+  }
+  const allMonths = [];
+  for(let m=minM; m<=maxM; m++) allMonths.push(m);
+
+  // Simula, mes a mes e cliente a cliente, os 3 eventos: virou novo (1a compra da vida), ficou
+  // inativo (6 meses corridos sem comprar) e reativado (voltou a comprar depois de inativo).
+  // Guarda tambem QUAIS clientes (idx) geraram cada evento, pra alimentar o drill-down.
+  const eventos = {};
+  allMonths.forEach(m=> eventos[m] = {novo:0, ficouInativo:0, reativado:0, novoCli:[], inativouCli:[], reativadoCli:[]});
+  Object.entries(activeByCli).forEach(([cliStr, set])=>{
+    const cli = +cliStr;
+    let state = 'never', last = null;
+    allMonths.forEach(m=>{
+      const comprou = set.has(m);
+      if(comprou){
+        if(state==='never'){ eventos[m].novo++; eventos[m].novoCli.push(cli); state='ativo'; last=m; }
+        else if(state==='ativo'){ last=m; }
+        else if(state==='inativo'){ eventos[m].reativado++; eventos[m].reativadoCli.push(cli); state='ativo'; last=m; }
+      } else if(state==='ativo' && (m-last)>=6){
+        eventos[m].ficouInativo++; eventos[m].inativouCli.push(cli); state='inativo';
+      }
+    });
+  });
+
+  // "Inativos no momento" (snapshot) ao final do mes m: cliente ja comprou alguma vez ate m, e o
+  // gap desde a ultima compra ate m e >=6 meses. Divide em recuperaveis (6 a 12 meses) e provaveis
+  // perdidos (12+ meses) -- e um corte mais operacional do que so um total acumulado desde 2022.
+  function inativosSnapshot(m){
+    const seis = [], doze = [];
+    Object.entries(activeByCli).forEach(([cliStr, set])=>{
+      const cli = +cliStr;
+      let lastAte = -Infinity;
+      set.forEach(x=>{ if(x<=m && x>lastAte) lastAte = x; });
+      if(lastAte===-Infinity) return;
+      const gap = m - lastAte;
+      if(gap>=6 && gap<12) seis.push(cli);
+      else if(gap>=12) doze.push(cli);
+    });
+    return {seis, doze};
+  }
+
+  const mesAtualReal = lastFact[F.ANO]*12+lastFact[F.MES];
+  const mesAtual = allMonths.includes(mesAtualReal) ? mesAtualReal : maxM;
+
+  function labelMes(m){ const ano=Math.floor((m-1)/12), mes=((m-1)%12)+1; return MESES_FULL[mes-1]+'/'+ano; }
+  function kpiCard(tipo, m, label, value, cls){
+    return '<div class="kpi kpi-click" data-tipo="'+tipo+'" data-mes="'+m+'"><div class="label">'+label+'</div><div class="value '+(cls||'')+'">'+value+'</div></div>';
+  }
+  function kpiBlock(m){
+    const e = eventos[m] || {novo:0,ficouInativo:0,reativado:0};
+    const {seis, doze} = inativosSnapshot(m);
+    return kpiCard('novos', m, 'Clientes novos', '+'+e.novo, 'up')
+      + kpiCard('inativou', m, 'Mudaram para inativo', '-'+e.ficouInativo, 'down')
+      + kpiCard('reativado', m, 'Reativados', '+'+e.reativado, 'up')
+      + kpiCard('inat6a12', m, 'Inativos 6–12 meses', seis.length, '')
+      + kpiCard('inat12mais', m, 'Inativos 12m+', doze.length, '');
+  }
+  document.getElementById('churnMesAtualLabel').textContent = labelMes(mesAtual);
+  document.getElementById('churnKpisAtual').innerHTML = kpiBlock(mesAtual);
+
+  const compSelect = document.getElementById('churnCompMes');
+  const opcoes = allMonths.filter(m=>m!==mesAtual);
+  if(compSelect.dataset.builtFor !== String(mesAtual)){
+    compSelect.innerHTML = opcoes.slice().reverse().map(m=>'<option value="'+m+'">'+labelMes(m)+'</option>').join('');
+    const defaultComp = allMonths.includes(mesAtual-1)? (mesAtual-1) : opcoes[opcoes.length-1];
+    compSelect.value = String(defaultComp);
+    compSelect.dataset.builtFor = String(mesAtual);
+    compSelect.onchange = ()=> render();
+  }
+  const mesComp = +compSelect.value || (mesAtual-1);
+  document.getElementById('churnKpisComp').innerHTML = kpiBlock(mesComp);
+
+  // contexto pro drill-down (clique nos cards) -- guarda tudo que o clique precisa pra montar a lista
+  CHURN_CTX = { sub, activeByCli, eventos, inativosSnapshot, labelMes };
+  document.querySelectorAll('.kpi-click').forEach(el=>{
+    el.onclick = ()=> abrirDrillChurn(el.dataset.tipo, +el.dataset.mes);
+  });
+
+  if(!box.querySelector('canvas')) box.innerHTML = '<canvas id="chartChurn"></canvas>';
+  const last = allMonths.slice(-24);
+  const labels = last.map(m=>{ const ano=Math.floor((m-1)/12), mes=((m-1)%12)+1; return MESES[mes-1]+'/'+String(ano).slice(-2); });
+  makeChart('chartChurn', { type:'bar',
+    data:{labels, datasets:[
+      {label:'Novos', data:last.map(m=>eventos[m].novo), backgroundColor:'rgba(219,188,96,.85)',
+        showValues:true, valueFormatter:function(v){return v?String(v):'';}, labelColorInside:'#3a2f10', labelColor:'#33404A'},
+      {label:'Mudaram para inativo', data:last.map(m=>-eventos[m].ficouInativo), backgroundColor:'rgba(179,67,46,.78)',
+        showValues:true, valueFormatter:function(v){return v?String(Math.abs(v)):'';}, labelColorInside:'#fff', labelColor:'#33404A'},
+      {label:'Reativados', data:last.map(m=>eventos[m].reativado), backgroundColor:'rgba(46,125,91,.85)',
+        showValues:true, valueFormatter:function(v){return v?String(v):'';}, labelColorInside:'#fff', labelColor:'#33404A'},
+    ]},
+    options:{responsive:true, maintainAspectRatio:false, animation:{duration:400},
+      plugins:{legend:{position:'bottom'}, tooltip:{callbacks:{label:c=> c.dataset.label+': '+Math.abs(c.raw)}}},
+      scales:{ y:{ticks:{callback:v=>Math.abs(v)}} }
+    }
+  });
+  document.getElementById('churnLegenda').innerHTML =
+    '<b>Regra usada:</b> cliente novo é quando compra pela 1ª vez em toda a base (nunca mais volta a ser "novo" depois disso). '+
+    'Se ficar 6 meses corridos sem nenhuma compra, passa pra inativo. Quando um cliente inativo volta a comprar, entra como reativado/recuperado. '+
+    '"Inativos 6–12 meses" ainda vale tentar recuperar; "Inativos 12m+" é provável perda. '+
+    'Identificação por Grupo Cliente (ou CNPJ quando não há grupo cadastrado). Clientes com recorrência sazonal maior que 6 meses vão aparecer '+
+    'entrando e saindo dessa classificação todo ano — é esperado pela regra, não é erro do painel. Clique em qualquer card acima pra ver a lista de clientes.';
+}
+
+function abrirDrillChurn(tipo, mes){
+  if(!CHURN_CTX) return;
+  const { sub, eventos, inativosSnapshot, labelMes } = CHURN_CTX;
+  let clis = [], titulo = '';
+  if(tipo==='novos'){ clis = eventos[mes].novoCli; titulo = 'Clientes novos em '+labelMes(mes); }
+  else if(tipo==='inativou'){ clis = eventos[mes].inativouCli; titulo = 'Mudaram para inativo em '+labelMes(mes); }
+  else if(tipo==='reativado'){ clis = eventos[mes].reativadoCli; titulo = 'Reativados em '+labelMes(mes); }
+  else if(tipo==='inat6a12'){ clis = inativosSnapshot(mes).seis; titulo = 'Inativos há 6–12 meses (posição em '+labelMes(mes)+')'; }
+  else if(tipo==='inat12mais'){ clis = inativosSnapshot(mes).doze; titulo = 'Inativos há 12+ meses (posição em '+labelMes(mes)+')'; }
+
+  const segDom = segDominantePorCliente();
+  const linhas = clis.map(cli=>{
+    const nome = DATA.dims.clientes[cli] || 'N/D';
+    const cnpj = formatCnpjCpf((DATA.dims.clientes_cnpj || [])[cli]);
+    const uc = ultimaCompraAte(cli, mes, sub) || ultimaCompraAte(cli, mes, DATA.facts);
+    const dataStr = uc ? String(uc.dia).padStart(2,'0')+'/'+String(uc.mes).padStart(2,'0')+'/'+uc.ano : 'N/D';
+    const seg = DATA.dims.segmentos[segDom[cli]] || 'N/D';
+    return {nome, cnpj, dataStr, seg, k: uc?uc.k:-1};
+  }).sort((a,b)=> a.nome.localeCompare(b.nome));
+
+  let html = '<b>'+titulo+'</b> · '+linhas.length+' cliente'+(linhas.length===1?'':'s');
+  if(!linhas.length){
+    html += '<div class="drill-empty">Nenhum cliente nessa condição.</div>';
+  } else {
+    html += '<table class="drill-table"><thead><tr><th>Nome</th><th>CNPJ</th><th>Última compra</th><th>Segmento</th></tr></thead><tbody>'+
+      linhas.map(l=>'<tr><td>'+l.nome+'</td><td>'+l.cnpj+'</td><td>'+l.dataStr+'</td><td>'+l.seg+'</td></tr>').join('')+
+      '</tbody></table>';
+  }
+  showInfo(html, true);
+}
+
+
+function renderVendTable(sub, cur, fatPeriodo){
+  document.getElementById('noteVend').textContent = periodLabel()+' · concentração de receita por vendedor · Part. Frota/3º e M. 3º consideram só o que já foi faturado · clique numa linha pra filtrar';
+  const total = fatPeriodo || 1;
+  const g = {};
+  cur.forEach(r=>{
+    const k=r[F.VEND];
+    g[k]=g[k]||{fat:0,ton:0,fatPropria:0,fatTerc:0,pagoTerc:0};
+    g[k].fat+=r[F.FAT]; g[k].ton+=r[F.TON];
+    if(r[F.FROTA]===TERC_IDX){ g[k].fatTerc+=r[F.FAT]; g[k].pagoTerc+=r[F.PAGO]; }
+    else { g[k].fatPropria+=r[F.FAT]; }
+  });
+  const prev = {};
+  periodRows(sub, SEL.ano-1, SEL.mes).forEach(r=>{ prev[r[F.VEND]]=(prev[r[F.VEND]]||0)+r[F.FAT]; });
+  function margemCols(v){
+    const base = v.fatPropria + v.fatTerc;
+    return {
+      partFrota: base? v.fatPropria/base : null,
+      partTerc: base? v.fatTerc/base : null,
+      margemTerc: v.fatTerc? (v.fatTerc-v.pagoTerc)/v.fatTerc : null,
+    };
+  }
+  const rows = Object.entries(g).map(([k,v])=>({
+    idx:+k, nome: DATA.dims.vendedores[k] || 'N/D', fat:v.fat, ton:v.ton,
+    share: v.fat/total,
+    yoy: prev[k]? (v.fat-prev[k])/prev[k] : null,
+    active: +k===SEL.vend, _m: margemCols(v),
+  })).sort((a,b)=>b.fat-a.fat);
+  const totAgg = {fatPropria:0, fatTerc:0, pagoTerc:0};
+  Object.values(g).forEach(v=>{ totAgg.fatPropria+=v.fatPropria; totAgg.fatTerc+=v.fatTerc; totAgg.pagoTerc+=v.pagoTerc; });
+  const totM = margemCols(totAgg);
+  const extraCols = [
+    {header:'Part. Frota', get:function(r){ return r._m.partFrota==null? '—' : (r._m.partFrota*100).toFixed(0)+'%'; },
+      getTotal:function(){ return totM.partFrota==null? '—' : (totM.partFrota*100).toFixed(0)+'%'; }},
+    {header:'Part. 3º', get:function(r){ return r._m.partTerc==null? '—' : (r._m.partTerc*100).toFixed(0)+'%'; },
+      getTotal:function(){ return totM.partTerc==null? '—' : (totM.partTerc*100).toFixed(0)+'%'; }},
+    {header:'M. 3º', get:function(r){ return r._m.margemTerc==null? '—' : (r._m.margemTerc*100).toFixed(1)+'%'; },
+      getTotal:function(){ return totM.margemTerc==null? '—' : (totM.margemTerc*100).toFixed(1)+'%'; }},
+  ];
+  document.getElementById('tblVend').innerHTML = buildTable(rows, {firstCol:'Vendedor', shareBase:'período', prevLabel:(SEL.mes===0?String(SEL.ano-1):MESES[SEL.mes-1]+'/'+(SEL.ano-1)), showProjecao:false, extraCols:extraCols});
+  document.querySelectorAll('#tblVend tr[data-idx]').forEach(tr=>{
+    tr.onclick = ()=>{
+      const idx = +tr.dataset.idx;
+      SEL.vend = (SEL.vend===idx)? -1 : idx;
+      document.getElementById('fVend').value = String(SEL.vend);
+      render();
+    };
+  });
+}
+
+
+// Margem = faturamento liquido - (frete pago ao motorista terceiro + pedagio), so faz sentido
+// para cargas com Frota == Terceiro (frota propria nao tem esse custo lancado na planilha).
+function renderMargem(sub, cur){
+  const rowsT = cur.filter(r=>r[F.FROTA]===TERC_IDX);
+  document.getElementById('noteMargemSeg').textContent = periodLabel()+' · clique numa linha pra filtrar';
+  if(!rowsT.length){
+    document.getElementById('tblMargemSeg').innerHTML = '<div class="empty">Sem cargas terceirizadas no período/filtros selecionados.</div>';
+    return;
+  }
+  const gs = {};
+  rowsT.forEach(r=>{ const k=r[F.SEG]; gs[k]=gs[k]||{fat:0,pago:0}; gs[k].fat+=r[F.FAT]; gs[k].pago+=r[F.PAGO]; });
+  const rowsSeg = Object.entries(gs).map(([k,v])=>({idx:+k, nome:DATA.dims.segmentos[k], fat:v.fat, pago:v.pago, active:+k===SEL.seg})).sort((a,b)=>b.fat-a.fat);
+  document.getElementById('tblMargemSeg').innerHTML = buildMargemTable(rowsSeg, 'Segmento');
+  document.querySelectorAll('#tblMargemSeg tr[data-idx]').forEach(tr=>{
+    tr.onclick = ()=>{ const idx=+tr.dataset.idx; SEL.seg=(SEL.seg===idx)?-1:idx; document.getElementById('fSeg').value=String(SEL.seg); render(); };
+  });
+}
+
+function buildMargemTable(rows, firstCol){
+  if(!rows.length) return '<div class="empty">Sem dados.</div>';
+  const maxV = Math.max(1, ...rows.map(r=>r.fat));
+  let h = '<table><thead><tr><th>'+firstCol+'</th><th class="num">Faturamento (terceiro)</th><th class="num">Pago ao terceiro + pedágio</th><th class="num">Margem</th><th class="num">Margem %</th></tr></thead><tbody>';
+  rows.forEach((r,i)=>{
+    const margem = r.fat - r.pago;
+    const pctM = r.fat? margem/r.fat*100 : 0;
+    const cls = ['clickable-row']; if(r.active) cls.push('row-active'); if(i<3) cls.push('top3');
+    h += '<tr class="'+cls.join(' ')+'" data-idx="'+r.idx+'">'+
+      '<td>'+r.nome+'<div class="bar-mini"><div style="width:'+(r.fat/maxV*100)+'%"></div></div></td>'+
+      '<td class="num">'+brl(r.fat)+'</td>'+
+      '<td class="num">'+brl(r.pago)+'</td>'+
+      '<td class="num" style="font-weight:700">'+brl(margem)+'</td>'+
+      '<td class="num '+(pctM>=30?'pos':(pctM<15?'neg':''))+'">'+pctM.toFixed(1)+'%</td>'+
+      '</tr>';
+  });
+  const totFat=rows.reduce((s,r)=>s+r.fat,0), totPago=rows.reduce((s,r)=>s+r.pago,0);
+  const totPct = totFat? (totFat-totPago)/totFat*100 : 0;
+  h += '<tr style="font-weight:700;border-top:2px solid var(--bronze)"><td>TOTAL</td>'+
+    '<td class="num">'+brl(totFat)+'</td><td class="num">'+brl(totPago)+'</td>'+
+    '<td class="num">'+brl(totFat-totPago)+'</td><td class="num">'+totPct.toFixed(1)+'%</td></tr>';
+  return h+'</tbody></table>';
 }
 
 function renderFrota(sub, cur){
@@ -824,8 +1492,8 @@ function renderFrota(sub, cur){
   const labels = names.filter(n=> (curG[n]||0)+(prevG[n]||0) > 0);
   makeChart('chartFrota', { type:'bar',
     data:{labels, datasets:[
-      {label:String(SEL.ano-1), data:labels.map(l=>prevG[l]||0), backgroundColor:GOLD},
-      {label:String(SEL.ano), data:labels.map(l=>curG[l]||0), backgroundColor:NAVY},
+      {label:String(SEL.ano-1), data:labels.map(l=>prevG[l]||0), backgroundColor:GOLD, showValues:true, valueFormatter:brlShort, labelColorInside:'#3a2f10', labelColor:'#33404A'},
+      {label:String(SEL.ano), data:labels.map(l=>curG[l]||0), backgroundColor:NAVY, showValues:true, valueFormatter:brlShort, labelColorInside:'#fff', labelColor:'#33404A'},
     ]},
     options:{responsive:true, maintainAspectRatio:false, animation:{duration:500},
       plugins:{legend:{position:'bottom'}, tooltip:{callbacks:{label:c=>c.dataset.label+': '+brl(c.raw)}}},
@@ -834,31 +1502,39 @@ function renderFrota(sub, cur){
 }
 
 function renderTerceiros(sub, cur){
-  document.getElementById('noteTerc').textContent = periodLabel()+' · top 10 + OUTROS = 100% do faturamento de terceiros · filtros aplicados';
+  document.getElementById('noteTerc').textContent = periodLabel()+' · top 10 + OUTROS = 100% do faturamento de terceiros · M. 3º considera só o que já foi faturado · filtros aplicados';
   const curT = cur.filter(r=>r[F.TERC]>=0);
   const prevT = periodRows(sub, SEL.ano-1, SEL.mes).filter(r=>r[F.TERC]>=0);
   const total = sumFat(curT) || 1;
   const totalTon = sumTon(curT);
   const prevTotal = sumFat(prevT);
   const g = {};
-  curT.forEach(r=>{ const k=r[F.TERC]; g[k]=g[k]||{fat:0,ton:0}; g[k].fat+=r[F.FAT]; g[k].ton+=r[F.TON]; });
+  curT.forEach(r=>{ const k=r[F.TERC]; g[k]=g[k]||{fat:0,ton:0,pago:0}; g[k].fat+=r[F.FAT]; g[k].ton+=r[F.TON]; g[k].pago+=r[F.PAGO]; });
   const prev = {};
   prevT.forEach(r=>{ prev[r[F.TERC]]=(prev[r[F.TERC]]||0)+r[F.FAT]; });
+  function margemTerc(v){ return v.fat? (v.fat-v.pago)/v.fat : null; }
   const outrosIdx = DATA.dims.terceiros.indexOf('OUTROS');
   const top10 = Object.entries(g).filter(([k])=>+k!==outrosIdx)
     .map(([k,v])=>({idx:+k, nome:DATA.dims.terceiros[k], fat:v.fat, ton:v.ton,
-      share:v.fat/total, yoy: prev[k]? (v.fat-prev[k])/prev[k] : null}))
+      share:v.fat/total, yoy: prev[k]? (v.fat-prev[k])/prev[k] : null, _pago:v.pago, _m:margemTerc(v)}))
     .sort((a,b)=>b.fat-a.fat).slice(0,10);
   const topFat = top10.reduce((s,r)=>s+r.fat,0), topTon = top10.reduce((s,r)=>s+r.ton,0);
   const outrosFat = total - topFat, outrosTon = totalTon - topTon;
   const prevTop = top10.reduce((s,r)=>s+(prev[r.idx]||0),0);
   const prevOutros = prevTotal - prevTop;
+  const outrosPago = Object.entries(g).reduce((s,[k,v])=> +k!==outrosIdx && !top10.find(r=>r.idx===+k) ? s+v.pago : s, 0);
   const rows = top10.slice();
   if(Math.abs(outrosFat) > 1){
     rows.push({nome:'OUTROS', fat:outrosFat, ton:outrosTon, share:outrosFat/total,
-      yoy: prevOutros? (outrosFat-prevOutros)/prevOutros : null});
+      yoy: prevOutros? (outrosFat-prevOutros)/prevOutros : null, _pago:outrosPago, _m:margemTerc({fat:outrosFat,pago:outrosPago})});
   }
-  document.getElementById('tblTerc').innerHTML = buildTable(rows, {firstCol:'Terceiro (contratado)', shareBase:'período (só terceiros)', prevLabel:(SEL.mes===0?String(SEL.ano-1):MESES[SEL.mes-1]+'/'+(SEL.ano-1))});
+  const totFat = rows.reduce((s,r)=>s+r.fat,0), totPago = rows.reduce((s,r)=>s+r._pago,0);
+  const totM = margemTerc({fat:totFat, pago:totPago});
+  const extraCols = [
+    {header:'M. 3º', get:function(r){ return r._m==null? '—' : (r._m*100).toFixed(1)+'%'; },
+      getTotal:function(){ return totM==null? '—' : (totM*100).toFixed(1)+'%'; }},
+  ];
+  document.getElementById('tblTerc').innerHTML = buildTable(rows, {firstCol:'Terceiro (contratado)', shareBase:'período (só terceiros)', prevLabel:(SEL.mes===0?String(SEL.ano-1):MESES[SEL.mes-1]+'/'+(SEL.ano-1)), extraCols:extraCols});
 }
 
 // janelas móveis: últimos 90 dias (até a data mais recente da base) vs os 90 dias imediatamente anteriores.
@@ -903,8 +1579,14 @@ function renderAnalise(sub){
   // headline: tendência geral do portfólio nos últimos 90 dias (recomendação adicional —
   // dá o pulso do negócio antes de entrar no detalhe por cliente). grid-column:1/-1 pra ocupar
   // as duas colunas do #anaZone (que já é um grid de 2 colunas) em vez de disputar espaço com elas.
+  const nCresceram = deltas.filter(d=>d.delta>0).length;
+  const nCairam = deltas.filter(d=>d.delta<0).length;
+  const nZeraram = deltas.filter(d=>d.churn).length;
+  const plural = (n, s, p) => n+' '+(n===1? s : p);
   let headline = '<div class="alert '+(totalPct==null?'':(totalPct>=0?'ok':'danger'))+'" style="grid-column:1/-1; margin-bottom:2px;">'+
     '<b>Tendência geral — últimos 90 dias:</b> '+brl(total)+' ('+(totalPct==null?'sem base de comparação':pct(totalPct))+' vs '+brl(prevTotal)+' nos 90 dias anteriores)'+
+    ' · '+plural(nCresceram,'cliente cresceu','clientes cresceram')+', '+plural(nCairam,'cliente caiu','clientes caíram')+
+    (nZeraram? ' (sendo '+plural(nZeraram,'zerou','zeraram')+' totalmente)':'')+
     '</div>';
 
   let html = '';
@@ -945,16 +1627,40 @@ function renderAnaliseCliente(sub){
   document.getElementById('noteAna').textContent = 'Últimos 90 dias ('+fmtDate(startA)+' a '+fmtDate(endA)+') vs 90 dias anteriores · cliente selecionado';
 }
 
+// Rede de seguranca: mostra um aviso visivel na tela se algo quebrar, em vez de deixar a pagina em
+// branco sem explicacao -- facilita demais reportar o problema (basta printar a faixa vermelha).
+function mostrarErroCarregamento(msg){
+  const el = document.createElement('div');
+  el.style.cssText = 'position:fixed; top:0; left:0; right:0; background:#B3432E; color:#fff; padding:14px 20px; font:600 13px Arial, sans-serif; z-index:9999;';
+  el.textContent = 'Erro ao carregar o painel: ' + msg + ' — tira um print desta faixa e manda pro Claude.';
+  document.body.prepend(el);
+}
+window.addEventListener('error', function(e){
+  console.error('Erro global capturado:', e.error||e.message);
+});
+
 fetch('./data.b64.txt').then(r=>r.text()).then(b64=>{
   const bin = atob(b64);
   const bytes = new Uint8Array(bin.length);
   for(let i=0;i<bin.length;i++) bytes[i]=bin.charCodeAt(i);
   DATA = JSON.parse(pako.inflate(bytes, {to:'string'}));
   computeDerived();
-  initFilters();
-  render();
+  tentarRegistrarPluginChart();
+  try { initFilters(); initModais(); render(); }
+  catch(e) { console.error('Erro na carga inicial do painel:', e); mostrarErroCarregamento(e.message); }
 }).catch(err=>{
+  console.error('Erro ao buscar/descompactar data.b64.txt:', err);
   document.body.innerHTML = '<div style="padding:40px;font-family:sans-serif;color:#a00;">Erro ao carregar dados do painel: '+err+'</div>';
+});
+
+// Rede de seguranca extra: se o Chart.js (CDN externo) ainda nao tinha carregado no momento do
+// render() inicial, o guard em makeChart() pula os graficos sem quebrar o resto da pagina -- mas ai
+// o grafico fica vazio ate o usuario mexer num filtro. Forcando mais um render() quando a janela
+// terminar de carregar tudo (window.load) cobre esse caso sem depender de interacao do usuario.
+window.addEventListener('load', function(){
+  if(!DATA) return; // ainda esperando o fetch de data.b64.txt -- nao ha o que renderizar ainda
+  try { tentarRegistrarPluginChart(); render(); }
+  catch(e) { console.error('Erro no re-render de window.load:', e); mostrarErroCarregamento(e.message); }
 });
 
 // ============ Tour guiado ============
@@ -1073,5 +1779,12 @@ window.addEventListener('resize', ()=>{ if(document.getElementById('tourTooltip'
   document.getElementById('tourWelcomeStart').onclick = ()=>{ modal.remove(); startTour(); };
 })();
 </script>
+  <button class="btn-float-reset" id="btnResetFloat">✕ Limpar filtros</button>
+  <div class="info-modal" id="infoModal">
+    <div class="info-modal-box">
+      <button class="info-modal-close" id="infoModalClose">✕</button>
+      <div id="infoModalBody"></div>
+    </div>
+  </div>
 </body>
 </html>
