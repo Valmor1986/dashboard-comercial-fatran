@@ -1641,49 +1641,55 @@ function renderAnaliseCliente(sub){
 // pedido nesse segmento na mesma janela movel de 90 dias usada em janelas90()/renderAnalise().
 // Independente dos filtros de Vendedor/Cliente/Segmento do topo -- e sempre travado nesse segmento,
 // por pedido explicito do Valmor (13/08/2026): "leva em consideracao apenas aditivos e cargas minerais".
+// Lista (nao um ranking limitado como as "quedas" da Analise do periodo, mas TODOS) de clientes
+// que compraram no segmento "Aditivos e Cargas Minerais" nos 90 dias ANTERIORES (mesma janela
+// anterior usada em janelas90()/renderAnalise()) e que nao tiveram nenhum pedido nesse segmento
+// nos ultimos 90 dias (janela atual). Criterio ajustado em 13/08/2026 a pedido do Valmor: a versao
+// anterior usava "segmento dominante historico" e trazia clientes com ultima compra em 2023/2025 --
+// nao era um alerta acionavel. Agora so entra quem estava comprando ha pouco tempo e parou.
+// Independente dos filtros de Vendedor/Cliente/Segmento do topo -- travado nesse segmento por
+// pedido explicito do Valmor (13/08/2026): "leva em consideracao apenas aditivos e cargas minerais".
 function renderSemPedido(){
   const nomeAlvo = 'ADITIVOS E CARGAS MINERAIS';
   const segIdx = DATA.dims.segmentos.indexOf(nomeAlvo);
   const zone = document.getElementById('semPedidoZone');
   if(segIdx===-1){ zone.innerHTML = '<div class="drill-empty">Segmento "'+nomeAlvo+'" nao encontrado na base.</div>'; return; }
 
-  const {startA, endA} = janelas90();
-  const segDom = segDominantePorCliente();
-  const clientesDoSegmento = Object.keys(segDom).filter(cli => segDom[cli]===segIdx).map(Number);
+  const {startA, endA, startB, endB} = janelas90();
 
-  const curPorCli = {}, totalHistPorCli = {}, ultimaPorCli = {};
+  const curPorCli = {}, prevPorCli = {}, ultimaPorCli = {};
   DATA.facts.forEach(r=>{
     if(r[F.SEG]!==segIdx || r[F.FAT]<=0) return;
     const cli = r[F.CLI];
-    totalHistPorCli[cli] = (totalHistPorCli[cli]||0) + r[F.FAT];
     const d = factDate(r);
     if(!ultimaPorCli[cli] || d>ultimaPorCli[cli]) ultimaPorCli[cli] = d;
+    if(d>=startB && d<=endB) prevPorCli[cli] = (prevPorCli[cli]||0) + r[F.FAT];
     if(d>=startA && d<=endA) curPorCli[cli] = (curPorCli[cli]||0) + r[F.FAT];
   });
 
-  const linhas = clientesDoSegmento
+  const linhas = Object.keys(prevPorCli)
+    .map(Number)
     .filter(cli => !curPorCli[cli])
     .map(cli=>{
       const nome = DATA.dims.clientes[cli] || 'N/D';
       const cnpj = formatCnpjCpf((DATA.dims.clientes_cnpj || [])[cli]);
       const ultima = ultimaPorCli[cli] || null;
       const dias = ultima ? Math.round((endA - ultima)/86400000) : null;
-      return { cli, nome, cnpj, ultima, dias, hist: totalHistPorCli[cli]||0 };
+      return { cli, nome, cnpj, ultima, dias, prev: prevPorCli[cli]||0 };
     })
-    .sort((a,b)=> b.hist - a.hist);
+    .sort((a,b)=> b.prev - a.prev);
 
   document.getElementById('noteSemPedido').textContent =
-    'Sem pedido nos ultimos 90 dias ('+fmtDate(startA)+' a '+fmtDate(endA)+') · so considera o segmento Aditivos e Cargas Minerais · '+
-    'universo = clientes cujo segmento dominante historico e esse (nao respeita os filtros do topo) · ordenado por faturamento historico no segmento';
+    'Comprava Aditivos e Cargas Minerais nos 90 dias anteriores ('+fmtDate(startB)+' a '+fmtDate(endB)+') e parou nos ultimos 90 dias ('+fmtDate(startA)+' a '+fmtDate(endA)+') · nao respeita os filtros do topo · ordenado por faturamento no segmento nos 90 dias anteriores';
 
   if(!linhas.length){
-    zone.innerHTML = '<div class="drill-empty">Nenhum cliente do segmento Aditivos e Cargas Minerais esta sem pedido nos ultimos 90 dias.</div>';
+    zone.innerHTML = '<div class="drill-empty">Nenhum cliente que comprava Aditivos e Cargas Minerais parou nos ultimos 90 dias.</div>';
     return;
   }
 
-  zone.innerHTML = '<b>'+linhas.length+' cliente'+(linhas.length===1?'':'s')+'</b> sem pedido de Aditivos e Cargas Minerais nos ultimos 90 dias.'+
-    '<table class="drill-table"><thead><tr><th>Nome</th><th>CNPJ</th><th>Ultima compra (segmento)</th><th>Dias sem comprar</th><th>Faturamento historico no segmento</th></tr></thead><tbody>'+
-    linhas.map(l=>'<tr><td>'+l.nome+'</td><td>'+l.cnpj+'</td><td>'+(l.ultima?fmtDate(l.ultima):'N/D')+'</td><td>'+(l.dias==null?'—':l.dias)+'</td><td>'+brl(l.hist)+'</td></tr>').join('')+
+  zone.innerHTML = '<b>'+linhas.length+' cliente'+(linhas.length===1?'':'s')+'</b> que compravam Aditivos e Cargas Minerais pararam nos ultimos 90 dias.'+
+    '<table class="drill-table"><thead><tr><th>Nome</th><th>CNPJ</th><th>Ultima compra (segmento)</th><th>Dias sem comprar</th><th>Faturamento no segmento (90 dias anteriores)</th></tr></thead><tbody>'+
+    linhas.map(l=>'<tr><td>'+l.nome+'</td><td>'+l.cnpj+'</td><td>'+(l.ultima?fmtDate(l.ultima):'N/D')+'</td><td>'+(l.dias==null?'—':l.dias)+'</td><td>'+brl(l.prev)+'</td></tr>').join('')+
     '</tbody></table>';
 }
 
