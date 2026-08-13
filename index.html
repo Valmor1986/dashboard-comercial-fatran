@@ -364,6 +364,12 @@
     <div class="ana-grid" id="anaZone"></div>
   </div>
 
+  <!-- Bloco NOVO: Clientes sem pedido -- Aditivos e Cargas Minerais -->
+  <div class="card">
+    <h3>Clientes sem pedido — Aditivos e Cargas Minerais <span class="note" id="noteSemPedido"></span></h3>
+    <div id="semPedidoZone"></div>
+  </div>
+
   <footer>
     Fonte: aba "Base Estudos" — "AA - Historico de Faturamento.xlsx" (dados reais, jan/2022 a jun/2026). Volume/peso: coluna "Total Ton" (AS).
     <b>Faturamento</b> = Total Frete Cobrado − Avaria − Descarga − Reembolso (Pedágio da frota não é abatido do faturamento); CT-es do tipo Anulação e Substituto entram como abatimento (valor negativo, sobre o Total Frete Cobrado). Quando um CT-e é transportado em 2 pernas (mesmo NumCTRC, mesmo valor cobrado e mesma tonelagem, motoristas/CTRB diferentes), a receita e a tonelagem contam uma única vez.
@@ -773,6 +779,7 @@ function render(){
   } else {
     renderAnalise(sub);
   }
+  renderSemPedido();
 }
 
 function renderImplantRow(implCalc, jaFaturadoTon){
@@ -1629,6 +1636,57 @@ function renderAnaliseCliente(sub){
 
 // Rede de seguranca: mostra um aviso visivel na tela se algo quebrar, em vez de deixar a pagina em
 // branco sem explicacao -- facilita demais reportar o problema (basta printar a faixa vermelha).
+// Lista (nao um ranking limitado como as "quedas" da Analise do periodo, mas TODOS) de clientes
+// cujo segmento dominante historico e "Aditivos e Cargas Minerais" e que nao tiveram nenhum
+// pedido nesse segmento na mesma janela movel de 90 dias usada em janelas90()/renderAnalise().
+// Independente dos filtros de Vendedor/Cliente/Segmento do topo -- e sempre travado nesse segmento,
+// por pedido explicito do Valmor (13/08/2026): "leva em consideracao apenas aditivos e cargas minerais".
+function renderSemPedido(){
+  const nomeAlvo = 'ADITIVOS E CARGAS MINERAIS';
+  const segIdx = DATA.dims.segmentos.indexOf(nomeAlvo);
+  const zone = document.getElementById('semPedidoZone');
+  if(segIdx===-1){ zone.innerHTML = '<div class="drill-empty">Segmento "'+nomeAlvo+'" nao encontrado na base.</div>'; return; }
+
+  const {startA, endA} = janelas90();
+  const segDom = segDominantePorCliente();
+  const clientesDoSegmento = Object.keys(segDom).filter(cli => segDom[cli]===segIdx).map(Number);
+
+  const curPorCli = {}, totalHistPorCli = {}, ultimaPorCli = {};
+  DATA.facts.forEach(r=>{
+    if(r[F.SEG]!==segIdx || r[F.FAT]<=0) return;
+    const cli = r[F.CLI];
+    totalHistPorCli[cli] = (totalHistPorCli[cli]||0) + r[F.FAT];
+    const d = factDate(r);
+    if(!ultimaPorCli[cli] || d>ultimaPorCli[cli]) ultimaPorCli[cli] = d;
+    if(d>=startA && d<=endA) curPorCli[cli] = (curPorCli[cli]||0) + r[F.FAT];
+  });
+
+  const linhas = clientesDoSegmento
+    .filter(cli => !curPorCli[cli])
+    .map(cli=>{
+      const nome = DATA.dims.clientes[cli] || 'N/D';
+      const cnpj = formatCnpjCpf((DATA.dims.clientes_cnpj || [])[cli]);
+      const ultima = ultimaPorCli[cli] || null;
+      const dias = ultima ? Math.round((endA - ultima)/86400000) : null;
+      return { cli, nome, cnpj, ultima, dias, hist: totalHistPorCli[cli]||0 };
+    })
+    .sort((a,b)=> b.hist - a.hist);
+
+  document.getElementById('noteSemPedido').textContent =
+    'Sem pedido nos ultimos 90 dias ('+fmtDate(startA)+' a '+fmtDate(endA)+') · so considera o segmento Aditivos e Cargas Minerais · '+
+    'universo = clientes cujo segmento dominante historico e esse (nao respeita os filtros do topo) · ordenado por faturamento historico no segmento';
+
+  if(!linhas.length){
+    zone.innerHTML = '<div class="drill-empty">Nenhum cliente do segmento Aditivos e Cargas Minerais esta sem pedido nos ultimos 90 dias.</div>';
+    return;
+  }
+
+  zone.innerHTML = '<b>'+linhas.length+' cliente'+(linhas.length===1?'':'s')+'</b> sem pedido de Aditivos e Cargas Minerais nos ultimos 90 dias.'+
+    '<table class="drill-table"><thead><tr><th>Nome</th><th>CNPJ</th><th>Ultima compra (segmento)</th><th>Dias sem comprar</th><th>Faturamento historico no segmento</th></tr></thead><tbody>'+
+    linhas.map(l=>'<tr><td>'+l.nome+'</td><td>'+l.cnpj+'</td><td>'+(l.ultima?fmtDate(l.ultima):'N/D')+'</td><td>'+(l.dias==null?'—':l.dias)+'</td><td>'+brl(l.hist)+'</td></tr>').join('')+
+    '</tbody></table>';
+}
+
 function mostrarErroCarregamento(msg){
   const el = document.createElement('div');
   el.style.cssText = 'position:fixed; top:0; left:0; right:0; background:#B3432E; color:#fff; padding:14px 20px; font:600 13px Arial, sans-serif; z-index:9999;';
