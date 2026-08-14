@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Dashboard Comercial — Fatran</title>
+<title>Painel Comercial — Fatran</title>
 <script src="https://cdn.jsdelivr.net/npm/pako@2.1.0/dist/pako.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.js" integrity="sha384-iU8HYtnGQ8Cy4zl7gbNMOhsDTTKX02BTXptVP/vqAWIaTfM7isw76iyZCsjL2eVi" crossorigin="anonymous"></script>
 <style>
@@ -52,6 +52,13 @@
   .dd-days label:hover{border-color:var(--gold);}
   .dd-days label.on{background:var(--navy); color:var(--gold-light); border-color:var(--navy);}
   .dd-days input{display:none;}
+  .dd-months{display:grid; grid-template-columns:repeat(4,1fr); gap:4px; min-width:180px;}
+  .dd-months label{
+    display:flex; align-items:center; justify-content:center; font-size:12px; padding:5px 0; border-radius:6px;
+    border:1px solid #E4E8EC; cursor:pointer; user-select:none; margin:0; text-transform:none; letter-spacing:0; color:var(--text); font-weight:600;
+  }
+  .dd-months label:hover{border-color:var(--gold);}
+  .dd-months label.on{background:var(--navy); color:var(--gold-light); border-color:var(--navy);}
   .filters label{display:block; font-size:10.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.4px; margin-bottom:4px; font-weight:700;}
   .filters select{
     width:100%; font-size:13px; padding:8px 10px; border-radius:7px; border:1px solid #D6DCE2;
@@ -242,7 +249,7 @@
 <body>
 <div class="wrap">
   <div class="titlebar">
-    <h1>DASHBOARD COMERCIAL — FATRAN</h1>
+    <h1>PAINEL COMERCIAL — FATRAN</h1>
     <div style="display:flex; align-items:center; gap:10px;">
       <button type="button" id="btnTour" class="tour-btn">🧭 Tour guiado</button>
       <div class="meta" id="metaBox"></div>
@@ -257,7 +264,15 @@
         <div class="dd-menu cli-menu" id="cliMenu"></div>
       </div>
     </div>
-    <div><label>Mês</label><select id="fMes"></select></div>
+    <div><label>Mês</label>
+      <div class="dd" id="mmWrap">
+        <button type="button" class="dd-btn" id="mmBtn">···</button>
+        <div class="dd-menu" id="mmMenu">
+          <div class="dd-actions"><button type="button" id="mmAll">Ano completo</button><button type="button" id="mmClear">Nenhum</button></div>
+          <div class="dd-months" id="mmMonths"></div>
+        </div>
+      </div>
+    </div>
     <div><label>Dia(s) do mês</label>
       <div class="dd" id="ddWrap">
         <button type="button" class="dd-btn" id="ddBtn">Todos os dias ▾</button>
@@ -392,7 +407,7 @@ const PALETTE=[NAVY,GOLD,STEEL,BRONZE,GOLDL,'#7C93A6','#C9A96E','#324B66'];
 // facts: [ano,mes,dia,cliIdx,vendIdx,segIdx,frotaIdx,regIdx,tercIdx(-1 se frota própria),fat,ton]
 const F={ANO:0,MES:1,DIA:2,CLI:3,VEND:4,SEG:5,FROTA:6,REG:7,TERC:8,FAT:9,TON:10,PAGO:11};
 
-let SEL = {cli:-1, mes:6, ano:2026, vend:-1, seg:-1, dias:new Set()}; // -1 = todos; dias vazio = todos
+let SEL = {cli:-1, meses:new Set([6]), ano:2026, vend:-1, seg:-1, dias:new Set()}; // -1 = todos; meses/dias vazios = sem filtro
 let CHARTS = {};
 let SAZ_ANOS = null; // anos selecionados no card de Sazonalidade (default: ano atual + anterior)
 
@@ -471,7 +486,7 @@ function factDate(r){ return new Date(r[F.ANO], r[F.MES]-1, r[F.DIA]); }
 function computeDerived(){
   anos = [...new Set(DATA.facts.map(r=>r[F.ANO]))].sort();
   lastFact = DATA.facts.reduce((a,b)=> (b[F.ANO]*100+b[F.MES] > a[F.ANO]*100+a[F.MES])? b:a);
-  SEL.ano = lastFact[F.ANO]; SEL.mes = lastFact[F.MES];
+  SEL.ano = lastFact[F.ANO]; SEL.meses = new Set([lastFact[F.MES]]);
   MAXDATE = DATA.facts.reduce((m,r)=>{ const d=factDate(r); return d>m?d:m; }, new Date(2000,0,1));
   TERC_IDX = DATA.dims.frotas.indexOf('Terceiro');
 }
@@ -484,25 +499,24 @@ function fillSelect(id, options, selValue){
 }
 function initFilters(){
   setupCliAutocomplete();
-  fillSelect('fMes', [{v:0,t:'Ano completo'}].concat(MESES_FULL.map((m,i)=>({v:i+1,t:m}))), SEL.mes);
   fillSelect('fAno', anos.map(a=>({v:a,t:a})), SEL.ano);
   fillSelect('fVend', [{v:-1,t:'Todos os vendedores'}].concat(DATA.dims.vendedores.map((c,i)=>({v:i,t:c}))), SEL.vend);
   fillSelect('fSeg', [{v:-1,t:'Todos os segmentos'}].concat(DATA.dims.segmentos.map((c,i)=>({v:i,t:c}))), SEL.seg);
-  document.getElementById('fMes').onchange = e=>{SEL.mes=+e.target.value; render();};
   document.getElementById('fAno').onchange = e=>{SEL.ano=+e.target.value; render();};
   document.getElementById('fVend').onchange = e=>{SEL.vend=+e.target.value; render();};
   document.getElementById('fSeg').onchange = e=>{SEL.seg=+e.target.value; render();};
   document.getElementById('btnReset').onclick = resetFiltros;
   document.getElementById('btnResetFloat').onclick = resetFiltros;
   initDias();
+  initMeses();
 }
 function resetFiltros(){
-  SEL = {cli:-1, mes:lastFact[F.MES], ano:lastFact[F.ANO], vend:-1, seg:-1, dias:new Set()};
+  SEL = {cli:-1, meses:new Set([lastFact[F.MES]]), ano:lastFact[F.ANO], vend:-1, seg:-1, dias:new Set()};
   initFilters(); render();
 }
 function temFiltroAtivo(){
   return SEL.cli!==-1 || SEL.vend!==-1 || SEL.seg!==-1 || SEL.dias.size>0 ||
-    !(SEL.ano===lastFact[F.ANO] && SEL.mes===lastFact[F.MES]);
+    !(SEL.ano===lastFact[F.ANO] && SEL.meses.size===1 && SEL.meses.has(lastFact[F.MES]));
 }
 function showInfo(html, wide){
   document.getElementById('infoModalBody').innerHTML = html;
@@ -601,6 +615,48 @@ function initDias(){
   document.getElementById('ddMenu').onclick = e=> e.stopPropagation();
 }
 
+// ---- Filtro de Mes (multi-selecao, mesmo padrao do filtro de Dias acima) ----
+// decisao de 13/08/2026 (pedido do Valmor): permitir selecionar mais de um mes por vez,
+// igual ja era possivel com os dias do mes.
+function mesesArr(){ return [...SEL.meses].sort((a,b)=>a-b); }
+function mesesLabel(){
+  if(SEL.meses.size===0) return 'Ano completo ▾';
+  const m = mesesArr();
+  return (m.length<=3? m.map(x=>MESES[x-1]).join(', ') : m.length+' meses') + ' ▾';
+}
+// texto do 'mesmo periodo do ano anterior' usado nas tabelas (prevLabel) -- cobre ano
+// completo, um unico mes, ou varios meses combinados.
+function prevLabelTxt(){
+  if(SEL.meses.size===0) return String(SEL.ano-1);
+  if(SEL.meses.size===1) return MESES[mesesArr()[0]-1]+'/'+(SEL.ano-1);
+  return mesesArr().map(m=>MESES[m-1]).join('+')+'/'+(SEL.ano-1);
+}
+function initMeses(){
+  const wrap = document.getElementById('mmWrap');
+  const btn = document.getElementById('mmBtn');
+  const box = document.getElementById('mmMonths');
+  btn.textContent = mesesLabel();
+  box.innerHTML = MESES_FULL.map((nome,i)=>{
+    const m = i+1, on = SEL.meses.has(m);
+    return '<label class="'+(on?'on':'')+'" data-m="'+m+'">'+MESES[i]+'</label>';
+  }).join('');
+  btn.onclick = e=>{ e.stopPropagation(); wrap.classList.toggle('open'); };
+  box.querySelectorAll('label').forEach(l=>{
+    l.onclick = e=>{
+      e.stopPropagation();
+      const m = +l.dataset.m;
+      if(SEL.meses.has(m)) SEL.meses.delete(m); else SEL.meses.add(m);
+      l.classList.toggle('on');
+      btn.textContent = mesesLabel();
+      render();
+    };
+  });
+  document.getElementById('mmAll').onclick = e=>{ e.stopPropagation(); SEL.meses = new Set(); initMeses(); wrap.classList.add('open'); render(); };
+  document.getElementById('mmClear').onclick = e=>{ e.stopPropagation(); SEL.meses = new Set(); initMeses(); wrap.classList.add('open'); render(); };
+  document.addEventListener('click', ()=> wrap.classList.remove('open'));
+  document.getElementById('mmMenu').onclick = e=> e.stopPropagation();
+}
+
 // subset respecting cli/vend/seg (not ano/mes)
 function baseSubset(){
   return DATA.facts.filter(r=>
@@ -609,7 +665,14 @@ function baseSubset(){
     (SEL.seg===-1 || r[F.SEG]===SEL.seg));
 }
 function diaOk(r){ return SEL.dias.size===0 || SEL.dias.has(r[F.DIA]); }
-function periodRows(sub, ano, mes){ return sub.filter(r=> r[F.ANO]===ano && (mes===0 || r[F.MES]===mes) && diaOk(r)); }
+// mes pode ser um numero (0 = ano completo, N = so aquele mes) OU um Set (SEL.meses; vazio =
+// ano completo, senao qualquer mes presente no set) -- mantem compatibilidade com todo o
+// codigo que ja chamava periodRows/implantPeriodRows passando um mes especifico (numero).
+function mesMatch(mVal, mes){
+  if(mes instanceof Set) return mes.size===0 || mes.has(mVal);
+  return mes===0 || mVal===mes;
+}
+function periodRows(sub, ano, mes){ return sub.filter(r=> r[F.ANO]===ano && mesMatch(r[F.MES], mes) && diaOk(r)); }
 function sumFat(rows){ return rows.reduce((s,r)=>s+r[F.FAT],0); }
 function sumTon(rows){ return rows.reduce((s,r)=>s+r[F.TON],0); }
 
@@ -627,9 +690,9 @@ function implantSubset(){
     (SEL.seg===-1 || r[IF.SEG]===SEL.seg));
 }
 function implantPeriodRows(sub, ano, mes){
-  return sub.filter(r=> r[IF.ANO]===ano && (mes===0 || r[IF.MES]===mes) && (SEL.dias.size===0 || SEL.dias.has(r[IF.DIA])));
+  return sub.filter(r=> r[IF.ANO]===ano && mesMatch(r[IF.MES], mes) && (SEL.dias.size===0 || SEL.dias.has(r[IF.DIA])));
 }
-function implantCur(){ return implantPeriodRows(implantSubset(), SEL.ano, SEL.mes); }
+function implantCur(){ return implantPeriodRows(implantSubset(), SEL.ano, SEL.meses); }
 function implantTotais(rows){
   return rows.reduce((a,r)=>{ a.total+=r[IF.TOTAL]; a.canc+=r[IF.CANC]; a.post+=r[IF.POST]; return a; }, {total:0,canc:0,post:0});
 }
@@ -701,7 +764,10 @@ function implantCalculo(cur, jaFaturadoTonReal){
 }
 
 function periodLabel(){
-  let l = SEL.mes===0? ('Ano '+SEL.ano) : (MESES_FULL[SEL.mes-1]+'/'+SEL.ano);
+  let l;
+  if(SEL.meses.size===0) l = 'Ano '+SEL.ano;
+  else if(SEL.meses.size===1) l = MESES_FULL[mesesArr()[0]-1]+'/'+SEL.ano;
+  else l = mesesArr().map(m=>MESES[m-1]).join('+')+'/'+SEL.ano;
   if(SEL.dias.size>0){
     const d = [...SEL.dias].sort((a,b)=>a-b);
     l += ' · dia'+(d.length>1?'s':'')+' '+d.join(', ');
@@ -712,23 +778,25 @@ function periodLabel(){
 function render(){
   document.getElementById('btnResetFloat').style.display = temFiltroAtivo()? 'flex':'none';
   const sub = baseSubset();
-  const cur = periodRows(sub, SEL.ano, SEL.mes);
+  const cur = periodRows(sub, SEL.ano, SEL.meses);
   const fat = sumFat(cur), tons = sumTon(cur);
 
   // comparações
-  const sameLY = periodRows(sub, SEL.ano-1, SEL.mes);
+  const sameLY = periodRows(sub, SEL.ano-1, SEL.meses);
   const fatLY = sumFat(sameLY);
   const yoy = fatLY? (fat-fatLY)/fatLY : null;
 
   let mom = null;
-  if(SEL.mes!==0){
-    const pmAno = SEL.mes===1? SEL.ano-1 : SEL.ano, pmMes = SEL.mes===1? 12 : SEL.mes-1;
+  if(SEL.meses.size===1){
+    const mesUnico = mesesArr()[0];
+    const pmAno = mesUnico===1? SEL.ano-1 : SEL.ano, pmMes = mesUnico===1? 12 : mesUnico-1;
     const prevM = periodRows(sub, pmAno, pmMes);
     const fatPM = sumFat(prevM);
     mom = fatPM? (fat-fatPM)/fatPM : null;
   }
 
-  const ytdRows = SEL.mes===0? periodRows(sub, SEL.ano, 0) : sub.filter(r=>r[F.ANO]===SEL.ano && r[F.MES]<=SEL.mes && diaOk(r));
+  const maxMesSel = SEL.meses.size? Math.max(...SEL.meses) : 12;
+  const ytdRows = sub.filter(r=>r[F.ANO]===SEL.ano && r[F.MES]<=maxMesSel && diaOk(r));
   const ytd = sumFat(ytdRows);
 
   document.getElementById('metaBox').innerHTML =
@@ -746,13 +814,13 @@ function render(){
   const saldoRsAtual = implCalc? implCalc.projRsGlobal : null;
   const projAtual = saldoRsAtual==null? null : fat + saldoRsAtual;
   const kpis = [
-    {label:(SEL.mes===0?'Faturamento no ano':'Faturamento no mês'), value:brl(fat)},
+    {label:(SEL.meses.size===0?'Faturamento no ano': SEL.meses.size===1?'Faturamento no mês':'Faturamento no período'), value:brl(fat)},
     {label:'Projeção de faturamento', value: projAtual==null?'—':brl(projAtual), hint: projAtual==null?'sem dados de pipeline':'faturado + saldo do pipeline ('+brl(saldoRsAtual)+')'},
     {label:'Volume (toneladas)', value:ton(tons)},
     {label:'Ticket médio (R$/ton)', value: tons? brl(fat/tons):'—'},
     {label:'vs mesmo período '+(SEL.ano-1), value: yoy==null?'—':pct(yoy), cls: yoy==null?'':(yoy>=0?'up':'down'), hint: fatLY? brl(fatLY)+' em '+(SEL.ano-1):'sem base'},
-    {label:'vs mês anterior', value: mom==null?'—':pct(mom), cls: mom==null?'':(mom>=0?'up':'down'), hint: SEL.mes===0?'selecione um mês':''},
-    {label:'Acumulado no ano', value:brl(ytd), hint:'jan a '+(SEL.mes===0?'dez':MESES[SEL.mes-1])+'/'+SEL.ano},
+    {label:'vs mês anterior', value: mom==null?'—':pct(mom), cls: mom==null?'':(mom>=0?'up':'down'), hint: SEL.meses.size!==1?'selecione um único mês':''},
+    {label:'Acumulado no ano', value:brl(ytd), hint:'jan a '+MESES[maxMesSel-1]+'/'+SEL.ano},
   ];
   document.getElementById('kpiRow').innerHTML = kpis.map(k=>
     '<div class="kpi"><div class="label">'+k.label+'</div><div class="value '+(k.cls||'')+'">'+k.value+'</div>'+
@@ -815,7 +883,7 @@ function renderClienteDetalhe(){
 
   // ranking no período atual e no mesmo período do ano anterior (entre todos os clientes, no mesmo contexto de filtros)
   function rankingNoPeriodo(ano){
-    const rows = periodRows(subCtx, ano, SEL.mes);
+    const rows = periodRows(subCtx, ano, SEL.meses);
     const porCli = {};
     rows.forEach(r=>{ porCli[r[F.CLI]]=(porCli[r[F.CLI]]||0)+r[F.FAT]; });
     const ranked = Object.entries(porCli).sort((a,b)=>b[1]-a[1]).map(([k])=>+k);
@@ -869,8 +937,8 @@ function renderClienteDetalhe(){
 function renderEvol(sub){
   const serie = ano => MESES.map((_,i)=> sumFat(sub.filter(r=>r[F.ANO]===ano && r[F.MES]===i+1 && diaOk(r))) || null);
   const curS = serie(SEL.ano), prevS = serie(SEL.ano-1);
-  const ptColors = MESES.map((_,i)=> (SEL.mes!==0 && i+1===SEL.mes)? BRONZE : NAVY);
-  const ptRadius = MESES.map((_,i)=> (SEL.mes!==0 && i+1===SEL.mes)? 7 : 3);
+  const ptColors = MESES.map((_,i)=> SEL.meses.has(i+1)? BRONZE : NAVY);
+  const ptRadius = MESES.map((_,i)=> SEL.meses.has(i+1)? 7 : 3);
   document.getElementById('noteEvol').textContent = SEL.ano+' x '+(SEL.ano-1)+' · filtros aplicados · clique num mês do gráfico pra filtrar';
   makeChart('chartEvol', { type:'line',
     data:{labels:MESES, datasets:[
@@ -883,8 +951,10 @@ function renderEvol(sub){
       onClick:(e,els)=>{
         if(!els.length) return;
         const idx = els[0].index; // 0-11 = mês
-        SEL.mes = (SEL.mes===idx+1)? 0 : idx+1; // clicar de novo no mesmo mês volta pra "ano completo"
-        document.getElementById('fMes').value = String(SEL.mes);
+        const m = idx+1;
+        // clique substitui a selecao por so esse mes; clicar de novo no mesmo (unico) mes volta pra "ano completo"
+        SEL.meses = (SEL.meses.size===1 && SEL.meses.has(m))? new Set() : new Set([m]);
+        initMeses();
         render();
       },
       plugins:{legend:{position:'bottom'}, tooltip:{callbacks:{label:c=>c.dataset.label+': '+brl(c.raw)}}},
@@ -904,7 +974,7 @@ function renderSegTable(sub, cur, fatPeriodo, implCalc){
   const g = {};
   cur.forEach(r=>{ const k=r[F.SEG]; g[k]=g[k]||{fat:0,ton:0}; g[k].fat+=r[F.FAT]; g[k].ton+=r[F.TON]; });
   const prev = {};
-  periodRows(sub, SEL.ano-1, SEL.mes).forEach(r=>{ prev[r[F.SEG]]=(prev[r[F.SEG]]||0)+r[F.FAT]; });
+  periodRows(sub, SEL.ano-1, SEL.meses).forEach(r=>{ prev[r[F.SEG]]=(prev[r[F.SEG]]||0)+r[F.FAT]; });
   const rows = Object.entries(g).map(([k,v])=>({
     idx:+k, nome: DATA.dims.segmentos[k], fat:v.fat, ton:v.ton,
     share: v.fat/total,
@@ -921,7 +991,7 @@ function renderSegTable(sub, cur, fatPeriodo, implCalc){
       }
     });
   }
-  document.getElementById('tblSeg').innerHTML = buildTable(rows, {firstCol:'Segmento', shareBase:'período', prevLabel:(SEL.mes===0?String(SEL.ano-1):MESES[SEL.mes-1]+'/'+(SEL.ano-1)), showProjecao:true});
+  document.getElementById('tblSeg').innerHTML = buildTable(rows, {firstCol:'Segmento', shareBase:'período', prevLabel:prevLabelTxt(), showProjecao:true});
   document.querySelectorAll('#tblSeg tr[data-idx]').forEach(tr=>{
     tr.onclick = ()=>{
       const idx = +tr.dataset.idx;
@@ -999,7 +1069,7 @@ function renderTblClientes(sub, cur, fatPeriodo, implCalc){
   document.getElementById('noteCli').textContent = periodLabel()+' · top 10 + OUTROS = 100% do faturamento do período · Part. Frota/3º e M. 3º consideram só o que já foi faturado · clique numa linha pra filtrar';
   const total = fatPeriodo || 1;
   const totalTon = sumTon(cur);
-  const prevRows = periodRows(sub, SEL.ano-1, SEL.mes);
+  const prevRows = periodRows(sub, SEL.ano-1, SEL.meses);
   const prevTotal = sumFat(prevRows);
   const g = {};
   cur.forEach(r=>{
@@ -1058,7 +1128,7 @@ function renderTblClientes(sub, cur, fatPeriodo, implCalc){
     {header:'M. 3º', get:function(r){ return r._m.margemTerc==null? '—' : (r._m.margemTerc*100).toFixed(1)+'%'; },
       getTotal:function(){ return totM.margemTerc==null? '—' : (totM.margemTerc*100).toFixed(1)+'%'; }},
   ];
-  document.getElementById('tblCli').innerHTML = buildTable(rows, {firstCol:'Cliente (grupo)', shareBase:'período', prevLabel:(SEL.mes===0?String(SEL.ano-1):MESES[SEL.mes-1]+'/'+(SEL.ano-1)), showProjecao:true, extraCols:extraCols});
+  document.getElementById('tblCli').innerHTML = buildTable(rows, {firstCol:'Cliente (grupo)', shareBase:'período', prevLabel:prevLabelTxt(), showProjecao:true, extraCols:extraCols});
   document.querySelectorAll('#tblCli tr[data-idx]').forEach(tr=>{
     tr.onclick = ()=>{
       const idx = +tr.dataset.idx;
@@ -1074,9 +1144,11 @@ function renderTblClientes(sub, cur, fatPeriodo, implCalc){
 
 function renderCurvaABC(sub, cur){
   fillSelect('abcAno', anos.map(a=>({v:a,t:a})), SEL.ano);
-  fillSelect('abcMes', [{v:0,t:'Ano completo'}].concat(MESES_FULL.map((m,i)=>({v:i+1,t:m}))), SEL.mes);
+  // Curva ABC e uma leitura pontual (foto de um periodo), entao o seletor dela continua de UM
+  // mes so; se o filtro geral (SEL.meses) tiver 0 ou mais de 1 mes selecionado, mostra 'Ano completo' aqui.
+  fillSelect('abcMes', [{v:0,t:'Ano completo'}].concat(MESES_FULL.map((m,i)=>({v:i+1,t:m}))), SEL.meses.size===1? mesesArr()[0] : 0);
   document.getElementById('abcAno').onchange = e=>{ SEL.ano=+e.target.value; document.getElementById('fAno').value=String(SEL.ano); render(); };
-  document.getElementById('abcMes').onchange = e=>{ SEL.mes=+e.target.value; document.getElementById('fMes').value=String(SEL.mes); render(); };
+  document.getElementById('abcMes').onchange = e=>{ const v=+e.target.value; SEL.meses = v===0? new Set() : new Set([v]); initMeses(); render(); };
   document.getElementById('abcLegenda').innerHTML =
     '<b>Como ler:</b> as barras mostram o faturamento de cada cliente no período, do maior pro menor. '+
     'A linha com marcadores é o percentual acumulado — soma a receita à medida que anda da esquerda pra direita, cliente por cliente. '+
@@ -1177,7 +1249,7 @@ function renderSazonalidade(sub){
     h += '<tr><td>'+DATA.dims.segmentos[s]+
       '<div style="font-size:9.5px;color:#8895a1;font-weight:400;margin-top:2px;">pico '+MESES[picoI]+' ('+(idxs[picoI]>=0?'+':'')+idxs[picoI].toFixed(0)+'%) · fraco '+MESES[baixoI]+' ('+idxs[baixoI].toFixed(0)+'%)</div></td>';
     idxs.forEach((v,i)=>{
-      const active = (SEL.seg===s && SEL.mes===i+1);
+      const active = (SEL.seg===s && SEL.meses.size===1 && SEL.meses.has(i+1));
       const isPico = i===picoI, isBaixo = i===baixoI && idxs[baixoI]<0;
       const color = v>=0 ? '46,125,91' : '179,67,46';
       const alpha = Math.min(0.85, Math.abs(v)/40);
@@ -1191,10 +1263,10 @@ function renderSazonalidade(sub){
   document.querySelectorAll('#tblSaz td.heat-cell').forEach(td=>{
     td.onclick = ()=>{
       const s = +td.dataset.seg, m = +td.dataset.mes;
-      if(SEL.seg===s && SEL.mes===m){ SEL.seg=-1; SEL.mes=lastFact[F.MES]; }
-      else { SEL.seg=s; SEL.mes=m; }
+      if(SEL.seg===s && SEL.meses.size===1 && SEL.meses.has(m)){ SEL.seg=-1; SEL.meses=new Set([lastFact[F.MES]]); }
+      else { SEL.seg=s; SEL.meses=new Set([m]); }
       document.getElementById('fSeg').value = String(SEL.seg);
-      document.getElementById('fMes').value = String(SEL.mes);
+      initMeses();
       render();
     };
   });
@@ -1410,7 +1482,7 @@ function renderVendTable(sub, cur, fatPeriodo){
     else { g[k].fatPropria+=r[F.FAT]; }
   });
   const prev = {};
-  periodRows(sub, SEL.ano-1, SEL.mes).forEach(r=>{ prev[r[F.VEND]]=(prev[r[F.VEND]]||0)+r[F.FAT]; });
+  periodRows(sub, SEL.ano-1, SEL.meses).forEach(r=>{ prev[r[F.VEND]]=(prev[r[F.VEND]]||0)+r[F.FAT]; });
   function margemCols(v){
     const base = v.fatPropria + v.fatTerc;
     return {
@@ -1436,7 +1508,7 @@ function renderVendTable(sub, cur, fatPeriodo){
     {header:'M. 3º', get:function(r){ return r._m.margemTerc==null? '—' : (r._m.margemTerc*100).toFixed(1)+'%'; },
       getTotal:function(){ return totM.margemTerc==null? '—' : (totM.margemTerc*100).toFixed(1)+'%'; }},
   ];
-  document.getElementById('tblVend').innerHTML = buildTable(rows, {firstCol:'Vendedor', shareBase:'período', prevLabel:(SEL.mes===0?String(SEL.ano-1):MESES[SEL.mes-1]+'/'+(SEL.ano-1)), showProjecao:false, extraCols:extraCols});
+  document.getElementById('tblVend').innerHTML = buildTable(rows, {firstCol:'Vendedor', shareBase:'período', prevLabel:prevLabelTxt(), showProjecao:false, extraCols:extraCols});
   document.querySelectorAll('#tblVend tr[data-idx]').forEach(tr=>{
     tr.onclick = ()=>{
       const idx = +tr.dataset.idx;
@@ -1495,7 +1567,7 @@ function renderFrota(sub, cur){
   const names = DATA.dims.frotas;
   const curG = {}, prevG = {};
   cur.forEach(r=>{ const k=names[r[F.FROTA]]; curG[k]=(curG[k]||0)+r[F.FAT]; });
-  periodRows(sub, SEL.ano-1, SEL.mes).forEach(r=>{ const k=names[r[F.FROTA]]; prevG[k]=(prevG[k]||0)+r[F.FAT]; });
+  periodRows(sub, SEL.ano-1, SEL.meses).forEach(r=>{ const k=names[r[F.FROTA]]; prevG[k]=(prevG[k]||0)+r[F.FAT]; });
   const labels = names.filter(n=> (curG[n]||0)+(prevG[n]||0) > 0);
   makeChart('chartFrota', { type:'bar',
     data:{labels, datasets:[
@@ -1511,7 +1583,7 @@ function renderFrota(sub, cur){
 function renderTerceiros(sub, cur){
   document.getElementById('noteTerc').textContent = periodLabel()+' · top 10 + OUTROS = 100% do faturamento de terceiros · M. 3º considera só o que já foi faturado · filtros aplicados';
   const curT = cur.filter(r=>r[F.TERC]>=0);
-  const prevT = periodRows(sub, SEL.ano-1, SEL.mes).filter(r=>r[F.TERC]>=0);
+  const prevT = periodRows(sub, SEL.ano-1, SEL.meses).filter(r=>r[F.TERC]>=0);
   const total = sumFat(curT) || 1;
   const totalTon = sumTon(curT);
   const prevTotal = sumFat(prevT);
@@ -1541,7 +1613,7 @@ function renderTerceiros(sub, cur){
     {header:'M. 3º', get:function(r){ return r._m==null? '—' : (r._m*100).toFixed(1)+'%'; },
       getTotal:function(){ return totM==null? '—' : (totM*100).toFixed(1)+'%'; }},
   ];
-  document.getElementById('tblTerc').innerHTML = buildTable(rows, {firstCol:'Terceiro (contratado)', shareBase:'período (só terceiros)', prevLabel:(SEL.mes===0?String(SEL.ano-1):MESES[SEL.mes-1]+'/'+(SEL.ano-1)), extraCols:extraCols});
+  document.getElementById('tblTerc').innerHTML = buildTable(rows, {firstCol:'Terceiro (contratado)', shareBase:'período (só terceiros)', prevLabel:prevLabelTxt(), extraCols:extraCols});
 }
 
 // janelas móveis: últimos 90 dias (até a data mais recente da base) vs os 90 dias imediatamente anteriores.
