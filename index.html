@@ -25,9 +25,11 @@
   /* Bloco 1 - filtros */
   .filters{
     background:var(--card); border:1px solid #E4E8EC; border-radius:12px; padding:14px 16px; margin-bottom:16px;
-    display:grid; grid-template-columns:repeat(6,1fr) auto; gap:12px; align-items:end;
   }
-  @media (max-width:950px){ .filters{grid-template-columns:repeat(2,1fr);} }
+  .filters-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:12px; align-items:end; }
+  @media (max-width:1300px){ .filters-grid{grid-template-columns:repeat(3,1fr);} }
+  @media (max-width:950px){ .filters-grid{grid-template-columns:repeat(2,1fr);} }
+  .filters-actions{ display:flex; justify-content:flex-end; margin-top:10px; }
   .dd{position:relative;}
   .dd-btn{
     width:100%; font-size:13px; padding:8px 10px; border-radius:7px; border:1px solid #D6DCE2;
@@ -59,6 +61,22 @@
   }
   .dd-months label:hover{border-color:var(--gold);}
   .dd-months label.on{background:var(--navy); color:var(--gold-light); border-color:var(--navy);}
+  .dd-menu-wide{min-width:260px; max-width:300px;}
+  .dd-subtitle{font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.4px; font-weight:700; margin:8px 0 4px;}
+  .dd-states{display:grid; grid-template-columns:repeat(6,1fr); gap:4px;}
+  .dd-states label{
+    display:flex; align-items:center; justify-content:center; font-size:11px; padding:4px 0; border-radius:6px;
+    border:1px solid #E4E8EC; cursor:pointer; user-select:none; margin:0; text-transform:none; letter-spacing:0; color:var(--text); font-weight:600;
+  }
+  .dd-states label:hover{border-color:var(--gold);}
+  .dd-states label.on{background:var(--navy); color:var(--gold-light); border-color:var(--navy);}
+  .dd-cities{max-height:190px; overflow-y:auto; display:flex; flex-direction:column; gap:2px;}
+  .dd-cities label{
+    display:block; font-size:12px; padding:4px 6px; border-radius:5px; cursor:pointer; user-select:none;
+    margin:0; text-transform:none; letter-spacing:0; color:var(--text); font-weight:600;
+  }
+  .dd-cities label:hover{background:#F6F8FA;}
+  .dd-cities label.on{background:var(--navy); color:var(--gold-light);}
   .filters label{display:block; font-size:10.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.4px; margin-bottom:4px; font-weight:700;}
   .filters select{
     width:100%; font-size:13px; padding:8px 10px; border-radius:7px; border:1px solid #D6DCE2;
@@ -258,6 +276,7 @@
 
   <!-- Bloco 1: Filtros -->
   <div class="filters">
+    <div class="filters-grid">
     <div><label>Cliente</label>
       <div class="dd" id="cliWrap">
         <input type="text" id="cliInput" class="dd-btn" placeholder="Buscar por nome..." autocomplete="off">
@@ -285,7 +304,32 @@
     <div><label>Ano</label><select id="fAno"></select></div>
     <div><label>Vendedor</label><select id="fVend"></select></div>
     <div><label>Segmento</label><select id="fSeg"></select></div>
-    <button class="reset" id="btnReset">Limpar filtros</button>
+    <div><label>Origem (Estado/Cidade)</label>
+      <div class="dd" id="orWrap">
+        <button type="button" class="dd-btn" id="orBtn">Todas ▾</button>
+        <div class="dd-menu dd-menu-wide" id="orMenu">
+          <div class="dd-actions"><button type="button" id="orAll">Todas</button><button type="button" id="orClear">Nenhuma</button></div>
+          <div class="dd-subtitle">Estado</div>
+          <div class="dd-states" id="orUFs"></div>
+          <div class="dd-subtitle">Cidade</div>
+          <div class="dd-cities" id="orCidades"></div>
+        </div>
+      </div>
+    </div>
+    <div><label>Destino (Estado/Cidade)</label>
+      <div class="dd" id="deWrap">
+        <button type="button" class="dd-btn" id="deBtn">Todos ▾</button>
+        <div class="dd-menu dd-menu-wide" id="deMenu">
+          <div class="dd-actions"><button type="button" id="deAll">Todos</button><button type="button" id="deClear">Nenhum</button></div>
+          <div class="dd-subtitle">Estado</div>
+          <div class="dd-states" id="deUFs"></div>
+          <div class="dd-subtitle">Cidade</div>
+          <div class="dd-cities" id="deCidades"></div>
+        </div>
+      </div>
+    </div>
+    </div>
+    <div class="filters-actions"><button class="reset" id="btnReset">Limpar filtros</button></div>
   </div>
 
   <!-- Bloco 2: Métricas principais -->
@@ -405,9 +449,9 @@ const MESES_FULL = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho
 const NAVY='#0C2442', STEEL='#4F7492', BRONZE='#A67F3C', GOLD='#DBBC60', GOLDL='#E2CD81';
 const PALETTE=[NAVY,GOLD,STEEL,BRONZE,GOLDL,'#7C93A6','#C9A96E','#324B66'];
 // facts: [ano,mes,dia,cliIdx,vendIdx,segIdx,frotaIdx,regIdx,tercIdx(-1 se frota própria),fat,ton]
-const F={ANO:0,MES:1,DIA:2,CLI:3,VEND:4,SEG:5,FROTA:6,REG:7,TERC:8,FAT:9,TON:10,PAGO:11};
+const F={ANO:0,MES:1,DIA:2,CLI:3,VEND:4,SEG:5,FROTA:6,REG:7,TERC:8,FAT:9,TON:10,PAGO:11,ORIG:12,DEST:13};
 
-let SEL = {cli:-1, meses:new Set([6]), ano:2026, vend:-1, seg:-1, dias:new Set()}; // -1 = todos; meses/dias vazios = sem filtro
+let SEL = {cli:-1, meses:new Set([6]), ano:2026, vend:-1, seg:-1, dias:new Set(), ufOrig:new Set(), cidOrig:new Set(), ufDest:new Set(), cidDest:new Set()}; // -1 = todos; meses/dias/ufs/cidades vazios = sem filtro
 let CHARTS = {};
 let SAZ_ANOS = null; // anos selecionados no card de Sazonalidade (default: ano atual + anterior)
 
@@ -509,13 +553,15 @@ function initFilters(){
   document.getElementById('btnResetFloat').onclick = resetFiltros;
   initDias();
   initMeses();
+  initOrigemDestino();
 }
 function resetFiltros(){
-  SEL = {cli:-1, meses:new Set([lastFact[F.MES]]), ano:lastFact[F.ANO], vend:-1, seg:-1, dias:new Set()};
+  SEL = {cli:-1, meses:new Set([lastFact[F.MES]]), ano:lastFact[F.ANO], vend:-1, seg:-1, dias:new Set(), ufOrig:new Set(), cidOrig:new Set(), ufDest:new Set(), cidDest:new Set()};
   initFilters(); render();
 }
 function temFiltroAtivo(){
   return SEL.cli!==-1 || SEL.vend!==-1 || SEL.seg!==-1 || SEL.dias.size>0 ||
+    SEL.ufOrig.size>0 || SEL.cidOrig.size>0 || SEL.ufDest.size>0 || SEL.cidDest.size>0 ||
     !(SEL.ano===lastFact[F.ANO] && SEL.meses.size===1 && SEL.meses.has(lastFact[F.MES]));
 }
 function showInfo(html, wide){
@@ -657,12 +703,93 @@ function initMeses(){
   document.getElementById('mmMenu').onclick = e=> e.stopPropagation();
 }
 
+// ---- Filtro de Origem/Destino (Estado -> Cidade, em cascata) — pedido do Valmor (14/08/2026):
+// filtro global de rota (Coleta/Entrega da Base Estudos; "Local de Coleta/Entrega" dos Implantados)
+// que afeta TODAS as visoes do painel (implantados, faturamento, sazonalidade, margem por segmento,
+// regiao, top clientes, curva ABC, clientes sem pedido). Cidade marcada tem prioridade sobre Estado
+// marcado (permite refinar): se alguma cidade estiver marcada, so ela(s) valem; senao, vale o(s)
+// estado(s) marcado(s); sem nada marcado, nao filtra.
+function ufOrigOf(idx){ return (DATA.dims.cidade_origem_uf||[])[idx]; }
+function ufDestOf(idx){ return (DATA.dims.cidade_destino_uf||[])[idx]; }
+function origOk(idx){
+  if(SEL.cidOrig.size>0) return SEL.cidOrig.has(idx);
+  if(SEL.ufOrig.size>0) return SEL.ufOrig.has(ufOrigOf(idx));
+  return true;
+}
+function destOk(idx){
+  if(SEL.cidDest.size>0) return SEL.cidDest.has(idx);
+  if(SEL.ufDest.size>0) return SEL.ufDest.has(ufDestOf(idx));
+  return true;
+}
+function origDestLabel(ufSet, cidSet, allLabel){
+  if(cidSet.size>0) return (cidSet.size===1? '1 cidade':cidSet.size+' cidades')+' ▾';
+  if(ufSet.size>0) return (ufSet.size===1? [...ufSet][0] : ufSet.size+' estados')+' ▾';
+  return allLabel+' ▾';
+}
+function renderOrigDestBoxes(cfg){
+  const btn = document.getElementById(cfg.prefix+'Btn');
+  const ufBox = document.getElementById(cfg.prefix+'UFs');
+  const cidBox = document.getElementById(cfg.prefix+'Cidades');
+  const ufsUnicas = DATA.dims[cfg.dimUfList] || [];
+  btn.textContent = origDestLabel(SEL[cfg.ufKey], SEL[cfg.cidKey], cfg.allLabel);
+
+  ufBox.innerHTML = ufsUnicas.map(uf=>{
+    const on = SEL[cfg.ufKey].has(uf);
+    return '<label class="'+(on?'on':'')+'" data-uf="'+uf+'">'+uf+'</label>';
+  }).join('');
+
+  const cidades = DATA.dims[cfg.dimCid] || [];
+  const cidUfs = DATA.dims[cfg.dimUf] || [];
+  const idxOrdenados = cidades.map((c,i)=>i)
+    .filter(i=> SEL[cfg.ufKey].size===0 || SEL[cfg.ufKey].has(cidUfs[i]))
+    .sort((a,b)=> (cidUfs[a]+cidades[a]).localeCompare(cidUfs[b]+cidades[b]));
+  cidBox.innerHTML = idxOrdenados.map(i=>{
+    const on = SEL[cfg.cidKey].has(i);
+    return '<label class="'+(on?'on':'')+'" data-i="'+i+'">'+cidades[i]+' — '+cidUfs[i]+'</label>';
+  }).join('');
+
+  ufBox.querySelectorAll('label').forEach(l=>{
+    l.onclick = e=>{
+      e.stopPropagation();
+      const uf = l.dataset.uf;
+      if(SEL[cfg.ufKey].has(uf)) SEL[cfg.ufKey].delete(uf); else SEL[cfg.ufKey].add(uf);
+      renderOrigDestBoxes(cfg);
+      render();
+    };
+  });
+  cidBox.querySelectorAll('label').forEach(l=>{
+    l.onclick = e=>{
+      e.stopPropagation();
+      const i = +l.dataset.i;
+      if(SEL[cfg.cidKey].has(i)) SEL[cfg.cidKey].delete(i); else SEL[cfg.cidKey].add(i);
+      l.classList.toggle('on');
+      btn.textContent = origDestLabel(SEL[cfg.ufKey], SEL[cfg.cidKey], cfg.allLabel);
+      render();
+    };
+  });
+}
+function initOrigDestFiltro(cfg){
+  const wrap = document.getElementById(cfg.prefix+'Wrap');
+  const btn = document.getElementById(cfg.prefix+'Btn');
+  renderOrigDestBoxes(cfg);
+  btn.onclick = e=>{ e.stopPropagation(); wrap.classList.toggle('open'); };
+  document.getElementById(cfg.prefix+'All').onclick = e=>{ e.stopPropagation(); SEL[cfg.ufKey]=new Set(); SEL[cfg.cidKey]=new Set(); renderOrigDestBoxes(cfg); wrap.classList.add('open'); render(); };
+  document.getElementById(cfg.prefix+'Clear').onclick = e=>{ e.stopPropagation(); SEL[cfg.ufKey]=new Set(); SEL[cfg.cidKey]=new Set(); renderOrigDestBoxes(cfg); wrap.classList.add('open'); render(); };
+  document.addEventListener('click', ()=> wrap.classList.remove('open'));
+  document.getElementById(cfg.prefix+'Menu').onclick = e=> e.stopPropagation();
+}
+function initOrigemDestino(){
+  initOrigDestFiltro({prefix:'or', ufKey:'ufOrig', cidKey:'cidOrig', dimCid:'cidade_origem', dimUf:'cidade_origem_uf', dimUfList:'uf_origem', allLabel:'Todas'});
+  initOrigDestFiltro({prefix:'de', ufKey:'ufDest', cidKey:'cidDest', dimCid:'cidade_destino', dimUf:'cidade_destino_uf', dimUfList:'uf_destino', allLabel:'Todos'});
+}
+
 // subset respecting cli/vend/seg (not ano/mes)
 function baseSubset(){
   return DATA.facts.filter(r=>
     (SEL.cli===-1 || r[F.CLI]===SEL.cli) &&
     (SEL.vend===-1 || r[F.VEND]===SEL.vend) &&
-    (SEL.seg===-1 || r[F.SEG]===SEL.seg));
+    (SEL.seg===-1 || r[F.SEG]===SEL.seg) &&
+    origOk(r[F.ORIG]) && destOk(r[F.DEST]));
 }
 function diaOk(r){ return SEL.dias.size===0 || SEL.dias.has(r[F.DIA]); }
 // mes pode ser um numero (0 = ano completo, N = so aquele mes) OU um Set (SEL.meses; vazio =
@@ -682,12 +809,13 @@ function sumTon(rows){ return rows.reduce((s,r)=>s+r[F.TON],0); }
 // "Já faturado" NÃO vem de um cruzamento dia-a-dia entre as duas bases (isso subestimava o faturado
 // e inflava o saldo pendente); usa-se o volume REAL já faturado no mesmo período/filtro, tirado
 // diretamente da Base Estudos (a mesma tonelada que já aparece no resto do painel).
-const IF = {ANO:0, MES:1, DIA:2, CLI:3, SEG:4, TOTAL:5, CANC:6, POST:7};
+const IF = {ANO:0, MES:1, DIA:2, CLI:3, SEG:4, TOTAL:5, CANC:6, POST:7, ORIG:8, DEST:9};
 function implantAll(){ return (DATA.implantados && DATA.implantados.facts) || []; }
 function implantSubset(){
   return implantAll().filter(r=>
     (SEL.cli===-1 || r[IF.CLI]===SEL.cli) &&
-    (SEL.seg===-1 || r[IF.SEG]===SEL.seg));
+    (SEL.seg===-1 || r[IF.SEG]===SEL.seg) &&
+    origOk(r[IF.ORIG]) && destOk(r[IF.DEST]));
 }
 function implantPeriodRows(sub, ano, mes){
   return sub.filter(r=> r[IF.ANO]===ano && mesMatch(r[IF.MES], mes) && (SEL.dias.size===0 || SEL.dias.has(r[IF.DIA])));
@@ -772,6 +900,8 @@ function periodLabel(){
     const d = [...SEL.dias].sort((a,b)=>a-b);
     l += ' · dia'+(d.length>1?'s':'')+' '+d.join(', ');
   }
+  if(SEL.ufOrig.size>0 || SEL.cidOrig.size>0) l += ' · origem: '+origDestLabel(SEL.ufOrig, SEL.cidOrig, 'Todas').replace(' ▾','');
+  if(SEL.ufDest.size>0 || SEL.cidDest.size>0) l += ' · destino: '+origDestLabel(SEL.ufDest, SEL.cidDest, 'Todos').replace(' ▾','');
   return l;
 }
 
@@ -877,7 +1007,7 @@ function renderClienteDetalhe(){
   const nome = DATA.dims.clientes[SEL.cli];
 
   // respeita vendedor/segmento mas não o próprio filtro de cliente (senão não há o que comparar)
-  const subCtx = DATA.facts.filter(r=>(SEL.vend===-1||r[F.VEND]===SEL.vend) && (SEL.seg===-1||r[F.SEG]===SEL.seg));
+  const subCtx = DATA.facts.filter(r=>(SEL.vend===-1||r[F.VEND]===SEL.vend) && (SEL.seg===-1||r[F.SEG]===SEL.seg) && origOk(r[F.ORIG]) && destOk(r[F.DEST]));
   const rowsCli = subCtx.filter(r=>r[F.CLI]===SEL.cli);
   const totalHist = sumFat(rowsCli);
 
@@ -1732,6 +1862,7 @@ function renderSemPedido(){
   const curPorCli = {}, prevPorCli = {}, ultimaPorCli = {};
   DATA.facts.forEach(r=>{
     if(r[F.SEG]!==segIdx || r[F.FAT]<=0) return;
+    if(!origOk(r[F.ORIG]) || !destOk(r[F.DEST])) return;
     const cli = r[F.CLI];
     const d = factDate(r);
     if(!ultimaPorCli[cli] || d>ultimaPorCli[cli]) ultimaPorCli[cli] = d;
