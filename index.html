@@ -1906,7 +1906,7 @@ window.addEventListener('error', function(e){
   console.error('Erro global capturado:', e.error||e.message);
 });
 
-fetch('./data.b64.txt').then(r=>r.text()).then(b64=>{
+fetch('./data.b64.txt?v='+Date.now()).then(r=>r.text()).then(b64=>{
   const bin = atob(b64);
   const bytes = new Uint8Array(bin.length);
   for(let i=0;i<bin.length;i++) bytes[i]=bin.charCodeAt(i);
