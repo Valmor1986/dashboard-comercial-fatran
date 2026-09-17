@@ -634,7 +634,7 @@
     Quando a planilha não tem Grupo Cliente preenchido, o nome do Pagador é usado no lugar; quando esse nome de Pagador já corresponde a um grupo existente (ex.: "EFTEC" e "Grupo EFTEC"), as duas entradas são unificadas em uma só.
     O bloco "Análise do período" compara sempre os últimos 90 dias contra os 90 dias anteriores (janela móvel, não ano-a-ano) — respeita filtro de vendedor/segmento; com um cliente selecionado, mostra a tendência de 90 dias específica dele.
     A tabela de terceiros responde aos filtros de Ano e Mês (os demais filtros não se aplicam a essa dimensão).
-    <b>Pipeline (aba IMPLANTADOS):</b> Total Implantado = toneladas de TODAS as cargas programadas no período (ativo + cancelado + postergado, o pool bruto). Total Cancelado/Postergado = pelo campo Situação — Postergado é exibido apenas como informação (já está contido no Total Implantado, não é um bucket à parte nem entra em nenhuma subtração). <b>Saldo disponível a faturar</b> (cards do topo) = Total Implantado − Cancelado − já faturado no período, para a frota inteira, mesmo critério do BI oficial. As tabelas por segmento e por cliente detalham esse mesmo saldo célula a célula (cliente dentro de cada segmento, nunca abaixo de zero em cada célula) para que nenhum cliente "empreste" saldo a outro — por isso, quando algum cliente já faturou mais do que lhe restava de implantado no período, a soma das tabelas pode ficar um pouco ACIMA do card do topo (a diferença é sempre esse excedente pontual, nunca um erro de conta). Cada célula é precificada pelo ticket médio histórico DAQUELE cliente. <b>Projeção de faturamento</b> = faturado no período + saldo do pipeline daquele recorte — por isso a projeção de uma linha nunca é menor que o faturamento já daquela linha; quando o saldo é zero, a projeção fica igual ao próprio faturado. Todos os cards e a projeção respeitam os filtros de Ano/Mês/Dias/Cliente/Segmento ativos no painel. É uma estimativa, não um valor contratado.
+    <b>Pipeline (aba IMPLANTADOS):</b> Total Implantado = toneladas de TODAS as cargas programadas no período (ativo + cancelado + postergado, o pool bruto). Total Cancelado = pelo campo Situação, no mês selecionado. Total Postergado = também pelo campo Situação, mas olhando o MÊS SEGUINTE ao selecionado (não o mês selecionado em si) — uma carga com Situação Postergada cuja Programação já é do mês selecionado é backlog que chegou de trás e está disponível pra faturar agora, não é o que saiu deste período; o que de fato saiu deste período e foi empurrado pra frente só aparece quando a Programação está no mês seguinte. <b>Saldo disponível a faturar</b> (cards do topo) = Total Implantado − Cancelado − Postergado (do mês seguinte, calculado como acima) − já faturado no período, para a frota inteira. Isso diverge de propósito do critério do BI oficial (que só desconta Cancelado, não Postergado) — decisão do Valmor, pra visualização interna do painel. As tabelas por segmento e por cliente detalham esse mesmo saldo célula a célula (cliente dentro de cada segmento, nunca abaixo de zero em cada célula) para que nenhum cliente "empreste" saldo a outro — por isso, quando algum cliente já faturou mais do que lhe restava de implantado no período, a soma das tabelas pode ficar um pouco ACIMA do card do topo (a diferença é sempre esse excedente pontual, nunca um erro de conta). Cada célula é precificada pelo ticket médio histórico DAQUELE cliente. <b>Projeção de faturamento</b> = faturado no período + saldo do pipeline daquele recorte — por isso a projeção de uma linha nunca é menor que o faturamento já daquela linha; quando o saldo é zero, a projeção fica igual ao próprio faturado. Todos os cards e a projeção respeitam os filtros de Ano/Mês/Dias/Cliente/Segmento ativos no painel. É uma estimativa, não um valor contratado.
   </footer>
 </div>
 
@@ -1543,6 +1543,28 @@ function implantPostergadoMesSeguinte(){
   });
   return total;
 }
+// Mesma lógica de implantPostergadoMesSeguinte(), mas quebrada por átomo (cliente_segmento) --
+// necessária pra Saldo (implantCalculo) descontar Postergado sem quebrar a reconciliação entre o
+// card do topo e as tabelas por cliente/segmento (ajuste de 09/2026: Saldo do painel passou a
+// descontar Postergado, diferente do BI oficial que só desconta Cancelado -- pedido do Valmor,
+// com a leitura de Postergado corrigida pra olhar o mês seguinte, nunca o mês selecionado).
+function implantPostSeguintePorAtomo(){
+  const sub = implantSubset();
+  const lista = SEL.meses.size? [...SEL.meses] : [1,2,3,4,5,6,7,8,9,10,11,12];
+  const wanted = new Set();
+  lista.forEach(m=>{
+    const mSeg = m===12? 1 : m+1;
+    const anoSeg = m===12? SEL.ano+1 : SEL.ano;
+    wanted.add(anoSeg+'-'+mSeg);
+  });
+  const map = {};
+  sub.forEach(r=>{
+    if(!wanted.has(r[IF.ANO]+'-'+r[IF.MES])) return;
+    const key = r[IF.CLI]+'_'+r[IF.SEG];
+    map[key] = (map[key]||0) + r[IF.POST];
+  });
+  return map;
+}
 function ticketMedioGeral(){ return (DATA.implantados && DATA.implantados.ticket_medio_geral) || 0; }
 function ticketMedioCliente(cliIdx){
   const arr = DATA.implantados && DATA.implantados.ticket_por_cliente;
@@ -1583,17 +1605,23 @@ function implantAtomos(){
 // filtros ativos, não precisa passar isso: implantSubset() já filtra os átomos corretamente sozinho.
 function implantCalculo(cur, jaFaturadoTonReal, clientesPermitidos){
   const atomos = implantAtomos();
+  const postSeg = implantPostSeguintePorAtomo();
   const fatAtom = {};
   cur.forEach(r=>{ const key=r[F.CLI]+'_'+r[F.SEG]; fatAtom[key]=(fatAtom[key]||0)+r[F.TON]; });
-  let saldoTonTotal = 0, projRsTotal = 0, totalImplant = 0, totalCanc = 0;
+  let saldoTonTotal = 0, projRsTotal = 0, totalImplant = 0, totalCanc = 0, totalPostSeg = 0;
   const porCliente = {}, porSegmento = {}, porClienteTon = {}, porSegmentoTon = {};
   Object.entries(atomos).forEach(([key,a])=>{
     if(clientesPermitidos && !clientesPermitidos.has(a.cli)) return;
     totalImplant += a.total; totalCanc += a.canc;
     const jaFat = fatAtom[key] || 0;
-    // Postergado NAO entra na subtracao do saldo: e so informativo, ja esta contido no Total
-    // (ajuste de 27/07 -- o BI oficial desconta apenas Cancelado do Total, nao Postergado).
-    const saldoTon = Math.max(0, a.total - a.canc - jaFat);
+    // Postergado ENTRA na subtracao do saldo (ajuste de 09/2026, pedido do Valmor: pro painel,
+    // diferente do BI oficial, Saldo = Implantado - Cancelado - Postergado - Faturado). O Postergado
+    // usado aqui é o do MÊS SEGUINTE ao selecionado (implantPostSeguintePorAtomo), nunca o do próprio
+    // mês -- olhar o próprio mês mistura backlog que já chegou (disponível pra faturar) com o que de
+    // fato vai ser empurrado pra frente (ver comentário em implantPostergadoMesSeguinte).
+    const postAtom = postSeg[key] || 0;
+    totalPostSeg += postAtom;
+    const saldoTon = Math.max(0, a.total - a.canc - postAtom - jaFat);
     const rs = saldoTon * ticketMedioCliente(a.cli);
     saldoTonTotal += saldoTon; projRsTotal += rs;
     porCliente[a.cli] = (porCliente[a.cli]||0) + rs;
@@ -1604,20 +1632,26 @@ function implantCalculo(cur, jaFaturadoTonReal, clientesPermitidos){
     porClienteTon[a.cli] = (porClienteTon[a.cli]||0) + saldoTon;
     porSegmentoTon[a.seg] = (porSegmentoTon[a.seg]||0) + saldoTon;
   });
-  // saldoTonGlobal: mesmo critério do BI oficial e da conta simples do Valmor -- Total implantado da
-  // frota inteira menos Cancelado da frota inteira menos TODO o faturado real do período (não só o
-  // faturado que casa cliente×segmento com um registro implantado), floor uma única vez no final.
-  // Alimenta só os cards do topo (Saldo disponível / Projeção de faturamento).
+  // saldoTonGlobal: critério do PAINEL (diferente do BI oficial, que só desconta Cancelado) -- Total
+  // implantado da frota inteira menos Cancelado menos Postergado (do mês seguinte) menos TODO o
+  // faturado real do período (não só o faturado que casa cliente×segmento com um registro
+  // implantado), floor uma única vez no final. Alimenta só os cards do topo (Saldo disponível /
+  // Projeção de faturamento).
   // Pode ficar abaixo da soma das tabelas por segmento/cliente (que usam o modelo por célula) em dois
   // casos: (1) cliente/segmento que já faturou mais do que lhe restava no período -- esse excedente
   // não pode "emprestar" saldo a outro cliente na tabela por célula, mas abate o total da frota; e
   // (2) faturamento cujo par cliente×segmento não tem registro correspondente em IMPLANTADOS naquele
   // período -- não reduz nenhuma célula específica, mas reduz o card do topo. A diferença nunca é erro.
   const jf = jaFaturadoTonReal || 0;
-  const saldoTonGlobal = Math.max(0, totalImplant - totalCanc - jf);
+  // totalPostSeg (Postergado do mês seguinte, já restrito aos mesmos clientesPermitidos usados acima)
+  // entra aqui pelo mesmo motivo do totalImplant/totalCanc virem dos átomos e não da soma bruta: com
+  // vendedor/terceiro filtrado, usar o Postergado bruto da frota vazaria postergado de clientes de
+  // FORA do filtro pro card do vendedor filtrado -- mesmo bug de vazamento já corrigido em 09/2026
+  // pra Implantado/Cancelado (ver comentário logo abaixo), agora estendido ao Postergado.
+  const saldoTonGlobal = Math.max(0, totalImplant - totalCanc - totalPostSeg - jf);
   const ticketFrotaAtual = saldoTonTotal>0 ? (projRsTotal/saldoTonTotal) : ticketMedioGeral();
   const projRsGlobal = saldoTonGlobal * ticketFrotaAtual;
-  return {saldoTonTotal, projRsTotal, porCliente, porSegmento, porClienteTon, porSegmentoTon, saldoTonGlobal, projRsGlobal};
+  return {saldoTonTotal, projRsTotal, porCliente, porSegmento, porClienteTon, porSegmentoTon, saldoTonGlobal, projRsGlobal, totalPostSeg};
 }
 
 function periodLabel(){
