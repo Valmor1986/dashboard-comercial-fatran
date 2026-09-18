@@ -1506,6 +1506,20 @@ function forecastDoPeriodo(rows, ano, mesesSet){
 // "Já faturado" NÃO vem de um cruzamento dia-a-dia entre as duas bases (isso subestimava o faturado
 // e inflava o saldo pendente); usa-se o volume REAL já faturado no mesmo período/filtro, tirado
 // diretamente da Base Estudos (a mesma tonelada que já aparece no resto do painel).
+//
+// LIMITAÇÃO CONHECIDA (pedido do Valmor, 09/2026, ainda não resolvida aqui no painel): este array
+// `facts` é uma FOTO do estado atual da aba IMPLANTADOS a cada atualização -- ele não guarda
+// movimentação (carga X saiu de agosto, foi pra setembro, foi faturada em outubro). Pra isso existe,
+// fora do painel, um arquivo separado `implantados_ledger.json` (chave = Número da carga, estável
+// entre atualizações) que registra, atualização a atualização: quando cada carga foi vista por
+// primeira vez, toda vez que o mês/ano de Programação dela mudou (evento de postergação, de->para),
+// e a data em que ela saiu da aba IMPLANTADOS (sinal de que foi faturada ou cancelada -- sem cruzar
+// com uma nota fiscal específica, porque IMPLANTADOS e Base Estudos não têm uma chave em comum pra
+// isso). Rastreamento começou em 18/09/2026 -- cargas já abertas antes dessa data entram no ledger
+// com "primeira vez vista" = 18/09, não a data real de origem (não temos fotos anteriores pra
+// reconstruir isso). Esse ledger ainda não alimenta nenhuma tela do painel; é o material bruto pra,
+// depois de alguns ciclos de atualização, construir uma visão de "consultar agosto meses depois e
+// ver o que aconteceu com cada carga" sem depender só do snapshot do mês corrente.
 const IF = {ANO:0, MES:1, DIA:2, CLI:3, SEG:4, TOTAL:5, CANC:6, POST:7, ORIG:8, DEST:9};
 function implantAll(){ return (DATA.implantados && DATA.implantados.facts) || []; }
 function implantSubset(){
