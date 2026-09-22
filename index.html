@@ -324,6 +324,7 @@
       </div>
     </div>
     <div><label>Ano</label><select id="fAno"></select></div>
+    <div><label>Comparar com</label><select id="fAnoComp"></select></div>
     <div><label>Vendedor</label>
       <div class="dd" id="vendWrap">
         <button type="button" class="dd-btn" id="vendBtn">Todos ▾</button>
@@ -647,7 +648,8 @@ const PALETTE=[NAVY,GOLD,STEEL,BRONZE,GOLDL,'#7C93A6','#C9A96E','#324B66'];
 // facts: [ano,mes,dia,cliIdx,vendIdx,segIdx,frotaIdx,regIdx,tercIdx(-1 se frota própria),fat,ton]
 const F={ANO:0,MES:1,DIA:2,CLI:3,VEND:4,SEG:5,FROTA:6,REG:7,TERC:8,FAT:9,TON:10,PAGO:11,ORIG:12,DEST:13};
 
-let SEL = {cli:-1, meses:new Set([6]), ano:2026, vend:new Set(), seg:new Set(), terc:-1, oper:null, dias:new Set(), ufOrig:new Set(), cidOrig:new Set(), ufDest:new Set(), cidDest:new Set()}; // -1 = todos; oper (nome do Operador) usa null = todos, ja que nao tem indice fixo em DATA.dims; meses/dias/ufs/cidades/vend/seg vazios = sem filtro (Vendedor e Segmento passaram a multi-select em 09/2026)
+let SEL = {cli:-1, meses:new Set([6]), ano:2026, anoComp:null, vend:new Set(), seg:new Set(), terc:-1, oper:null, dias:new Set(), ufOrig:new Set(), cidOrig:new Set(), ufDest:new Set(), cidDest:new Set()}; // -1 = todos; oper (nome do Operador) usa null = todos, ja que nao tem indice fixo em DATA.dims; meses/dias/ufs/cidades/vend/seg vazios = sem filtro (Vendedor e Segmento passaram a multi-select em 09/2026); anoComp null = automatico (usa SEL.ano-1) -- pedido do Valmor 22/09, pra poder comparar ex. 2026 vs 2024 no lugar do ano anterior default, sem transformar SEL.ano num multi-select (isso quebraria as 50+ contas de KPI/forecast/meta que dependem de um unico "ano corrente"). Usar sempre anoCompVal(), nunca SEL.ano-1 direto.
+function anoCompVal(){ return SEL.anoComp===null ? (SEL.ano-1) : SEL.anoComp; }
 let CHARTS = {};
 let SAZ_ANOS = null; // anos selecionados no card de Sazonalidade (default: ano atual + anterior)
 let ACUM_ANOS = null; // anos selecionados no card de Acumulado no ano (default: ano atual + até 3 anteriores)
@@ -1035,10 +1037,18 @@ function fillSelect(id, options, selValue){
   const el = document.getElementById(id);
   el.innerHTML = options.map(o=>'<option value="'+o.v+'"'+(String(o.v)===String(selValue)?' selected':'')+'>'+o.t+'</option>').join('');
 }
+// Select "Comparar com" (fAnoComp): compara o Ano selecionado contra qualquer outro ano do
+// histórico, não só o anterior -- pedido do Valmor 22/09 (ex.: 2026 vs 2024). Valor '' = automático
+// (SEL.ano-1, comportamento de sempre). Ver SEL.anoComp/anoCompVal() pra como isso é usado.
+function refreshAnoCompSelect(){
+  fillSelect('fAnoComp', [{v:'',t:'Automático ('+(SEL.ano-1)+')'}].concat(anos.filter(a=>a!==SEL.ano).map(a=>({v:a,t:a}))), SEL.anoComp===null?'':SEL.anoComp);
+}
 function initFilters(){
   setupCliAutocomplete();
   fillSelect('fAno', anos.map(a=>({v:a,t:a})), SEL.ano);
-  document.getElementById('fAno').onchange = e=>{SEL.ano=+e.target.value; render();};
+  refreshAnoCompSelect();
+  document.getElementById('fAno').onchange = e=>{SEL.ano=+e.target.value; refreshAnoCompSelect(); render();};
+  document.getElementById('fAnoComp').onchange = e=>{ const v=e.target.value; SEL.anoComp = v===''? null : +v; render(); };
   document.getElementById('btnReset').onclick = resetFiltros;
   document.getElementById('btnResetFloat').onclick = resetFiltros;
   initDias();
@@ -1097,12 +1107,13 @@ function initEvolFiltros(){
   };
 }
 function resetFiltros(){
-  SEL = {cli:-1, meses:new Set([lastFact[F.MES]]), ano:lastFact[F.ANO], vend:new Set(), seg:new Set(), terc:-1, oper:null, dias:new Set(), ufOrig:new Set(), cidOrig:new Set(), ufDest:new Set(), cidDest:new Set()};
+  SEL = {cli:-1, meses:new Set([lastFact[F.MES]]), ano:lastFact[F.ANO], anoComp:null, vend:new Set(), seg:new Set(), terc:-1, oper:null, dias:new Set(), ufOrig:new Set(), cidOrig:new Set(), ufDest:new Set(), cidDest:new Set()};
   initFilters(); render();
 }
 function temFiltroAtivo(){
   return SEL.cli!==-1 || SEL.vend.size>0 || SEL.seg.size>0 || SEL.terc!==-1 || SEL.dias.size>0 ||
     SEL.ufOrig.size>0 || SEL.cidOrig.size>0 || SEL.ufDest.size>0 || SEL.cidDest.size>0 ||
+    SEL.anoComp!==null ||
     !(SEL.ano===lastFact[F.ANO] && SEL.meses.size===1 && SEL.meses.has(lastFact[F.MES]));
 }
 function showInfo(html, wide){
@@ -1214,9 +1225,9 @@ function mesesLabel(){
 // texto do 'mesmo periodo do ano anterior' usado nas tabelas (prevLabel) -- cobre ano
 // completo, um unico mes, ou varios meses combinados.
 function prevLabelTxt(){
-  if(SEL.meses.size===0) return String(SEL.ano-1);
-  if(SEL.meses.size===1) return MESES[mesesArr()[0]-1]+'/'+(SEL.ano-1);
-  return mesesArr().map(m=>MESES[m-1]).join('+')+'/'+(SEL.ano-1);
+  if(SEL.meses.size===0) return String(anoCompVal());
+  if(SEL.meses.size===1) return MESES[mesesArr()[0]-1]+'/'+(anoCompVal());
+  return mesesArr().map(m=>MESES[m-1]).join('+')+'/'+(anoCompVal());
 }
 function initMeses(){
   const wrap = document.getElementById('mmWrap');
@@ -1696,14 +1707,14 @@ function render(){
   const fat = sumFat(cur), tons = sumTon(cur);
 
   // comparações
-  const sameLY = periodRows(sub, SEL.ano-1, SEL.meses);
+  const sameLY = periodRows(sub, anoCompVal(), SEL.meses);
   const fatLY = sumFat(sameLY);
   const yoy = fatLY? (fat-fatLY)/fatLY : null;
 
   let mom = null;
   if(SEL.meses.size===1){
     const mesUnico = mesesArr()[0];
-    const pmAno = mesUnico===1? SEL.ano-1 : SEL.ano, pmMes = mesUnico===1? 12 : mesUnico-1;
+    const pmAno = mesUnico===1? anoCompVal() : SEL.ano, pmMes = mesUnico===1? 12 : mesUnico-1;
     const prevM = periodRows(sub, pmAno, pmMes);
     const fatPM = sumFat(prevM);
     mom = fatPM? (fat-fatPM)/fatPM : null;
@@ -1791,7 +1802,7 @@ function render(){
         ? 'Projeção ('+brl(projAtual)+') − Forecast congelado ('+brl(forecastRs)+') · em período fechado, aproxima o erro do modelo (Forecast vs. o que realmente fechou)'
         : 'Projeção ('+brl(projAtual)+') − Forecast ('+brl(forecastRs)+') · positivo = risco de não converter todo o pipeline no ritmo atual')},
     {label:'Ticket médio (R$/ton)', value: tons? brl(fat/tons):'—', hint: ton(tons), title: 'Faturamento ÷ Volume · volume do período: '+ton(tons)},
-    {label:'vs mesmo período '+(SEL.ano-1), value: yoy==null?'—':pct(yoy), cls: yoy==null?'':(yoy>=0?'up':'down'), hint: fatLY? brl(fatLY)+' em '+(SEL.ano-1):'sem base'},
+    {label:'vs mesmo período '+(anoCompVal()), value: yoy==null?'—':pct(yoy), cls: yoy==null?'':(yoy>=0?'up':'down'), hint: fatLY? brl(fatLY)+' em '+(anoCompVal()):'sem base'},
     {label:'vs mês anterior', value: mom==null?'—':pct(mom), cls: mom==null?'':(mom>=0?'up':'down'), hint: SEL.meses.size!==1?'selec. 1 mês':''},
     {label:'Acumulado no ano', value:brl(ytd), hint:'jan a '+MESES[maxMesSel-1]+'/'+SEL.ano},
   ];
@@ -1877,7 +1888,7 @@ function renderClienteDetalhe(){
     return {pos: ranked.indexOf(SEL.cli)+1, total: ranked.length, fat: porCli[SEL.cli]||0};
   }
   const rkCur = rankingNoPeriodo(SEL.ano);
-  const rkPrev = rankingNoPeriodo(SEL.ano-1);
+  const rkPrev = rankingNoPeriodo(anoCompVal());
   const yoyCli = rkPrev.fat? (rkCur.fat-rkPrev.fat)/rkPrev.fat : null;
 
   // tabela ano a ano (histórico completo, sem filtro de mês/dia)
@@ -1954,8 +1965,8 @@ function renderClienteDetalhe(){
     '<div class="cli-summary">'+
       '<div class="cli-stat"><div class="cli-stat-label">Faturamento histórico total</div><div class="cli-stat-val">'+brl(totalHist)+'</div></div>'+
       '<div class="cli-stat"><div class="cli-stat-label">Posição no período selecionado</div><div class="cli-stat-val">'+(rkCur.pos? '#'+rkCur.pos+' de '+rkCur.total : '—')+'</div></div>'+
-      '<div class="cli-stat"><div class="cli-stat-label">Posição no mesmo período '+(SEL.ano-1)+'</div><div class="cli-stat-val">'+(rkPrev.pos? '#'+rkPrev.pos+' de '+rkPrev.total : 'não faturou')+'</div></div>'+
-      '<div class="cli-stat"><div class="cli-stat-label">Faturamento no período vs '+(SEL.ano-1)+'</div><div class="cli-stat-val '+(yoyCli==null?'':(yoyCli>=0?'pos':'neg'))+'">'+(yoyCli==null?'sem base':pct(yoyCli))+'</div></div>'+
+      '<div class="cli-stat"><div class="cli-stat-label">Posição no mesmo período '+(anoCompVal())+'</div><div class="cli-stat-val">'+(rkPrev.pos? '#'+rkPrev.pos+' de '+rkPrev.total : 'não faturou')+'</div></div>'+
+      '<div class="cli-stat"><div class="cli-stat-label">Faturamento no período vs '+(anoCompVal())+'</div><div class="cli-stat-val '+(yoyCli==null?'':(yoyCli>=0?'pos':'neg'))+'">'+(yoyCli==null?'sem base':pct(yoyCli))+'</div></div>'+
     '</div>'+
     '<h4 style="margin:16px 0 4px;font-size:13px;color:#5B6B7A;">Faturamento por mês · marque/desmarque os anos que quer comparar (não depende do filtro de Ano do topo)</h4>'+
     seletorAnos+
@@ -2007,18 +2018,18 @@ function renderEvol(sub){
     (EVOL_SEG_IDX===-1 || r[F.SEG]===EVOL_SEG_IDX) &&
     (EVOL_CLI_IDX===-1 || r[F.CLI]===EVOL_CLI_IDX));
   const serie = ano => MESES.map((_,i)=> sumFat(subEvol.filter(r=>r[F.ANO]===ano && r[F.MES]===i+1 && diaOk(r))) || null);
-  const curS = serie(SEL.ano), prevS = serie(SEL.ano-1);
+  const curS = serie(SEL.ano), prevS = serie(anoCompVal());
   const ptColors = MESES.map((_,i)=> SEL.meses.has(i+1)? BRONZE : NAVY);
   const ptRadius = MESES.map((_,i)=> SEL.meses.has(i+1)? 7 : 3);
   const recorte = [];
   if(EVOL_SEG_IDX!==-1) recorte.push('segmento: '+DATA.dims.segmentos[EVOL_SEG_IDX]);
   if(EVOL_CLI_IDX!==-1) recorte.push('cliente: '+DATA.dims.clientes[EVOL_CLI_IDX]);
-  document.getElementById('noteEvol').textContent = SEL.ano+' x '+(SEL.ano-1)+' · filtros aplicados'+
+  document.getElementById('noteEvol').textContent = SEL.ano+' x '+(anoCompVal())+' · filtros aplicados'+
     (recorte.length? ' · '+recorte.join(', ') : '')+' · clique num mês do gráfico pra filtrar';
   makeChart('chartEvol', { type:'line',
     data:{labels:MESES, datasets:[
       {label:String(SEL.ano), data:curS, borderColor:NAVY, pointBackgroundColor:ptColors, pointRadius:ptRadius, backgroundColor:'rgba(12,36,66,.06)', fill:true, tension:.28, spanGaps:true},
-      {label:String(SEL.ano-1), data:prevS, borderColor:GOLD, backgroundColor:GOLD, borderDash:[5,3], tension:.28, spanGaps:true, pointRadius:2},
+      {label:String(anoCompVal()), data:prevS, borderColor:GOLD, backgroundColor:GOLD, borderDash:[5,3], tension:.28, spanGaps:true, pointRadius:2},
     ]},
     options:{responsive:true, maintainAspectRatio:false, animation:{duration:500},
       interaction:{mode:'index', intersect:false},
@@ -2089,7 +2100,7 @@ function renderSegTable(sub, cur, fatPeriodo, implCalc){
   const g = {};
   cur.forEach(r=>{ const k=r[F.SEG]; g[k]=g[k]||{fat:0,ton:0}; g[k].fat+=r[F.FAT]; g[k].ton+=r[F.TON]; });
   const prev = {};
-  periodRows(sub, SEL.ano-1, SEL.meses).forEach(r=>{ prev[r[F.SEG]]=(prev[r[F.SEG]]||0)+r[F.FAT]; });
+  periodRows(sub, anoCompVal(), SEL.meses).forEach(r=>{ prev[r[F.SEG]]=(prev[r[F.SEG]]||0)+r[F.FAT]; });
   const rows = Object.entries(g).map(([k,v])=>{
     const nome = DATA.dims.segmentos[k];
     const metaInfo = metaDoPeriodo(SEL.ano, SEL.meses, nome);
@@ -2206,7 +2217,7 @@ function renderTblClientes(sub, cur, fatPeriodo, implCalc){
   document.getElementById('noteCli').textContent = periodLabel()+' · clique numa linha pra filtrar';
   const total = fatPeriodo || 1;
   const totalTon = sumTon(cur);
-  const prevRows = periodRows(sub, SEL.ano-1, SEL.meses);
+  const prevRows = periodRows(sub, anoCompVal(), SEL.meses);
   const prevTotal = sumFat(prevRows);
   const g = {};
   cur.forEach(r=>{
@@ -2617,7 +2628,7 @@ function renderVendTable(sub, cur, fatPeriodo){
     else { g[k].fatPropria+=r[F.FAT]; }
   });
   const prev = {};
-  periodRows(sub, SEL.ano-1, SEL.meses).forEach(r=>{ prev[r[F.VEND]]=(prev[r[F.VEND]]||0)+r[F.FAT]; });
+  periodRows(sub, anoCompVal(), SEL.meses).forEach(r=>{ prev[r[F.VEND]]=(prev[r[F.VEND]]||0)+r[F.FAT]; });
   function margemCols(v){
     const base = v.fatPropria + v.fatTerc;
     return {
@@ -2808,15 +2819,15 @@ function buildMargemTable(rows, firstCol){
 }
 
 function renderFrota(sub, cur){
-  document.getElementById('noteFrota').textContent = periodLabel()+' x mesmo período '+(SEL.ano-1)+' · filtros aplicados';
+  document.getElementById('noteFrota').textContent = periodLabel()+' x mesmo período '+(anoCompVal())+' · filtros aplicados';
   const names = DATA.dims.frotas;
   const curG = {}, prevG = {};
   cur.forEach(r=>{ const k=names[r[F.FROTA]]; curG[k]=(curG[k]||0)+r[F.FAT]; });
-  periodRows(sub, SEL.ano-1, SEL.meses).forEach(r=>{ const k=names[r[F.FROTA]]; prevG[k]=(prevG[k]||0)+r[F.FAT]; });
+  periodRows(sub, anoCompVal(), SEL.meses).forEach(r=>{ const k=names[r[F.FROTA]]; prevG[k]=(prevG[k]||0)+r[F.FAT]; });
   const labels = names.filter(n=> (curG[n]||0)+(prevG[n]||0) > 0);
   makeChart('chartFrota', { type:'bar',
     data:{labels, datasets:[
-      {label:String(SEL.ano-1), data:labels.map(l=>prevG[l]||0), backgroundColor:GOLD, showValues:true, valueFormatter:brlShort, labelColorInside:'#3a2f10', labelColor:'#33404A'},
+      {label:String(anoCompVal()), data:labels.map(l=>prevG[l]||0), backgroundColor:GOLD, showValues:true, valueFormatter:brlShort, labelColorInside:'#3a2f10', labelColor:'#33404A'},
       {label:String(SEL.ano), data:labels.map(l=>curG[l]||0), backgroundColor:NAVY, showValues:true, valueFormatter:brlShort, labelColorInside:'#fff', labelColor:'#33404A'},
     ]},
     options:{responsive:true, maintainAspectRatio:false, animation:{duration:500},
@@ -2827,7 +2838,7 @@ function renderFrota(sub, cur){
 
 function renderTerceiros(sub, cur){
   const curT = cur.filter(r=>r[F.TERC]>=0);
-  const prevT = periodRows(sub, SEL.ano-1, SEL.meses).filter(r=>r[F.TERC]>=0);
+  const prevT = periodRows(sub, anoCompVal(), SEL.meses).filter(r=>r[F.TERC]>=0);
   const total = sumFat(curT) || 1;
   const totalTon = sumTon(curT);
   const prevTotal = sumFat(prevT);
