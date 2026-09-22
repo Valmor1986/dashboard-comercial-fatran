@@ -660,6 +660,13 @@ let ACUM_ANOS = null; // anos selecionados no card de Acumulado no ano (default:
 // em outra tabela) "prendia" este gráfico a um único segmento/cliente e parecia bug.
 let EVOL_SEG_IDX = -1;
 let EVOL_CLI_IDX = -1;
+// Seletor de Ano (multi-select) do card "Detalhe do cliente", independente do filtro global de Ano
+// (SEL.ano, single-select, usado em 50+ contas de YoY/forecast/meta em todo o painel -- pedido do
+// Valmor 22/09: precisa ver o faturamento mensal de um cliente atravessando vários anos ao mesmo
+// tempo, sem mexer no filtro global). null = todos os anos que o cliente tem histórico; um Set
+// restringe. Reseta pra null sempre que o cliente selecionado muda (ver renderClienteDetalhe).
+let CLI_DETAIL_ANOS_SEL = null;
+let CLI_DETAIL_LAST_CLI = -2;
 // Toggle do card "Top 10 terceiros (contratados)" -- Valmor precisa apresentar pro diretor a
 // representatividade de TODOS os terceiros, não só os 10 maiores; default continua Top 10 (visão do
 // dia a dia), e "Ver todos" abre a lista completa do período com os mesmos dados/clique-pra-detalhe
@@ -1851,8 +1858,9 @@ function renderImplantRow(implCalc, jaFaturadoTon){
 
 function renderClienteDetalhe(){
   const card = document.getElementById('cliDetailCard');
-  if(SEL.cli===-1){ card.style.display='none'; return; }
+  if(SEL.cli===-1){ card.style.display='none'; CLI_DETAIL_LAST_CLI=-2; return; }
   card.style.display='';
+  if(SEL.cli!==CLI_DETAIL_LAST_CLI){ CLI_DETAIL_ANOS_SEL = null; CLI_DETAIL_LAST_CLI = SEL.cli; }
   const nome = DATA.dims.clientes[SEL.cli];
 
   // respeita vendedor/segmento mas não o próprio filtro de cliente (senão não há o que comparar)
@@ -1906,13 +1914,40 @@ function renderClienteDetalhe(){
       '</tbody></table>';
   }
 
-  // evolução mensal — últimos 24 meses com faturamento
+  // evolução mensal — histórico completo (todos os anos que o cliente tem), com seletor de Ano
+  // PRÓPRIO deste card (multi-select, independente do filtro global de Ano -- ver comentário em
+  // CLI_DETAIL_ANOS_SEL). Por padrão mostra todos os anos; desmarcando um ano ele some do gráfico
+  // e da tabela abaixo, sem afetar mais nada do painel.
+  const anosCli = [...new Set(rowsCli.map(r=>r[F.ANO]))].sort((a,b)=>a-b);
+  const anosAtivos = CLI_DETAIL_ANOS_SEL===null ? new Set(anosCli) : CLI_DETAIL_ANOS_SEL;
+
   const porMes = {};
-  rowsCli.forEach(r=>{ const k=r[F.ANO]*100+r[F.MES]; porMes[k]=(porMes[k]||0)+r[F.FAT]; });
+  rowsCli.forEach(r=>{
+    if(!anosAtivos.has(r[F.ANO])) return;
+    const k=r[F.ANO]*100+r[F.MES];
+    porMes[k] = porMes[k] || {fat:0, ton:0};
+    porMes[k].fat += r[F.FAT];
+    porMes[k].ton += r[F.TON];
+  });
   const chaves = Object.keys(porMes).map(Number).sort((a,b)=>a-b);
-  const last24 = chaves.slice(-24);
-  const labels = last24.map(k=>MESES[(k%100)-1]+'/'+String(Math.floor(k/100)).slice(2));
-  const serieVals = last24.map(k=>porMes[k]);
+  const labels = chaves.map(k=>MESES[(k%100)-1]+'/'+String(Math.floor(k/100)).slice(2));
+  const serieVals = chaves.map(k=>porMes[k].fat);
+
+  const seletorAnos = '<div style="margin:4px 0 10px;">'+
+    anosCli.map(a=>{
+      const on = anosAtivos.has(a);
+      return '<label style="display:inline-flex;align-items:center;gap:4px;margin:0 12px 6px 0;font-size:12px;cursor:pointer;">'+
+        '<input type="checkbox" data-anocli="'+a+'" '+(on?'checked':'')+' style="cursor:pointer;">'+a+'</label>';
+    }).join('')+
+    '<button type="button" id="cliAnosTodos" style="font-size:11px;padding:2px 8px;margin-left:4px;cursor:pointer;">Todos</button>'+
+  '</div>';
+
+  let tabelaMes = '<table><thead><tr><th>Mês</th><th class="num">Faturamento</th><th class="num">Volume (ton)</th><th class="num">Ticket/Ton</th></tr></thead><tbody>';
+  chaves.forEach(k=>{
+    const v = porMes[k];
+    tabelaMes += '<tr><td>'+MESES[(k%100)-1]+'/'+Math.floor(k/100)+'</td><td class="num">'+brl(v.fat)+'</td><td class="num">'+ton(v.ton)+'</td><td class="num">'+(v.ton?brl(v.fat/v.ton):'—')+'</td></tr>';
+  });
+  tabelaMes += '</tbody></table>';
 
   document.getElementById('noteCliDetail').textContent = nome;
   document.getElementById('cliDetailZone').innerHTML =
@@ -1922,7 +1957,10 @@ function renderClienteDetalhe(){
       '<div class="cli-stat"><div class="cli-stat-label">Posição no mesmo período '+(SEL.ano-1)+'</div><div class="cli-stat-val">'+(rkPrev.pos? '#'+rkPrev.pos+' de '+rkPrev.total : 'não faturou')+'</div></div>'+
       '<div class="cli-stat"><div class="cli-stat-label">Faturamento no período vs '+(SEL.ano-1)+'</div><div class="cli-stat-val '+(yoyCli==null?'':(yoyCli>=0?'pos':'neg'))+'">'+(yoyCli==null?'sem base':pct(yoyCli))+'</div></div>'+
     '</div>'+
+    '<h4 style="margin:16px 0 4px;font-size:13px;color:#5B6B7A;">Faturamento por mês · marque/desmarque os anos que quer comparar (não depende do filtro de Ano do topo)</h4>'+
+    seletorAnos+
     '<div class="chart-box" style="height:220px;margin-bottom:14px;"><canvas id="chartCliDetail"></canvas></div>'+
+    tabelaMes +
     tabelaAno +
     tabelaTerc;
 
@@ -1932,6 +1970,18 @@ function renderClienteDetalhe(){
       plugins:{legend:{display:false}, tooltip:{callbacks:{label:c=>brl(c.raw)}}},
       scales:{y:{ticks:{callback:v=>'R$ '+(v/1e3).toFixed(0)+'k'}}}}
   });
+
+  document.querySelectorAll('#cliDetailZone input[data-anocli]').forEach(cb=>{
+    cb.onclick = e=>{
+      e.stopPropagation();
+      const a = +cb.dataset.anocli;
+      if(CLI_DETAIL_ANOS_SEL===null) CLI_DETAIL_ANOS_SEL = new Set(anosCli);
+      if(cb.checked) CLI_DETAIL_ANOS_SEL.add(a); else CLI_DETAIL_ANOS_SEL.delete(a);
+      render();
+    };
+  });
+  const btnTodos = document.getElementById('cliAnosTodos');
+  if(btnTodos) btnTodos.onclick = e=>{ e.stopPropagation(); CLI_DETAIL_ANOS_SEL = null; render(); };
 
   document.querySelectorAll('#cliDetailZone tr[data-idxterc]').forEach(tr=>{
     tr.onclick = ()=>{
