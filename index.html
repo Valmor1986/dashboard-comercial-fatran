@@ -1919,18 +1919,23 @@ function renderClienteDetalhe(){
   })).sort((a,b)=>b.fat-a.fat);
   let tabelaTerc = '';
   if(terceirosCli.length){
-    tabelaTerc = '<h4 style="margin:16px 0 8px;font-size:13px;color:#5B6B7A;">Terceiros que atenderam este cliente (histórico) · '+pct(pctTercCli)+' do faturamento do cliente é terceirizado · clique num terceiro pra ver o detalhe dele</h4>'+
+    tabelaTerc = '<h4 style="margin:16px 0 8px;font-size:13px;color:#5B6B7A;">Terceiros que atenderam este cliente (histórico) · '+pct(pctTercCli)+' do faturamento do cliente é terceirizado · '+terceirosCli.length+' terceiro(s) · clique num terceiro pra ver o detalhe dele</h4>'+
+      '<div style="max-height:320px;overflow-y:auto;border:1px solid #E3E8ED;border-radius:6px;">'+
       '<table><thead><tr><th>Terceiro</th><th class="num">Faturamento</th><th class="num">Volume (ton)</th><th class="num">% do terceirizado</th><th class="num">MC % - 3º</th></tr></thead><tbody>'+
       terceirosCli.map(r=>'<tr class="clickable-row" data-idxterc="'+r.idx+'"><td>'+r.nome+'</td><td class="num">'+brl(r.fat)+'</td><td class="num">'+ton(r.ton)+'</td><td class="num">'+pct(r.share)+'</td><td class="num">'+(r.margem==null?'—':(r.margem*100).toFixed(1)+'%')+'</td></tr>').join('')+
-      '</tbody></table>';
+      '</tbody></table></div>';
   }
 
-  // evolução mensal — histórico completo (todos os anos que o cliente tem), com seletor de Ano
-  // PRÓPRIO deste card (multi-select, independente do filtro global de Ano -- ver comentário em
-  // CLI_DETAIL_ANOS_SEL). Por padrão mostra todos os anos; desmarcando um ano ele some do gráfico
-  // e da tabela abaixo, sem afetar mais nada do painel.
+  // evolução mensal — com seletor de Ano PRÓPRIO deste card (multi-select, independente do filtro
+  // global de Ano -- ver comentário em CLI_DETAIL_ANOS_SEL). Por padrão mostra só o Ano selecionado
+  // no topo + o ano de "Comparar com" (2 anos, como era antes de 22/09) -- NÃO "todos" por padrão:
+  // com clientes de 5-6 anos de histórico a tabela ficava enorme e empurrava o resto do painel pra
+  // baixo (bug reportado pelo Valmor 22/09). Marcando mais anos nos checkboxes abaixo, expande; a
+  // tabela agora também tem altura fixa com rolagem própria, então o layout do resto do painel nunca
+  // se move, não importa quantos anos estejam marcados.
   const anosCli = [...new Set(rowsCli.map(r=>r[F.ANO]))].sort((a,b)=>a-b);
-  const anosAtivos = CLI_DETAIL_ANOS_SEL===null ? new Set(anosCli) : CLI_DETAIL_ANOS_SEL;
+  const anosDefault = new Set(anosCli.filter(a=>a===SEL.ano || a===anoCompVal()));
+  const anosAtivos = CLI_DETAIL_ANOS_SEL===null ? (anosDefault.size? anosDefault : new Set(anosCli.slice(-2))) : CLI_DETAIL_ANOS_SEL;
 
   const porMes = {};
   rowsCli.forEach(r=>{
@@ -1953,12 +1958,13 @@ function renderClienteDetalhe(){
     '<button type="button" id="cliAnosTodos" style="font-size:11px;padding:2px 8px;margin-left:4px;cursor:pointer;">Todos</button>'+
   '</div>';
 
-  let tabelaMes = '<table><thead><tr><th>Mês</th><th class="num">Faturamento</th><th class="num">Volume (ton)</th><th class="num">Ticket/Ton</th></tr></thead><tbody>';
-  chaves.forEach(k=>{
+  let tabelaMes = '<div style="max-height:320px;overflow-y:auto;border:1px solid #E3E8ED;border-radius:6px;">'+
+    '<table><thead><tr><th>Mês</th><th class="num">Faturamento</th><th class="num">Volume (ton)</th><th class="num">Ticket/Ton</th></tr></thead><tbody>';
+  chaves.slice().reverse().forEach(k=>{
     const v = porMes[k];
     tabelaMes += '<tr><td>'+MESES[(k%100)-1]+'/'+Math.floor(k/100)+'</td><td class="num">'+brl(v.fat)+'</td><td class="num">'+ton(v.ton)+'</td><td class="num">'+(v.ton?brl(v.fat/v.ton):'—')+'</td></tr>';
   });
-  tabelaMes += '</tbody></table>';
+  tabelaMes += '</tbody></table></div>';
 
   document.getElementById('noteCliDetail').textContent = nome;
   document.getElementById('cliDetailZone').innerHTML =
@@ -1986,7 +1992,7 @@ function renderClienteDetalhe(){
     cb.onclick = e=>{
       e.stopPropagation();
       const a = +cb.dataset.anocli;
-      if(CLI_DETAIL_ANOS_SEL===null) CLI_DETAIL_ANOS_SEL = new Set(anosCli);
+      if(CLI_DETAIL_ANOS_SEL===null) CLI_DETAIL_ANOS_SEL = new Set(anosAtivos);
       if(cb.checked) CLI_DETAIL_ANOS_SEL.add(a); else CLI_DETAIL_ANOS_SEL.delete(a);
       render();
     };
