@@ -272,6 +272,9 @@
     background:#fff; color:var(--navy); font-size:11.5px; font-weight:700; cursor:pointer;}
   .saz-ano-chip:hover{border-color:var(--gold);}
   .saz-ano-chip.on{background:var(--navy); color:var(--gold-light); border-color:var(--navy);}
+  .saz-ano-chip.locked{cursor:not-allowed; opacity:.55;}
+  .saz-ano-chip.locked:hover{border-color:#D7DCE1;}
+  .saz-ano-chip.locked.on{background:#8895a1; border-color:#8895a1;}
 
   .abc-mini-filtros{display:flex; gap:14px; margin:-4px 0 10px; flex-wrap:wrap;}
   .abc-mini-filtros label{font-size:10.5px; color:var(--muted); text-transform:uppercase; letter-spacing:.3px; font-weight:700; display:flex; align-items:center; gap:6px;}
@@ -323,8 +326,15 @@
         </div>
       </div>
     </div>
-    <div><label>Ano</label><select id="fAno"></select></div>
-    <div><label>Comparar com</label><select id="fAnoComp"></select></div>
+    <div><label>Ano</label>
+      <div class="dd" id="anoWrap">
+        <button type="button" class="dd-btn" id="anoBtn">···</button>
+        <div class="dd-menu" id="anoMenu">
+          <div class="dd-cities" id="anoItems"></div>
+          <div class="dd-hint" style="padding:6px 10px;font-size:11px;color:#8895a1;">Selecione até 2 anos pra comparar</div>
+        </div>
+      </div>
+    </div>
     <div><label>Vendedor</label>
       <div class="dd" id="vendWrap">
         <button type="button" class="dd-btn" id="vendBtn">Todos ▾</button>
@@ -450,7 +460,7 @@
   </div>
 
   <!-- Bloco NOVO: Curva ABC de clientes -->
-  <div class="card">
+  <div class="card" id="curvaABCCard">
     <h3>Curva ABC de clientes <span class="info-btn" id="btnInfoABC">?</span> <span class="note" id="noteABC"></span></h3>
     <div class="abc-mini-filtros">
       <label>Ano<select id="abcAno"></select></label>
@@ -475,7 +485,7 @@
   </div>
 
   <!-- Bloco 6: Top 10 clientes (largura total) -->
-  <div class="card">
+  <div class="card" id="top10CliCard">
     <h3>Top 10 clientes <span class="note" id="noteCli"></span><a href="#glossario" class="info-dot" title="Ver como é calculado">ℹ</a></h3>
     <div id="tblCli"></div>
   </div>
@@ -497,7 +507,7 @@
   </div>
 
   <!-- Bloco NOVO: Aquisição de clientes (novo / inativo / reativado) -->
-  <div class="card">
+  <div class="card" id="aquisicaoCard">
     <h3>Aquisição de clientes <span class="note" id="noteChurn"></span><a href="#glossario" class="info-dot" title="Ver a regra completa">ℹ</a></h3>
     <div class="churn-bloco-label">Mês atual — <b id="churnMesAtualLabel"></b></div>
     <div class="kpi-row-sm" id="churnKpisAtual"></div>
@@ -508,7 +518,7 @@
   </div>
 
   <!-- Bloco NOVO: Clientes sem pedido -- Aditivos e Cargas Minerais -->
-  <div class="card">
+  <div class="card" id="semPedidoCard">
     <h3>Clientes sem pedido — Aditivos e Cargas Minerais <span class="note" id="noteSemPedido"></span><a href="#glossario" class="info-dot" title="Ver como é calculado">ℹ</a></h3>
     <div id="semPedidoZone"></div>
   </div>
@@ -1037,18 +1047,53 @@ function fillSelect(id, options, selValue){
   const el = document.getElementById(id);
   el.innerHTML = options.map(o=>'<option value="'+o.v+'"'+(String(o.v)===String(selValue)?' selected':'')+'>'+o.t+'</option>').join('');
 }
-// Select "Comparar com" (fAnoComp): compara o Ano selecionado contra qualquer outro ano do
-// histórico, não só o anterior -- pedido do Valmor 22/09 (ex.: 2026 vs 2024). Valor '' = automático
-// (SEL.ano-1, comportamento de sempre). Ver SEL.anoComp/anoCompVal() pra como isso é usado.
-function refreshAnoCompSelect(){
-  fillSelect('fAnoComp', [{v:'',t:'Automático ('+(SEL.ano-1)+')'}].concat(anos.filter(a=>a!==SEL.ano).map(a=>({v:a,t:a}))), SEL.anoComp===null?'':SEL.anoComp);
+// Seletor de Ano (checkboxes, até 2 anos) -- substitui os antigos "Ano" (single) + "Comparar com"
+// por um único controle, no mesmo padrão visual de Vendedor/Segmento. Sempre mantém pelo menos 1
+// ano marcado; com 2 marcados, o mais recente vira SEL.ano e o mais antigo SEL.anoComp (usado por
+// anoCompVal() em todo o resto do painel -- pedido do Valmor 23/09, pra tratar Ano e "Comparar com"
+// como uma coisa só, limitada a 2 anos). Selecionar um 3º ano solta o mais antigo dos 2 já marcados.
+function anoWidgetLabel(){
+  return SEL.anoComp===null ? String(SEL.ano)+' ▾' : (SEL.ano+' + '+SEL.anoComp+' ▾');
+}
+function renderAnoWidget(){
+  const btn = document.getElementById('anoBtn');
+  const box = document.getElementById('anoItems');
+  btn.textContent = anoWidgetLabel();
+  const marcados = new Set(SEL.anoComp===null? [SEL.ano] : [SEL.ano, SEL.anoComp]);
+  box.innerHTML = anos.map(a=>{
+    const on = marcados.has(a);
+    return '<label class="'+(on?'on':'')+'" data-a="'+a+'">'+a+'</label>';
+  }).join('');
+  box.querySelectorAll('label').forEach(l=>{
+    l.onclick = e=>{
+      e.stopPropagation();
+      const a = +l.dataset.a;
+      let sel = [...marcados];
+      if(sel.includes(a)){
+        if(sel.length>1) sel = sel.filter(x=>x!==a); // nunca deixa zero anos marcados
+      } else {
+        sel.push(a);
+        if(sel.length>2) sel.shift(); // solta o mais antigo dos 2 já marcados
+      }
+      sel.sort((x,y)=>y-x); // mais recente primeiro
+      SEL.ano = sel[0];
+      SEL.anoComp = sel.length>1 ? sel[1] : null;
+      renderAnoWidget();
+      render();
+    };
+  });
+}
+function initAnoWidget(){
+  const wrap = document.getElementById('anoWrap');
+  const btn = document.getElementById('anoBtn');
+  renderAnoWidget();
+  btn.onclick = e=>{ e.stopPropagation(); wrap.classList.toggle('open'); };
+  document.addEventListener('click', ()=> wrap.classList.remove('open'));
+  document.getElementById('anoMenu').onclick = e=> e.stopPropagation();
 }
 function initFilters(){
   setupCliAutocomplete();
-  fillSelect('fAno', anos.map(a=>({v:a,t:a})), SEL.ano);
-  refreshAnoCompSelect();
-  document.getElementById('fAno').onchange = e=>{SEL.ano=+e.target.value; refreshAnoCompSelect(); render();};
-  document.getElementById('fAnoComp').onchange = e=>{ const v=e.target.value; SEL.anoComp = v===''? null : +v; render(); };
+  initAnoWidget();
   document.getElementById('btnReset').onclick = resetFiltros;
   document.getElementById('btnResetFloat').onclick = resetFiltros;
   initDias();
@@ -1723,6 +1768,10 @@ function render(){
   const maxMesSel = SEL.meses.size? Math.max(...SEL.meses) : 12;
   const ytdRows = sub.filter(r=>r[F.ANO]===SEL.ano && r[F.MES]<=maxMesSel && diaOk(r));
   const ytd = sumFat(ytdRows);
+  // Acumulado no ano: com 2 anos marcados no seletor de Ano, unifica (soma) os dois -- pedido do
+  // Valmor 23/09; com 1 ano só, mantém o cálculo de sempre (jan até o mês selecionado).
+  const ytdUnificado = SEL.anoComp===null ? ytd
+    : ytd + sumFat(sub.filter(r=>r[F.ANO]===SEL.anoComp && r[F.MES]<=maxMesSel && diaOk(r)));
 
   document.getElementById('metaBox').innerHTML =
     'Base: '+DATA.periodo.inicio+' a '+DATA.periodo.fim+' · Período: <b>'+periodLabel()+'</b> · Atualizado em '+DATA.gerado_em;
@@ -1783,32 +1832,49 @@ function render(){
       : (duInfo.decorridos<MIN_DIAS_FORECAST ? duInfo.decorridos+' de '+duInfo.total+' dias úteis · amostra pequena, aguardando mais dados'
         : 'ritmo atual: '+duInfo.decorridos+' de '+duInfo.total+' dias úteis · base Cachoeiro de Itapemirim/ES + feriados nacionais'));
 
+  // Regra do Valmor 23/09: com um CLIENTE selecionado no filtro principal, Meta/Projeção/Forecast
+  // (e seus gaps) zeram -- não existe meta por cliente na fonte (Controle de Metas.xlsx só tem
+  // Vendedor/Operador, mesma razão já documentada na tabela de Cliente) e planejamento de
+  // topo/pipeline não faz sentido zoom num cliente só. Faturamento, Ticket médio, os comparativos
+  // de período e o Acumulado continuam reais. Sem cliente (só Segmento/Vendedor/etc.), tudo normal.
+  const clienteAtivo = SEL.cli!==-1;
   const kpis = [
-    {label:'Meta', value: metaRs==null?'—':brl(metaRs),
-      hint: !metaInfo.achados ? 'sem meta cadastrada' : metaInfo.achados<metaInfo.solicitados ? 'meta parcial' : 'fonte: planilha de metas',
-      title: !metaInfo.achados ? 'sem meta cadastrada pra esse período'
+    {label:'Meta', value: clienteAtivo? brl(0) : (metaRs==null?'—':brl(metaRs)),
+      hint: clienteAtivo? 'não existe meta por cliente' : (!metaInfo.achados ? 'sem meta cadastrada' : metaInfo.achados<metaInfo.solicitados ? 'meta parcial' : 'fonte: planilha de metas'),
+      title: clienteAtivo? 'Meta só existe por Vendedor/Operador na fonte (Controle de Metas.xlsx) -- não existe granularidade por Cliente'
+        : (!metaInfo.achados ? 'sem meta cadastrada pra esse período'
         : metaInfo.achados<metaInfo.solicitados ? ('meta parcial: '+metaInfo.achados+' de '+metaInfo.solicitados+' meses com dado')
-        : 'fonte: Controle de Metas.xlsx'},
+        : 'fonte: Controle de Metas.xlsx')},
     {label:(SEL.meses.size===0?'Faturamento no ano': SEL.meses.size===1?'Faturamento no mês':'Faturamento no período'), value:brl(fat)},
-    {label:'Gap vs. Meta', value: gapMetaRs==null?'—':brl(gapMetaRs), cls: gapMetaRs==null?'':(gapMetaRs>0?'down':'up'),
-      hint: gapMetaRs==null?'':(gapMetaRs>0?'abaixo da meta':'acima da meta'),
-      title: gapMetaRs==null?'':'Meta ('+brl(metaRs)+') − Realizado ('+brl(fat)+') · positivo = abaixo da meta'},
-    {label:'Projeção de faturamento', value: projAtual==null?'—':brl(projAtual), hint: projAtual==null?'sem pipeline':'faturado + pipeline',
-      title: projAtual==null?'sem dados de pipeline':'faturado + saldo do pipeline ('+brl(saldoRsAtual)+')'},
-    {label:'Previsão Forecast (dias úteis)', value: forecastRs==null?'—':brl(forecastRs), hint: hintForecast, title: titleForecast},
-    {label:'Gap vs. Forecast', value: gapRs==null?'—':brl(gapRs), cls: gapRs==null?'':(gapRs>0?'down':'up'),
-      hint: gapRs==null?'' : (forecastInfo && forecastInfo.congelado ? 'assertividade' : 'risco de não bater'),
-      title: gapRs==null?'' : (forecastInfo && forecastInfo.congelado
+    {label:'Gap vs. Meta', value: clienteAtivo? brl(0) : (gapMetaRs==null?'—':brl(gapMetaRs)), cls: clienteAtivo||gapMetaRs==null?'':(gapMetaRs>0?'down':'up'),
+      hint: clienteAtivo? 'não se aplica por cliente' : (gapMetaRs==null?'':(gapMetaRs>0?'abaixo da meta':'acima da meta')),
+      title: clienteAtivo||gapMetaRs==null?'':'Meta ('+brl(metaRs)+') − Realizado ('+brl(fat)+') · positivo = abaixo da meta'},
+    {label:'Projeção de faturamento', value: clienteAtivo? brl(0) : (projAtual==null?'—':brl(projAtual)), hint: clienteAtivo?'não se aplica por cliente':(projAtual==null?'sem pipeline':'faturado + pipeline'),
+      title: clienteAtivo? 'Projeção é uma leitura de planejamento de topo -- não se aplica com um cliente selecionado' : (projAtual==null?'sem dados de pipeline':'faturado + saldo do pipeline ('+brl(saldoRsAtual)+')')},
+    {label:'Previsão Forecast (dias úteis)', value: clienteAtivo? brl(0) : (forecastRs==null?'—':brl(forecastRs)), hint: clienteAtivo?'não se aplica por cliente':hintForecast, title: clienteAtivo?'':titleForecast},
+    {label:'Gap vs. Forecast', value: clienteAtivo? brl(0) : (gapRs==null?'—':brl(gapRs)), cls: clienteAtivo||gapRs==null?'':(gapRs>0?'down':'up'),
+      hint: clienteAtivo?'não se aplica por cliente':(gapRs==null?'' : (forecastInfo && forecastInfo.congelado ? 'assertividade' : 'risco de não bater')),
+      title: clienteAtivo||gapRs==null?'' : (forecastInfo && forecastInfo.congelado
         ? 'Projeção ('+brl(projAtual)+') − Forecast congelado ('+brl(forecastRs)+') · em período fechado, aproxima o erro do modelo (Forecast vs. o que realmente fechou)'
         : 'Projeção ('+brl(projAtual)+') − Forecast ('+brl(forecastRs)+') · positivo = risco de não converter todo o pipeline no ritmo atual')},
     {label:'Ticket médio (R$/ton)', value: tons? brl(fat/tons):'—', hint: ton(tons), title: 'Faturamento ÷ Volume · volume do período: '+ton(tons)},
-    {label:'vs mesmo período '+(anoCompVal()), value: yoy==null?'—':pct(yoy), cls: yoy==null?'':(yoy>=0?'up':'down'), hint: fatLY? brl(fatLY)+' em '+(anoCompVal()):'sem base'},
+    {label:'vs ano anterior ('+(anoCompVal())+')', value: yoy==null?'—':pct(yoy), cls: yoy==null?'':(yoy>=0?'up':'down'), hint: fatLY? brl(fatLY)+' em '+(anoCompVal()):'sem base'},
     {label:'vs mês anterior', value: mom==null?'—':pct(mom), cls: mom==null?'':(mom>=0?'up':'down'), hint: SEL.meses.size!==1?'selec. 1 mês':''},
-    {label:'Acumulado no ano', value:brl(ytd), hint:'jan a '+MESES[maxMesSel-1]+'/'+SEL.ano},
+    {label:'Acumulado no ano', value:brl(ytdUnificado), hint: SEL.anoComp!==null? ('soma '+SEL.ano+' + '+SEL.anoComp) : ('jan a '+MESES[maxMesSel-1]+'/'+SEL.ano)},
   ];
   document.getElementById('kpiRow').innerHTML = kpis.map(k=>
     '<div class="kpi"'+(k.title?' title="'+k.title.replace(/"/g,'&quot;')+'"':'')+'><div class="label">'+k.label+'</div><div class="value '+(k.cls||'')+'">'+k.value+'</div>'+
     (k.hint?'<div class="hint">'+k.hint+'</div>':'')+'</div>').join('');
+
+  // Visibilidade de blocos conforme filtro principal -- pedido do Valmor 23/09: Curva ABC e Top 10
+  // clientes somem com um CLIENTE selecionado (ranking de 1 cliente contra ele mesmo não serve);
+  // Aquisição de clientes e Clientes sem pedido somem com QUALQUER filtro ativo no principal (são
+  // leituras de portfólio inteiro, não fazem sentido recortadas).
+  document.getElementById('curvaABCCard').style.display = clienteAtivo ? 'none' : '';
+  document.getElementById('top10CliCard').style.display = clienteAtivo ? 'none' : '';
+  const filtroAtivoGeral = temFiltroAtivo();
+  document.getElementById('aquisicaoCard').style.display = filtroAtivoGeral ? 'none' : '';
+  document.getElementById('semPedidoCard').style.display = filtroAtivoGeral ? 'none' : '';
 
   renderImplantRow(implCalc, tons);
   renderEvol(sub);
@@ -2010,6 +2076,16 @@ function renderClienteDetalhe(){
 }
 
 function renderEvol(sub){
+  // Regra do Valmor 23/09: com CLIENTE ativo no filtro principal, este card não pode mais oferecer
+  // uma seleção paralela de cliente (o filtro principal manda) -- trava EVOL_CLI_IDX no mesmo cliente
+  // e desabilita o campo local. Sem cliente no principal, volta a ser livre (comportamento de sempre).
+  if(SEL.cli!==-1) EVOL_CLI_IDX = SEL.cli;
+  const evolCliInputEl = document.getElementById('evolCliInput');
+  if(evolCliInputEl){
+    evolCliInputEl.disabled = SEL.cli!==-1;
+    evolCliInputEl.value = EVOL_CLI_IDX===-1? '' : DATA.dims.clientes[EVOL_CLI_IDX];
+    evolCliInputEl.placeholder = SEL.cli!==-1? 'seguindo filtro principal' : 'Todos os clientes...';
+  }
   // Segmento/Cliente locais deste card (EVOL_SEG_IDX/EVOL_CLI_IDX) precisam ser INDEPENDENTES do
   // Segmento/Cliente globais (SEL.seg/SEL.cli) -- por isso NÃO partimos de `sub` (que já vem com
   // esses dois filtros globais aplicados via baseSubset()). Recalculamos a base direto de
@@ -2056,18 +2132,21 @@ function renderEvol(sub){
 
 function renderAcumuladoAnual(sub){
   if(!ACUM_ANOS) ACUM_ANOS = new Set(anos.slice(-4)); // default: ano atual + até 3 anteriores
+  const acumLocked = temFiltroAtivo();
   document.getElementById('acumAnos').innerHTML = anos.map(function(a){
     const on = ACUM_ANOS.has(a);
-    return '<button type="button" class="saz-ano-chip'+(on?' on':'')+'" data-ano="'+a+'">'+a+'</button>';
+    return '<button type="button" class="saz-ano-chip'+(on?' on':'')+(acumLocked?' locked':'')+'" data-ano="'+a+'"'+(acumLocked?' disabled title="seguindo filtro principal"':'')+'>'+a+'</button>';
   }).join('');
-  document.querySelectorAll('#acumAnos .saz-ano-chip').forEach(function(btn){
-    btn.onclick = function(){
-      const a = +btn.dataset.ano;
-      if(ACUM_ANOS.has(a)){ if(ACUM_ANOS.size>1) ACUM_ANOS.delete(a); }
-      else ACUM_ANOS.add(a);
-      render();
-    };
-  });
+  if(!acumLocked){
+    document.querySelectorAll('#acumAnos .saz-ano-chip').forEach(function(btn){
+      btn.onclick = function(){
+        const a = +btn.dataset.ano;
+        if(ACUM_ANOS.has(a)){ if(ACUM_ANOS.size>1) ACUM_ANOS.delete(a); }
+        else ACUM_ANOS.add(a);
+        render();
+      };
+    });
+  }
   const anosSel = [...ACUM_ANOS].sort((a,b)=>a-b);
   if(!anosSel.length){ document.getElementById('noteAcum').textContent = 'selecione ao menos um ano.'; return; }
   const datasets = anosSel.map(function(anoRef, i){
@@ -2304,7 +2383,7 @@ function renderCurvaABC(sub, cur){
   // Curva ABC e uma leitura pontual (foto de um periodo), entao o seletor dela continua de UM
   // mes so; se o filtro geral (SEL.meses) tiver 0 ou mais de 1 mes selecionado, mostra 'Ano completo' aqui.
   fillSelect('abcMes', [{v:0,t:'Ano completo'}].concat(MESES_FULL.map((m,i)=>({v:i+1,t:m}))), SEL.meses.size===1? mesesArr()[0] : 0);
-  document.getElementById('abcAno').onchange = e=>{ SEL.ano=+e.target.value; document.getElementById('fAno').value=String(SEL.ano); render(); };
+  document.getElementById('abcAno').onchange = e=>{ SEL.ano=+e.target.value; renderAnoWidget(); render(); };
   document.getElementById('abcMes').onchange = e=>{ const v=+e.target.value; SEL.meses = v===0? new Set() : new Set([v]); initMeses(); render(); };
   document.getElementById('abcLegenda').innerHTML =
     '<b>Como ler:</b> as barras mostram o faturamento de cada cliente no período, do maior pro menor. '+
@@ -2373,18 +2452,21 @@ function renderCurvaABC(sub, cur){
 
 function renderSazonalidade(sub){
   if(!SAZ_ANOS) SAZ_ANOS = new Set([lastFact[F.ANO], lastFact[F.ANO]-1].filter(a=>anos.includes(a)));
+  const sazLocked = temFiltroAtivo();
   document.getElementById('sazAnos').innerHTML = anos.map(function(a){
     const on = SAZ_ANOS.has(a);
-    return '<button type="button" class="saz-ano-chip'+(on?' on':'')+'" data-ano="'+a+'">'+a+'</button>';
+    return '<button type="button" class="saz-ano-chip'+(on?' on':'')+(sazLocked?' locked':'')+'" data-ano="'+a+'"'+(sazLocked?' disabled title="seguindo filtro principal"':'')+'>'+a+'</button>';
   }).join('');
-  document.querySelectorAll('#sazAnos .saz-ano-chip').forEach(function(btn){
-    btn.onclick = function(){
-      const a = +btn.dataset.ano;
-      if(SAZ_ANOS.has(a)){ if(SAZ_ANOS.size>1) SAZ_ANOS.delete(a); }
-      else SAZ_ANOS.add(a);
-      render();
-    };
-  });
+  if(!sazLocked){
+    document.querySelectorAll('#sazAnos .saz-ano-chip').forEach(function(btn){
+      btn.onclick = function(){
+        const a = +btn.dataset.ano;
+        if(SAZ_ANOS.has(a)){ if(SAZ_ANOS.size>1) SAZ_ANOS.delete(a); }
+        else SAZ_ANOS.add(a);
+        render();
+      };
+    });
+  }
   const subAnos = sub.filter(r=>SAZ_ANOS.has(r[F.ANO]));
   const g = {}, segTotal = {};
   subAnos.forEach(r=>{
@@ -3182,10 +3264,18 @@ function inicializarPainel(){
   }
 }
 
-// DATA vem de um fetch assincrono (data.b64.txt) nessa versao hospedada no GitHub Pages -- por
+// DATA vem de um carregamento assincrono dos dados (data.b64.txt/.js) -- por
 // isso computeDerived() (que calcula anos/lastFact/MAXDATE/TERC_IDX a partir de DATA) so pode
-// rodar DEPOIS que o fetch resolver, nunca direto no corpo do script (nesse ponto DATA ainda e null).
-fetch('./data.b64.txt?v='+Date.now()).then(r=>r.text()).then(b64=>{
+// rodar DEPOIS que o carregamento resolver, nunca direto no corpo do script (nesse ponto DATA ainda e null).
+//
+// Carregamento em duas etapas, pra funcionar tanto hospedado (GitHub Pages, http/https) quanto
+// aberto localmente com duplo-clique (file://): o Chrome bloqueia fetch()/XHR pra arquivos locais
+// via file:// (CORS: "Cross origin requests are only supported for http/https"), mas uma tag
+// <script src="..."> carrega arquivos locais normalmente. Por isso tentamos primeiro um
+// data.b64.js (que so define window.DATA_B64='...') via <script>; se esse arquivo nao existir
+// (404 -- caso do pipeline atual que so gera data.b64.txt), caimos pro fetch() de data.b64.txt,
+// que continua funcionando normalmente quando hospedado via http/https.
+function processarB64(b64){
   const bin = atob(b64);
   const bytes = new Uint8Array(bin.length);
   for(let i=0;i<bin.length;i++) bytes[i]=bin.charCodeAt(i);
@@ -3193,10 +3283,27 @@ fetch('./data.b64.txt?v='+Date.now()).then(r=>r.text()).then(b64=>{
   computeDerived();
   tentarRegistrarPluginChart();
   inicializarPainel();
-}).catch(err=>{
-  console.error('Erro ao buscar/descompactar data.b64.txt:', err);
+}
+function erroCarregamento(err){
+  console.error('Erro ao buscar/descompactar dados do painel:', err);
   document.body.innerHTML = '<div style="padding:40px;font-family:sans-serif;color:#a00;">Erro ao carregar dados do painel: '+err+'</div>';
-});
+}
+function carregarViaFetch(){
+  fetch('./data.b64.txt?v='+Date.now()).then(r=>r.text()).then(processarB64).catch(erroCarregamento);
+}
+(function carregarDados(){
+  // Hospedado (GitHub Pages): sempre data.b64.txt, a fonte que é atualizada a cada carga de dados.
+  // O data.b64.js só é usado quando o arquivo é aberto com duplo-clique (file://).
+  if(location.protocol==='http:' || location.protocol==='https:'){ carregarViaFetch(); return; }
+  const s = document.createElement('script');
+  s.src = './data.b64.js?v='+Date.now();
+  s.onload = function(){
+    if(window.DATA_B64){ processarB64(window.DATA_B64); }
+    else { carregarViaFetch(); }
+  };
+  s.onerror = function(){ carregarViaFetch(); };
+  document.head.appendChild(s);
+})();
 
 // Rede de seguranca: se o Chart.js (CDN externo) ainda nao tinha carregado no momento do render()
 // inicial (ex.: 1a abertura do arquivo, cache frio), o guard em makeChart() pulou os graficos sem
