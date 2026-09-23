@@ -3292,6 +3292,9 @@ function carregarViaFetch(){
   fetch('./data.b64.txt?v='+Date.now()).then(r=>r.text()).then(processarB64).catch(erroCarregamento);
 }
 (function carregarDados(){
+  // Hospedado (GitHub Pages): sempre data.b64.txt, a fonte que é atualizada a cada carga de dados.
+  // O data.b64.js só é usado quando o arquivo é aberto com duplo-clique (file://).
+  if(location.protocol==='http:' || location.protocol==='https:'){ carregarViaFetch(); return; }
   const s = document.createElement('script');
   s.src = './data.b64.js?v='+Date.now();
   s.onload = function(){
