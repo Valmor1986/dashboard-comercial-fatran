@@ -77490,7 +77490,7 @@
   },
   "48798": {
    "pagador": "MINER SAN COM.REPRES.PROD.MINERAIS LTDA",
-   "grupo": "Grupo MINER SAN",
+   "grupo": "Grupo JOSE ROBERTO SANTESSO",
    "peso_ton": 38.0,
    "primeiro_visto_em": "2026-09-18",
    "primeira_posicao": {
@@ -77858,7 +77858,7 @@
      "de_mes": 10,
      "para_ano": 2026,
      "para_mes": 11,
-     "detectado_em": "2026-10-26"
+     "detectado_em": "2026-10-25"
     }
    ],
    "saiu_do_pipeline_em": null,
@@ -78601,7 +78601,7 @@
      "de_mes": 10,
      "para_ano": 2026,
      "para_mes": 11,
-     "detectado_em": "2026-10-26"
+     "detectado_em": "2026-10-25"
     }
    ],
    "saiu_do_pipeline_em": null,
@@ -83900,7 +83900,7 @@
     "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
-   "saiu_do_pipeline_em": "2026-10-26",
+   "saiu_do_pipeline_em": "2026-10-25",
    "situacao_na_saida": "EM ANDAMENTO"
   },
   "49761": {
@@ -84445,7 +84445,7 @@
      "de_mes": 10,
      "para_ano": 2026,
      "para_mes": 11,
-     "detectado_em": "2026-10-26"
+     "detectado_em": "2026-10-25"
     }
    ],
    "saiu_do_pipeline_em": null,
@@ -87255,12 +87255,12 @@
    "pagador": "ECTX S/A - EUCATEX",
    "grupo": "Grupo Eucatex",
    "peso_ton": 25.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 10
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
@@ -87275,12 +87275,12 @@
    "pagador": "ECTX S/A - EUCATEX",
    "grupo": "Grupo Eucatex",
    "peso_ton": 7.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 10
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
@@ -87295,12 +87295,12 @@
    "pagador": "MULTICARBO",
    "grupo": "Grupo MULTICARBO",
    "peso_ton": 33.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 10
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
@@ -87315,12 +87315,12 @@
    "pagador": "MULTICARBO",
    "grupo": "Grupo MULTICARBO",
    "peso_ton": 3.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 10
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
@@ -87335,12 +87335,12 @@
    "pagador": "AUXYBORR INDUSTRIA E COMERCIO DE AUXILIARES DE PROCESSO",
    "grupo": "Grupo AUXYBORR",
    "peso_ton": 36.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 10
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
@@ -87355,12 +87355,12 @@
    "pagador": "PROCOLOR - PE",
    "grupo": "Grupo Procolor",
    "peso_ton": 33.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 10
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
@@ -87375,12 +87375,12 @@
    "pagador": "COMPANHIA SIDERURGICA DO ESPIRITO SANTO S.A.",
    "grupo": "Grupo Simec",
    "peso_ton": 36.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 10
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
@@ -87395,12 +87395,12 @@
    "pagador": "COMPANHIA SIDERURGICA DO ESPIRITO SANTO S.A.",
    "grupo": "Grupo Simec",
    "peso_ton": 2.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 10
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
@@ -87415,12 +87415,12 @@
    "pagador": "NINE INDÚSTRIA E COMÉRCIO DE PLÁSTICOS LTDA",
    "grupo": "Grupo NINE",
    "peso_ton": 32.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 10
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
@@ -87435,12 +87435,12 @@
    "pagador": "COOPERATIVA AGRARIA MISTA DE CASTELO (NOVO)",
    "grupo": "Grupo CACAL",
    "peso_ton": 32.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 10
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
@@ -87455,12 +87455,12 @@
    "pagador": "RONDELLI COMERCIO E TRANSPORTE LTDA",
    "grupo": "Grupo Rondeli",
    "peso_ton": 1.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 10
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
@@ -87475,12 +87475,12 @@
    "pagador": "RONDELI COMERCIO IMPORTACAO E EXPORTACAO LTDA",
    "grupo": "Grupo Rondeli",
    "peso_ton": 0.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 10
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
@@ -87495,12 +87495,12 @@
    "pagador": "RONDELLI COMERCIO E TRANSPORTE LTDA",
    "grupo": "Grupo Rondeli",
    "peso_ton": 1.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 10
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
@@ -87515,12 +87515,12 @@
    "pagador": "RONDELLI COMERCIO E TRANSPORTE LTDA",
    "grupo": "Grupo Rondeli",
    "peso_ton": 5.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 10
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
@@ -87535,12 +87535,12 @@
    "pagador": "OSVALDO PERIM SUPERMERCADOS LTDA",
    "grupo": "Grupo Perim",
    "peso_ton": 3.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 10
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
@@ -87555,12 +87555,12 @@
    "pagador": "OSVALDO PERIM SUPERMERCADOS LTDA",
    "grupo": "Grupo Perim",
    "peso_ton": 0.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 10
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
@@ -87575,12 +87575,12 @@
    "pagador": "OSVALDO PERIM SUPERMERCADOS LTDA",
    "grupo": "Grupo Perim",
    "peso_ton": 1.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 10
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
@@ -87595,12 +87595,12 @@
    "pagador": "OSVALDO PERIM SUPERMERCADOS LTDA",
    "grupo": "Grupo Perim",
    "peso_ton": 0.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 10
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
@@ -87613,14 +87613,14 @@
   },
   "49895": {
    "pagador": "WR ENGENHARIA LTDA",
-   "grupo": "WR ENGENHARIA LTDA",
+   "grupo": "Grupo WR Engenharia",
    "peso_ton": 21.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 10
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
@@ -87635,12 +87635,12 @@
    "pagador": "BORZI DISTRIBUICAO E LOGISTICA LTDA",
    "grupo": "Grupo Mamute",
    "peso_ton": 35.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 10
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
@@ -87655,12 +87655,12 @@
    "pagador": "BRASCOLA",
    "grupo": "Grupo BRASCOLA",
    "peso_ton": 36.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 10
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
@@ -87675,12 +87675,12 @@
    "pagador": "IBRATIN",
    "grupo": "Grupo IBRATIN",
    "peso_ton": 33.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 10
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
@@ -87695,12 +87695,12 @@
    "pagador": "IBRATIN",
    "grupo": "Grupo IBRATIN",
    "peso_ton": 33.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 10
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
@@ -87715,12 +87715,12 @@
    "pagador": "ECTX S/A - EUCATEX",
    "grupo": "Grupo Eucatex",
    "peso_ton": 32.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 10
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
@@ -87733,14 +87733,14 @@
   },
   "49871": {
    "pagador": "LCCO ASSESSORIA , VENDAS E REPRESENTACOES LTDA",
-   "grupo": "LCCO ASSESSORIA , VENDAS E REPRESENTACOES LTDA",
+   "grupo": "Grupo LCCO Representacoes",
    "peso_ton": 0.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 10
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
@@ -87755,12 +87755,12 @@
    "pagador": "MULTICARBO",
    "grupo": "Grupo MULTICARBO",
    "peso_ton": 33.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 10
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
@@ -87775,12 +87775,12 @@
    "pagador": "COMPANHIA SIDERURGICA DO ESPIRITO SANTO S.A.",
    "grupo": "Grupo Simec",
    "peso_ton": 2.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 10
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
@@ -87795,12 +87795,12 @@
    "pagador": "COMPANHIA SIDERURGICA DO ESPIRITO SANTO S.A.",
    "grupo": "Grupo Simec",
    "peso_ton": 8.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 10
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
@@ -87815,12 +87815,12 @@
    "pagador": "COMPANHIA SIDERURGICA DO ESPIRITO SANTO S.A.",
    "grupo": "Grupo Simec",
    "peso_ton": 26.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 10
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
@@ -87835,12 +87835,12 @@
    "pagador": "COMPANHIA SIDERURGICA DO ESPIRITO SANTO S.A.",
    "grupo": "Grupo Simec",
    "peso_ton": 3.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 10
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
@@ -87855,12 +87855,12 @@
    "pagador": "ECTX S/A - EUCATEX",
    "grupo": "Grupo Eucatex",
    "peso_ton": 25.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 10
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
@@ -87875,12 +87875,12 @@
    "pagador": "ECTX S/A - EUCATEX",
    "grupo": "Grupo Eucatex",
    "peso_ton": 3.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 10
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
@@ -87895,12 +87895,12 @@
    "pagador": "ECTX S/A - EUCATEX",
    "grupo": "Grupo Eucatex",
    "peso_ton": 3.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 10
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
@@ -87913,14 +87913,14 @@
   },
   "49901": {
    "pagador": "TRANSPORTADORA FG EXPRESS LTDA",
-   "grupo": "TRANSPORTADORA FG EXPRESS LTDA",
+   "grupo": "Grupo FG express",
    "peso_ton": 34.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 10
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
@@ -87935,12 +87935,12 @@
    "pagador": "JJ PITOL REPRESENTACOES",
    "grupo": "Grupo JJ",
    "peso_ton": 0.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 10
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
@@ -87955,12 +87955,12 @@
    "pagador": "RESIDENCIAL SAONA",
    "grupo": "Grupo Vieira e Pontes",
    "peso_ton": 0.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 10
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
@@ -87975,12 +87975,12 @@
    "pagador": "RESIDENCIAL SAONA",
    "grupo": "Grupo Vieira e Pontes",
    "peso_ton": 0.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 10
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
@@ -87995,12 +87995,12 @@
    "pagador": "GV DO BRASIL INDUSTRIA E COMERCIO DE ACO LTDA",
    "grupo": "Grupo Simec",
    "peso_ton": 36.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 10
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
@@ -88015,12 +88015,12 @@
    "pagador": "GV DO BRASIL INDUSTRIA E COMERCIO DE ACO LTDA",
    "grupo": "Grupo Simec",
    "peso_ton": 32.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 10
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
@@ -88035,12 +88035,12 @@
    "pagador": "PLASTICOS ALKO",
    "grupo": "Grupo PLASTICOS",
    "peso_ton": 33.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 10
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
@@ -88055,12 +88055,12 @@
    "pagador": "MULTICARBO",
    "grupo": "Grupo MULTICARBO",
    "peso_ton": 15.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 10
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
@@ -88075,12 +88075,12 @@
    "pagador": "BRAZINCO",
    "grupo": "Grupo BRAZINCO",
    "peso_ton": 18.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 10
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
@@ -88095,12 +88095,12 @@
    "pagador": "FORTIPLAST INDUSTRIA E COMERCIO DE PLASTICOS LTDA",
    "grupo": "Grupo FORTIPLAST",
    "peso_ton": 2.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 10
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
@@ -88115,12 +88115,12 @@
    "pagador": "IBRATIN",
    "grupo": "Grupo IBRATIN",
    "peso_ton": 33.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 10
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
@@ -88135,12 +88135,12 @@
    "pagador": "IBRATIN",
    "grupo": "Grupo IBRATIN",
    "peso_ton": 33.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 10
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
@@ -88155,12 +88155,12 @@
    "pagador": "PROCOLOR - COTIA MPB",
    "grupo": "Grupo Procolor",
    "peso_ton": 18.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 10
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
@@ -88175,12 +88175,12 @@
    "pagador": "TECNOPERFIL",
    "grupo": "Grupo TECNOPERFIL",
    "peso_ton": 33.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 10
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
@@ -88195,12 +88195,12 @@
    "pagador": "BRASCOLA",
    "grupo": "Grupo BRASCOLA",
    "peso_ton": 36.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 10
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
@@ -88215,12 +88215,12 @@
    "pagador": "MARINI TRANSPORTES LTDA",
    "grupo": "Grupo MARINI TRANSP.",
    "peso_ton": 25.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 10
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
@@ -88235,12 +88235,12 @@
    "pagador": "MASTIFLEX",
    "grupo": "Grupo MASTIFLEX",
    "peso_ton": 36.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 10
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
@@ -88255,12 +88255,12 @@
    "pagador": "PROCOLOR - COTIA MPB",
    "grupo": "Grupo Procolor",
    "peso_ton": 18.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 10
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
@@ -88275,12 +88275,12 @@
    "pagador": "PROCOLOR - COTIA MPB",
    "grupo": "Grupo Procolor",
    "peso_ton": 15.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 10
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
@@ -88295,12 +88295,12 @@
    "pagador": "MULTICARBO",
    "grupo": "Grupo MULTICARBO",
    "peso_ton": 15.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 10
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
@@ -88315,12 +88315,12 @@
    "pagador": "F B MIX INDUSTRIA E COMERCIO DE PLASTICOS LTDA",
    "grupo": "Grupo F B MIX",
    "peso_ton": 14.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 11
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
@@ -88335,12 +88335,12 @@
    "pagador": "PIRENOPOLIS INDUSTRIA E COMERCIO DE PLASTICOS LTDA",
    "grupo": "Grupo PIRENOPOLIS",
    "peso_ton": 15.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 11
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
@@ -88355,12 +88355,12 @@
    "pagador": "PIRENOPOLIS INDUSTRIA E COMERCIO DE PLASTICOS LTDA",
    "grupo": "Grupo PIRENOPOLIS",
    "peso_ton": 18.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 11
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
@@ -88375,12 +88375,12 @@
    "pagador": "EFTEC",
    "grupo": "Grupo EFTEC",
    "peso_ton": 27.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 11
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
@@ -88395,12 +88395,12 @@
    "pagador": "IMCD BRASIL FARMACEUTICOS",
    "grupo": "Grupo IMCD",
    "peso_ton": 19.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 11
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
@@ -88415,12 +88415,12 @@
    "pagador": "IMCD BRASIL FARMACEUTICOS",
    "grupo": "Grupo IMCD",
    "peso_ton": 19.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 11
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
@@ -88435,12 +88435,12 @@
    "pagador": "IMCD BRASIL FARMACEUTICOS",
    "grupo": "Grupo IMCD",
    "peso_ton": 24.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 11
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
@@ -88455,12 +88455,12 @@
    "pagador": "EFTEC",
    "grupo": "Grupo EFTEC",
    "peso_ton": 27.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 11
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
@@ -88475,12 +88475,12 @@
    "pagador": "F B MIX INDUSTRIA E COMERCIO DE PLASTICOS LTDA",
    "grupo": "Grupo F B MIX",
    "peso_ton": 33.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 11
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
@@ -88495,12 +88495,12 @@
    "pagador": "SACRARIUM INDUSTRIA E COM. DE VELAS LTDA",
    "grupo": "Grupo SACRARIUM",
    "peso_ton": 9.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 11
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
@@ -88515,12 +88515,12 @@
    "pagador": "SACRARIUM INDUSTRIA E COM. DE VELAS LTDA",
    "grupo": "Grupo SACRARIUM",
    "peso_ton": 9.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 11
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
@@ -88535,12 +88535,12 @@
    "pagador": "EFTEC",
    "grupo": "Grupo EFTEC",
    "peso_ton": 27.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 11
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
@@ -88555,12 +88555,12 @@
    "pagador": "MASTIFLEX",
    "grupo": "Grupo MASTIFLEX",
    "peso_ton": 36.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 11
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
@@ -88575,12 +88575,12 @@
    "pagador": "EFTEC",
    "grupo": "Grupo EFTEC",
    "peso_ton": 27.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 11
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
@@ -88595,12 +88595,12 @@
    "pagador": "MASTIFLEX",
    "grupo": "Grupo MASTIFLEX",
    "peso_ton": 36.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 11
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
@@ -88615,12 +88615,12 @@
    "pagador": "MINER SAN COM.REPRES.PROD.MINERAIS LTDA",
    "grupo": "Grupo MINER SAN",
    "peso_ton": 38.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 11
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
@@ -88635,12 +88635,12 @@
    "pagador": "MINERIOS OURO BRANCO LT",
    "grupo": "Grupo MINERIOS",
    "peso_ton": 33.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 11
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
@@ -88655,12 +88655,12 @@
    "pagador": "SIKA SA",
    "grupo": "Grupo Sika",
    "peso_ton": 32.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 11
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
@@ -88675,12 +88675,12 @@
    "pagador": "A&S TECHNOLOGIES INDUSTRIA E COMERCIO LTDA",
    "grupo": "Grupo A&S",
    "peso_ton": 7.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 12
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 12,
@@ -88695,12 +88695,12 @@
    "pagador": "A&S TECHNOLOGIES INDUSTRIA E COMERCIO LTDA",
    "grupo": "Grupo A&S",
    "peso_ton": 36.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 12
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 12,
@@ -88715,12 +88715,12 @@
    "pagador": "SIKA SA",
    "grupo": "Grupo Sika",
    "peso_ton": 32.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 12
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 12,
@@ -88735,12 +88735,12 @@
    "pagador": "SIKA SA",
    "grupo": "Grupo Sika",
    "peso_ton": 32.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 12
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 12,
@@ -88755,12 +88755,12 @@
    "pagador": "SIKA SA",
    "grupo": "Grupo Sika",
    "peso_ton": 32.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 12
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 12,
@@ -88775,12 +88775,12 @@
    "pagador": "SIKA SA",
    "grupo": "Grupo Sika",
    "peso_ton": 32.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 12
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 12,
@@ -88795,12 +88795,12 @@
    "pagador": "A&S TECHNOLOGIES INDUSTRIA E COMERCIO LTDA",
    "grupo": "Grupo A&S",
    "peso_ton": 36.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 12
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 12,
@@ -88815,12 +88815,12 @@
    "pagador": "A&S TECHNOLOGIES INDUSTRIA E COMERCIO LTDA",
    "grupo": "Grupo A&S",
    "peso_ton": 6.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 12
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 12,
@@ -88835,12 +88835,12 @@
    "pagador": "SIKA SA",
    "grupo": "Grupo Sika",
    "peso_ton": 32.0,
-   "primeiro_visto_em": "2026-10-26",
+   "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
     "ano": 2026,
     "mes": 12
    },
-   "rastreamento_desde": "2026-10-26",
+   "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
     "mes": 12,
@@ -88852,7 +88852,7 @@
    "situacao_na_saida": null
   }
  },
- "ultima_atualizacao": "2026-10-26",
+ "ultima_atualizacao": "2026-10-25",
  "observacao_18_10": "Atualizacao 18/10 22h: aba IMPLANTADOS completa (jan a dez). Cargas ausentes da aba foram marcadas como saida.",
- "observacao_26_10": "Atualizacao 26/10: aba IMPLANTADOS completa (jan a dez). Cargas ausentes da aba marcadas como saida."
+ "observacao_25_10": "Atualizacao 25/10: aba IMPLANTADOS completa (jan a dez). Cargas ausentes da aba marcadas como saida."
 }
