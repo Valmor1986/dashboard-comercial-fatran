@@ -76845,7 +76845,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
-    "dia": 19,
+    "dia": 20,
     "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
@@ -77105,7 +77105,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
-    "dia": 19,
+    "dia": 20,
     "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
@@ -77383,7 +77383,7 @@
   "47887": {
    "pagador": "MINERIOS OURO BRANCO LT",
    "grupo": "Grupo MINERIOS",
-   "peso_ton": 33.0,
+   "peso_ton": 30.0,
    "primeiro_visto_em": "2026-09-18",
    "primeira_posicao": {
     "ano": 2026,
@@ -77393,7 +77393,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
-    "dia": 19,
+    "dia": 20,
     "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
@@ -77434,7 +77434,7 @@
     "ano": 2026,
     "mes": 10,
     "dia": 23,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -77491,7 +77491,7 @@
   "48798": {
    "pagador": "MINER SAN COM.REPRES.PROD.MINERAIS LTDA",
    "grupo": "Grupo MINER SAN",
-   "peso_ton": 32.0,
+   "peso_ton": 38.0,
    "primeiro_visto_em": "2026-09-18",
    "primeira_posicao": {
     "ano": 2026,
@@ -77501,7 +77501,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
-    "dia": 19,
+    "dia": 20,
     "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
@@ -77521,7 +77521,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
-    "dia": 19,
+    "dia": 20,
     "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
@@ -77542,7 +77542,7 @@
     "ano": 2026,
     "mes": 10,
     "dia": 20,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -77562,7 +77562,7 @@
     "ano": 2026,
     "mes": 10,
     "dia": 20,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -77622,7 +77622,7 @@
     "ano": 2026,
     "mes": 10,
     "dia": 23,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -77662,7 +77662,7 @@
     "ano": 2026,
     "mes": 10,
     "dia": 21,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -77710,7 +77710,7 @@
     "ano": 2026,
     "mes": 10,
     "dia": 22,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -77739,7 +77739,7 @@
   "48826": {
    "pagador": "CARTINT FILIAL",
    "grupo": "Grupo Cartint",
-   "peso_ton": 30.0,
+   "peso_ton": 33.0,
    "primeiro_visto_em": "2026-09-18",
    "primeira_posicao": {
     "ano": 2026,
@@ -77749,8 +77749,8 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
-    "dia": 23,
-    "situacao": "NÃO INICIADA"
+    "dia": 24,
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -77789,8 +77789,8 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
-    "dia": 23,
-    "situacao": "NÃO INICIADA"
+    "dia": 24,
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -77848,11 +77848,19 @@
    "rastreamento_desde": "2026-09-18",
    "posicao_atual": {
     "ano": 2026,
-    "mes": 10,
-    "dia": 26,
-    "situacao": "NÃO INICIADA"
+    "mes": 11,
+    "dia": 17,
+    "situacao": "POSTERGADA ( NÃO INICIADA )"
    },
-   "historico_postergacoes": [],
+   "historico_postergacoes": [
+    {
+     "de_ano": 2026,
+     "de_mes": 10,
+     "para_ano": 2026,
+     "para_mes": 11,
+     "detectado_em": "2026-10-26"
+    }
+   ],
    "saiu_do_pipeline_em": null,
    "situacao_na_saida": null
   },
@@ -77870,7 +77878,7 @@
     "ano": 2026,
     "mes": 10,
     "dia": 26,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -77890,7 +77898,7 @@
     "ano": 2026,
     "mes": 10,
     "dia": 26,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -77939,7 +77947,7 @@
   "48705": {
    "pagador": "CARBOMASTER",
    "grupo": "Grupo Carbomaster",
-   "peso_ton": 38.0,
+   "peso_ton": 37.0,
    "primeiro_visto_em": "2026-09-18",
    "primeira_posicao": {
     "ano": 2026,
@@ -77950,7 +77958,7 @@
     "ano": 2026,
     "mes": 10,
     "dia": 23,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -77970,7 +77978,7 @@
     "ano": 2026,
     "mes": 10,
     "dia": 23,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -78030,7 +78038,7 @@
     "ano": 2026,
     "mes": 10,
     "dia": 28,
-    "situacao": "NÃO INICIADA"
+    "situacao": "CANCELADA"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -78169,7 +78177,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 2,
+    "dia": 3,
     "situacao": "NÃO INICIADA"
    },
    "historico_postergacoes": [],
@@ -78199,7 +78207,7 @@
   "49020": {
    "pagador": "MINER SAN COM.REPRES.PROD.MINERAIS LTDA",
    "grupo": "Grupo MINER SAN",
-   "peso_ton": 32.0,
+   "peso_ton": 38.0,
    "primeiro_visto_em": "2026-09-18",
    "primeira_posicao": {
     "ano": 2026,
@@ -78269,7 +78277,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 3,
+    "dia": 4,
     "situacao": "NÃO INICIADA"
    },
    "historico_postergacoes": [],
@@ -78576,9 +78584,9 @@
    "rastreamento_desde": "2026-09-18",
    "posicao_atual": {
     "ano": 2026,
-    "mes": 10,
-    "dia": 28,
-    "situacao": "NÃO INICIADA"
+    "mes": 11,
+    "dia": 4,
+    "situacao": "POSTERGADA ( NÃO INICIADA )"
    },
    "historico_postergacoes": [
     {
@@ -78587,6 +78595,13 @@
      "para_ano": 2026,
      "para_mes": 10,
      "detectado_em": "2026-10-18"
+    },
+    {
+     "de_ano": 2026,
+     "de_mes": 10,
+     "para_ano": 2026,
+     "para_mes": 11,
+     "detectado_em": "2026-10-26"
     }
    ],
    "saiu_do_pipeline_em": null,
@@ -78865,7 +78880,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 9,
+    "dia": 16,
     "situacao": "NÃO INICIADA"
    },
    "historico_postergacoes": [],
@@ -83461,7 +83476,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
-    "dia": 16,
+    "dia": 23,
     "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
@@ -83671,7 +83686,7 @@
   "49607": {
    "pagador": "PROCOLOR - COTIA MPB",
    "grupo": "Grupo Procolor",
-   "peso_ton": 12.0,
+   "peso_ton": 6.0,
    "primeiro_visto_em": "2026-10-18",
    "primeira_posicao": {
     "ano": 2026,
@@ -83681,8 +83696,8 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
-    "dia": 19,
-    "situacao": "EM ANDAMENTO"
+    "dia": 26,
+    "situacao": "NÃO INICIADA"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -83701,8 +83716,8 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
-    "dia": 19,
-    "situacao": "NÃO INICIADA"
+    "dia": 20,
+    "situacao": "CANCELADA"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -83781,7 +83796,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
-    "dia": 19,
+    "dia": 20,
     "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
@@ -83801,7 +83816,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
-    "dia": 19,
+    "dia": 20,
     "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
@@ -83821,8 +83836,8 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
-    "dia": 19,
-    "situacao": "EM ANDAMENTO"
+    "dia": 20,
+    "situacao": "CANCELADA"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -83851,7 +83866,7 @@
   "49743": {
    "pagador": "MOLECULAS",
    "grupo": "Grupo MOLECULAS",
-   "peso_ton": 15.0,
+   "peso_ton": 33.0,
    "primeiro_visto_em": "2026-10-18",
    "primeira_posicao": {
     "ano": 2026,
@@ -83861,7 +83876,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
-    "dia": 19,
+    "dia": 20,
     "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
@@ -83885,8 +83900,8 @@
     "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
-   "saiu_do_pipeline_em": null,
-   "situacao_na_saida": null
+   "saiu_do_pipeline_em": "2026-10-26",
+   "situacao_na_saida": "EM ANDAMENTO"
   },
   "49761": {
    "pagador": "AURIQUIMICA - SP",
@@ -83901,7 +83916,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
-    "dia": 19,
+    "dia": 20,
     "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
@@ -83921,7 +83936,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
-    "dia": 19,
+    "dia": 22,
     "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
@@ -83941,7 +83956,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
-    "dia": 19,
+    "dia": 20,
     "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
@@ -83981,7 +83996,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
-    "dia": 19,
+    "dia": 20,
     "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
@@ -84021,8 +84036,8 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
-    "dia": 19,
-    "situacao": "NÃO INICIADA"
+    "dia": 23,
+    "situacao": "CANCELADA"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -84041,8 +84056,8 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
-    "dia": 19,
-    "situacao": "NÃO INICIADA"
+    "dia": 23,
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -84062,7 +84077,7 @@
     "ano": 2026,
     "mes": 10,
     "dia": 19,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -84091,7 +84106,7 @@
   "49605": {
    "pagador": "PROCOLOR - COTIA MPB",
    "grupo": "Grupo Procolor",
-   "peso_ton": 15.0,
+   "peso_ton": 21.0,
    "primeiro_visto_em": "2026-10-18",
    "primeira_posicao": {
     "ano": 2026,
@@ -84101,7 +84116,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
-    "dia": 20,
+    "dia": 22,
     "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
@@ -84121,7 +84136,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
-    "dia": 20,
+    "dia": 19,
     "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
@@ -84142,7 +84157,7 @@
     "ano": 2026,
     "mes": 10,
     "dia": 20,
-    "situacao": "NÃO INICIADA"
+    "situacao": "CANCELADA"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -84151,7 +84166,7 @@
   "49617": {
    "pagador": "CARBOMASTER",
    "grupo": "Grupo Carbomaster",
-   "peso_ton": 39.0,
+   "peso_ton": 37.0,
    "primeiro_visto_em": "2026-10-18",
    "primeira_posicao": {
     "ano": 2026,
@@ -84161,8 +84176,8 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
-    "dia": 20,
-    "situacao": "NÃO INICIADA"
+    "dia": 21,
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -84181,8 +84196,8 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
-    "dia": 20,
-    "situacao": "NÃO INICIADA"
+    "dia": 21,
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -84201,8 +84216,8 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
-    "dia": 20,
-    "situacao": "NÃO INICIADA"
+    "dia": 21,
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -84221,8 +84236,8 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
-    "dia": 20,
-    "situacao": "NÃO INICIADA"
+    "dia": 19,
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -84242,7 +84257,7 @@
     "ano": 2026,
     "mes": 10,
     "dia": 20,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -84261,8 +84276,8 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
-    "dia": 20,
-    "situacao": "NÃO INICIADA"
+    "dia": 21,
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -84281,8 +84296,8 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
-    "dia": 20,
-    "situacao": "NÃO INICIADA"
+    "dia": 23,
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -84302,7 +84317,7 @@
     "ano": 2026,
     "mes": 10,
     "dia": 21,
-    "situacao": "NÃO INICIADA"
+    "situacao": "CANCELADA"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -84322,7 +84337,7 @@
     "ano": 2026,
     "mes": 10,
     "dia": 21,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -84342,7 +84357,7 @@
     "ano": 2026,
     "mes": 10,
     "dia": 21,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -84362,7 +84377,7 @@
     "ano": 2026,
     "mes": 10,
     "dia": 21,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -84382,7 +84397,7 @@
     "ano": 2026,
     "mes": 10,
     "dia": 22,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -84401,8 +84416,8 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
-    "dia": 22,
-    "situacao": "NÃO INICIADA"
+    "dia": 23,
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -84420,11 +84435,19 @@
    "rastreamento_desde": "2026-10-18",
    "posicao_atual": {
     "ano": 2026,
-    "mes": 10,
-    "dia": 23,
-    "situacao": "EM ANDAMENTO"
+    "mes": 11,
+    "dia": 13,
+    "situacao": "NÃO INICIADA"
    },
-   "historico_postergacoes": [],
+   "historico_postergacoes": [
+    {
+     "de_ano": 2026,
+     "de_mes": 10,
+     "para_ano": 2026,
+     "para_mes": 11,
+     "detectado_em": "2026-10-26"
+    }
+   ],
    "saiu_do_pipeline_em": null,
    "situacao_na_saida": null
   },
@@ -84442,7 +84465,7 @@
     "ano": 2026,
     "mes": 10,
     "dia": 23,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -84462,7 +84485,7 @@
     "ano": 2026,
     "mes": 10,
     "dia": 23,
-    "situacao": "NÃO INICIADA"
+    "situacao": "CANCELADA"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -84482,7 +84505,7 @@
     "ano": 2026,
     "mes": 10,
     "dia": 23,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -84502,7 +84525,7 @@
     "ano": 2026,
     "mes": 10,
     "dia": 23,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -84511,7 +84534,7 @@
   "49606": {
    "pagador": "PROCOLOR - COTIA MPB",
    "grupo": "Grupo Procolor",
-   "peso_ton": 33.0,
+   "peso_ton": 15.0,
    "primeiro_visto_em": "2026-10-18",
    "primeira_posicao": {
     "ano": 2026,
@@ -84542,7 +84565,7 @@
     "ano": 2026,
     "mes": 10,
     "dia": 26,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -84582,7 +84605,7 @@
     "ano": 2026,
     "mes": 10,
     "dia": 26,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -84602,7 +84625,7 @@
     "ano": 2026,
     "mes": 10,
     "dia": 26,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -84871,7 +84894,7 @@
   "49608": {
    "pagador": "PROCOLOR - COTIA MPB",
    "grupo": "Grupo Procolor",
-   "peso_ton": 33.0,
+   "peso_ton": 15.0,
    "primeiro_visto_em": "2026-10-18",
    "primeira_posicao": {
     "ano": 2026,
@@ -84881,7 +84904,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
-    "dia": 30,
+    "dia": 29,
     "situacao": "NÃO INICIADA"
    },
    "historico_postergacoes": [],
@@ -85041,7 +85064,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 3,
+    "dia": 6,
     "situacao": "NÃO INICIADA"
    },
    "historico_postergacoes": [],
@@ -85061,7 +85084,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 3,
+    "dia": 6,
     "situacao": "NÃO INICIADA"
    },
    "historico_postergacoes": [],
@@ -85102,7 +85125,7 @@
     "ano": 2026,
     "mes": 11,
     "dia": 4,
-    "situacao": "NÃO INICIADA"
+    "situacao": "CANCELADA"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -85241,7 +85264,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 11,
+    "dia": 20,
     "situacao": "NÃO INICIADA"
    },
    "historico_postergacoes": [],
@@ -85382,7 +85405,7 @@
     "ano": 2026,
     "mes": 11,
     "dia": 17,
-    "situacao": "NÃO INICIADA"
+    "situacao": "CANCELADA"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -85401,7 +85424,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 18,
+    "dia": 24,
     "situacao": "NÃO INICIADA"
    },
    "historico_postergacoes": [],
@@ -87227,8 +87250,1609 @@
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
    "situacao_na_saida": null
+  },
+  "49851": {
+   "pagador": "ECTX S/A - EUCATEX",
+   "grupo": "Grupo Eucatex",
+   "peso_ton": 25.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 20,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49852": {
+   "pagador": "ECTX S/A - EUCATEX",
+   "grupo": "Grupo Eucatex",
+   "peso_ton": 7.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 20,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49853": {
+   "pagador": "MULTICARBO",
+   "grupo": "Grupo MULTICARBO",
+   "peso_ton": 33.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 20,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49842": {
+   "pagador": "MULTICARBO",
+   "grupo": "Grupo MULTICARBO",
+   "peso_ton": 3.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 20,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49834": {
+   "pagador": "AUXYBORR INDUSTRIA E COMERCIO DE AUXILIARES DE PROCESSO",
+   "grupo": "Grupo AUXYBORR",
+   "peso_ton": 36.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 21,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49835": {
+   "pagador": "PROCOLOR - PE",
+   "grupo": "Grupo Procolor",
+   "peso_ton": 33.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 21,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49860": {
+   "pagador": "COMPANHIA SIDERURGICA DO ESPIRITO SANTO S.A.",
+   "grupo": "Grupo Simec",
+   "peso_ton": 36.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 21,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49861": {
+   "pagador": "COMPANHIA SIDERURGICA DO ESPIRITO SANTO S.A.",
+   "grupo": "Grupo Simec",
+   "peso_ton": 2.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 21,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49855": {
+   "pagador": "NINE INDÚSTRIA E COMÉRCIO DE PLÁSTICOS LTDA",
+   "grupo": "Grupo NINE",
+   "peso_ton": 32.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 22,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49870": {
+   "pagador": "COOPERATIVA AGRARIA MISTA DE CASTELO (NOVO)",
+   "grupo": "Grupo CACAL",
+   "peso_ton": 32.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 22,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49881": {
+   "pagador": "RONDELLI COMERCIO E TRANSPORTE LTDA",
+   "grupo": "Grupo Rondeli",
+   "peso_ton": 1.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 22,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49882": {
+   "pagador": "RONDELI COMERCIO IMPORTACAO E EXPORTACAO LTDA",
+   "grupo": "Grupo Rondeli",
+   "peso_ton": 0.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 22,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49883": {
+   "pagador": "RONDELLI COMERCIO E TRANSPORTE LTDA",
+   "grupo": "Grupo Rondeli",
+   "peso_ton": 1.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 22,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49884": {
+   "pagador": "RONDELLI COMERCIO E TRANSPORTE LTDA",
+   "grupo": "Grupo Rondeli",
+   "peso_ton": 5.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 22,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49887": {
+   "pagador": "OSVALDO PERIM SUPERMERCADOS LTDA",
+   "grupo": "Grupo Perim",
+   "peso_ton": 3.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 22,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49888": {
+   "pagador": "OSVALDO PERIM SUPERMERCADOS LTDA",
+   "grupo": "Grupo Perim",
+   "peso_ton": 0.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 22,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49889": {
+   "pagador": "OSVALDO PERIM SUPERMERCADOS LTDA",
+   "grupo": "Grupo Perim",
+   "peso_ton": 1.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 22,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49891": {
+   "pagador": "OSVALDO PERIM SUPERMERCADOS LTDA",
+   "grupo": "Grupo Perim",
+   "peso_ton": 0.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 22,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49895": {
+   "pagador": "WR ENGENHARIA LTDA",
+   "grupo": "WR ENGENHARIA LTDA",
+   "peso_ton": 21.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 22,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49900": {
+   "pagador": "BORZI DISTRIBUICAO E LOGISTICA LTDA",
+   "grupo": "Grupo Mamute",
+   "peso_ton": 35.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 23,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49854": {
+   "pagador": "BRASCOLA",
+   "grupo": "Grupo BRASCOLA",
+   "peso_ton": 36.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 23,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49856": {
+   "pagador": "IBRATIN",
+   "grupo": "Grupo IBRATIN",
+   "peso_ton": 33.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 23,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49857": {
+   "pagador": "IBRATIN",
+   "grupo": "Grupo IBRATIN",
+   "peso_ton": 33.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 23,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49862": {
+   "pagador": "ECTX S/A - EUCATEX",
+   "grupo": "Grupo Eucatex",
+   "peso_ton": 32.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 23,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49871": {
+   "pagador": "LCCO ASSESSORIA , VENDAS E REPRESENTACOES LTDA",
+   "grupo": "LCCO ASSESSORIA , VENDAS E REPRESENTACOES LTDA",
+   "peso_ton": 0.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 23,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49872": {
+   "pagador": "MULTICARBO",
+   "grupo": "Grupo MULTICARBO",
+   "peso_ton": 33.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 23,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49874": {
+   "pagador": "COMPANHIA SIDERURGICA DO ESPIRITO SANTO S.A.",
+   "grupo": "Grupo Simec",
+   "peso_ton": 2.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 23,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49875": {
+   "pagador": "COMPANHIA SIDERURGICA DO ESPIRITO SANTO S.A.",
+   "grupo": "Grupo Simec",
+   "peso_ton": 8.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 23,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49876": {
+   "pagador": "COMPANHIA SIDERURGICA DO ESPIRITO SANTO S.A.",
+   "grupo": "Grupo Simec",
+   "peso_ton": 26.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 23,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49877": {
+   "pagador": "COMPANHIA SIDERURGICA DO ESPIRITO SANTO S.A.",
+   "grupo": "Grupo Simec",
+   "peso_ton": 3.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 23,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49896": {
+   "pagador": "ECTX S/A - EUCATEX",
+   "grupo": "Grupo Eucatex",
+   "peso_ton": 25.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 23,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49897": {
+   "pagador": "ECTX S/A - EUCATEX",
+   "grupo": "Grupo Eucatex",
+   "peso_ton": 3.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 23,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49898": {
+   "pagador": "ECTX S/A - EUCATEX",
+   "grupo": "Grupo Eucatex",
+   "peso_ton": 3.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 23,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49901": {
+   "pagador": "TRANSPORTADORA FG EXPRESS LTDA",
+   "grupo": "TRANSPORTADORA FG EXPRESS LTDA",
+   "peso_ton": 34.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 23,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49911": {
+   "pagador": "JJ PITOL REPRESENTACOES",
+   "grupo": "Grupo JJ",
+   "peso_ton": 0.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 23,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49912": {
+   "pagador": "RESIDENCIAL SAONA",
+   "grupo": "Grupo Vieira e Pontes",
+   "peso_ton": 0.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 23,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49913": {
+   "pagador": "RESIDENCIAL SAONA",
+   "grupo": "Grupo Vieira e Pontes",
+   "peso_ton": 0.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 23,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49914": {
+   "pagador": "GV DO BRASIL INDUSTRIA E COMERCIO DE ACO LTDA",
+   "grupo": "Grupo Simec",
+   "peso_ton": 36.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 23,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49915": {
+   "pagador": "GV DO BRASIL INDUSTRIA E COMERCIO DE ACO LTDA",
+   "grupo": "Grupo Simec",
+   "peso_ton": 32.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 23,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49886": {
+   "pagador": "PLASTICOS ALKO",
+   "grupo": "Grupo PLASTICOS",
+   "peso_ton": 33.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 24,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49841": {
+   "pagador": "MULTICARBO",
+   "grupo": "Grupo MULTICARBO",
+   "peso_ton": 15.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 26,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49849": {
+   "pagador": "BRAZINCO",
+   "grupo": "Grupo BRAZINCO",
+   "peso_ton": 18.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 26,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49850": {
+   "pagador": "FORTIPLAST INDUSTRIA E COMERCIO DE PLASTICOS LTDA",
+   "grupo": "Grupo FORTIPLAST",
+   "peso_ton": 2.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 26,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49879": {
+   "pagador": "IBRATIN",
+   "grupo": "Grupo IBRATIN",
+   "peso_ton": 33.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 26,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49880": {
+   "pagador": "IBRATIN",
+   "grupo": "Grupo IBRATIN",
+   "peso_ton": 33.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 26,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49890": {
+   "pagador": "PROCOLOR - COTIA MPB",
+   "grupo": "Grupo Procolor",
+   "peso_ton": 18.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 26,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49894": {
+   "pagador": "TECNOPERFIL",
+   "grupo": "Grupo TECNOPERFIL",
+   "peso_ton": 33.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 26,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49908": {
+   "pagador": "BRASCOLA",
+   "grupo": "Grupo BRASCOLA",
+   "peso_ton": 36.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 26,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49910": {
+   "pagador": "MARINI TRANSPORTES LTDA",
+   "grupo": "Grupo MARINI TRANSP.",
+   "peso_ton": 25.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 26,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49840": {
+   "pagador": "MASTIFLEX",
+   "grupo": "Grupo MASTIFLEX",
+   "peso_ton": 36.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 30,
+    "situacao": "NÃO INICIADA"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49892": {
+   "pagador": "PROCOLOR - COTIA MPB",
+   "grupo": "Grupo Procolor",
+   "peso_ton": 18.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 30,
+    "situacao": "NÃO INICIADA"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49893": {
+   "pagador": "PROCOLOR - COTIA MPB",
+   "grupo": "Grupo Procolor",
+   "peso_ton": 15.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 30,
+    "situacao": "NÃO INICIADA"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49909": {
+   "pagador": "MULTICARBO",
+   "grupo": "Grupo MULTICARBO",
+   "peso_ton": 15.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 30,
+    "situacao": "NÃO INICIADA"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49843": {
+   "pagador": "F B MIX INDUSTRIA E COMERCIO DE PLASTICOS LTDA",
+   "grupo": "Grupo F B MIX",
+   "peso_ton": 14.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 3,
+    "situacao": "NÃO INICIADA"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49847": {
+   "pagador": "PIRENOPOLIS INDUSTRIA E COMERCIO DE PLASTICOS LTDA",
+   "grupo": "Grupo PIRENOPOLIS",
+   "peso_ton": 15.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 3,
+    "situacao": "NÃO INICIADA"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49848": {
+   "pagador": "PIRENOPOLIS INDUSTRIA E COMERCIO DE PLASTICOS LTDA",
+   "grupo": "Grupo PIRENOPOLIS",
+   "peso_ton": 18.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 3,
+    "situacao": "NÃO INICIADA"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49869": {
+   "pagador": "EFTEC",
+   "grupo": "Grupo EFTEC",
+   "peso_ton": 27.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 3,
+    "situacao": "NÃO INICIADA"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49844": {
+   "pagador": "IMCD BRASIL FARMACEUTICOS",
+   "grupo": "Grupo IMCD",
+   "peso_ton": 19.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 4,
+    "situacao": "NÃO INICIADA"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49845": {
+   "pagador": "IMCD BRASIL FARMACEUTICOS",
+   "grupo": "Grupo IMCD",
+   "peso_ton": 19.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 4,
+    "situacao": "NÃO INICIADA"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49846": {
+   "pagador": "IMCD BRASIL FARMACEUTICOS",
+   "grupo": "Grupo IMCD",
+   "peso_ton": 24.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 4,
+    "situacao": "NÃO INICIADA"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49868": {
+   "pagador": "EFTEC",
+   "grupo": "Grupo EFTEC",
+   "peso_ton": 27.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 5,
+    "situacao": "NÃO INICIADA"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49836": {
+   "pagador": "F B MIX INDUSTRIA E COMERCIO DE PLASTICOS LTDA",
+   "grupo": "Grupo F B MIX",
+   "peso_ton": 33.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 9,
+    "situacao": "NÃO INICIADA"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49858": {
+   "pagador": "SACRARIUM INDUSTRIA E COM. DE VELAS LTDA",
+   "grupo": "Grupo SACRARIUM",
+   "peso_ton": 9.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 9,
+    "situacao": "NÃO INICIADA"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49859": {
+   "pagador": "SACRARIUM INDUSTRIA E COM. DE VELAS LTDA",
+   "grupo": "Grupo SACRARIUM",
+   "peso_ton": 9.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 9,
+    "situacao": "NÃO INICIADA"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49867": {
+   "pagador": "EFTEC",
+   "grupo": "Grupo EFTEC",
+   "peso_ton": 27.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 13,
+    "situacao": "NÃO INICIADA"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49839": {
+   "pagador": "MASTIFLEX",
+   "grupo": "Grupo MASTIFLEX",
+   "peso_ton": 36.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 16,
+    "situacao": "NÃO INICIADA"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49866": {
+   "pagador": "EFTEC",
+   "grupo": "Grupo EFTEC",
+   "peso_ton": 27.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 19,
+    "situacao": "NÃO INICIADA"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49838": {
+   "pagador": "MASTIFLEX",
+   "grupo": "Grupo MASTIFLEX",
+   "peso_ton": 36.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 23,
+    "situacao": "NÃO INICIADA"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49878": {
+   "pagador": "MINER SAN COM.REPRES.PROD.MINERAIS LTDA",
+   "grupo": "Grupo MINER SAN",
+   "peso_ton": 38.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 25,
+    "situacao": "NÃO INICIADA"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49837": {
+   "pagador": "MINERIOS OURO BRANCO LT",
+   "grupo": "Grupo MINERIOS",
+   "peso_ton": 33.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 26,
+    "situacao": "NÃO INICIADA"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49902": {
+   "pagador": "SIKA SA",
+   "grupo": "Grupo Sika",
+   "peso_ton": 32.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 27,
+    "situacao": "NÃO INICIADA"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49865": {
+   "pagador": "A&S TECHNOLOGIES INDUSTRIA E COMERCIO LTDA",
+   "grupo": "Grupo A&S",
+   "peso_ton": 7.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 12
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 12,
+    "dia": 1,
+    "situacao": "NÃO INICIADA"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49864": {
+   "pagador": "A&S TECHNOLOGIES INDUSTRIA E COMERCIO LTDA",
+   "grupo": "Grupo A&S",
+   "peso_ton": 36.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 12
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 12,
+    "dia": 2,
+    "situacao": "NÃO INICIADA"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49903": {
+   "pagador": "SIKA SA",
+   "grupo": "Grupo Sika",
+   "peso_ton": 32.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 12
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 12,
+    "dia": 2,
+    "situacao": "NÃO INICIADA"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49904": {
+   "pagador": "SIKA SA",
+   "grupo": "Grupo Sika",
+   "peso_ton": 32.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 12
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 12,
+    "dia": 4,
+    "situacao": "NÃO INICIADA"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49905": {
+   "pagador": "SIKA SA",
+   "grupo": "Grupo Sika",
+   "peso_ton": 32.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 12
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 12,
+    "dia": 8,
+    "situacao": "NÃO INICIADA"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49906": {
+   "pagador": "SIKA SA",
+   "grupo": "Grupo Sika",
+   "peso_ton": 32.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 12
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 12,
+    "dia": 11,
+    "situacao": "NÃO INICIADA"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49863": {
+   "pagador": "A&S TECHNOLOGIES INDUSTRIA E COMERCIO LTDA",
+   "grupo": "Grupo A&S",
+   "peso_ton": 36.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 12
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 12,
+    "dia": 14,
+    "situacao": "NÃO INICIADA"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49873": {
+   "pagador": "A&S TECHNOLOGIES INDUSTRIA E COMERCIO LTDA",
+   "grupo": "Grupo A&S",
+   "peso_ton": 6.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 12
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 12,
+    "dia": 15,
+    "situacao": "NÃO INICIADA"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49907": {
+   "pagador": "SIKA SA",
+   "grupo": "Grupo Sika",
+   "peso_ton": 32.0,
+   "primeiro_visto_em": "2026-10-26",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 12
+   },
+   "rastreamento_desde": "2026-10-26",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 12,
+    "dia": 15,
+    "situacao": "NÃO INICIADA"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
   }
  },
- "ultima_atualizacao": "2026-10-18",
- "observacao_18_10": "Atualizacao 18/10 22h: aba IMPLANTADOS completa (jan a dez). Cargas ausentes da aba foram marcadas como saida."
+ "ultima_atualizacao": "2026-10-26",
+ "observacao_18_10": "Atualizacao 18/10 22h: aba IMPLANTADOS completa (jan a dez). Cargas ausentes da aba foram marcadas como saida.",
+ "observacao_26_10": "Atualizacao 26/10: aba IMPLANTADOS completa (jan a dez). Cargas ausentes da aba marcadas como saida."
 }
