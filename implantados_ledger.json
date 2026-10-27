@@ -63606,7 +63606,7 @@
   },
   "48912": {
    "pagador": "JJ PITOL REPRESENTACOES",
-   "grupo": "Grupo JJ",
+   "grupo": "Grupo JJ PITOL",
    "peso_ton": 3.0,
    "primeiro_visto_em": "2026-09-18",
    "primeira_posicao": {
@@ -77877,7 +77877,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
-    "dia": 26,
+    "dia": 27,
     "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
@@ -77897,7 +77897,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
-    "dia": 26,
+    "dia": 27,
     "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
@@ -77938,7 +77938,7 @@
     "ano": 2026,
     "mes": 10,
     "dia": 27,
-    "situacao": "NÃO INICIADA"
+    "situacao": "CANCELADA"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -77998,7 +77998,7 @@
     "ano": 2026,
     "mes": 10,
     "dia": 28,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -78016,11 +78016,19 @@
    "rastreamento_desde": "2026-09-18",
    "posicao_atual": {
     "ano": 2026,
-    "mes": 10,
-    "dia": 28,
-    "situacao": "NÃO INICIADA"
+    "mes": 11,
+    "dia": 19,
+    "situacao": "POSTERGADA ( NÃO INICIADA )"
    },
-   "historico_postergacoes": [],
+   "historico_postergacoes": [
+    {
+     "de_ano": 2026,
+     "de_mes": 10,
+     "para_ano": 2026,
+     "para_mes": 11,
+     "detectado_em": "2026-10-27"
+    }
+   ],
    "saiu_do_pipeline_em": null,
    "situacao_na_saida": null
   },
@@ -78096,11 +78104,19 @@
    "rastreamento_desde": "2026-09-18",
    "posicao_atual": {
     "ano": 2026,
-    "mes": 10,
-    "dia": 30,
+    "mes": 11,
+    "dia": 23,
     "situacao": "POSTERGADA ( NÃO INICIADA )"
    },
-   "historico_postergacoes": [],
+   "historico_postergacoes": [
+    {
+     "de_ano": 2026,
+     "de_mes": 10,
+     "para_ano": 2026,
+     "para_mes": 11,
+     "detectado_em": "2026-10-27"
+    }
+   ],
    "saiu_do_pipeline_em": null,
    "situacao_na_saida": null
   },
@@ -78277,7 +78293,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 4,
+    "dia": 5,
     "situacao": "NÃO INICIADA"
    },
    "historico_postergacoes": [],
@@ -78405,7 +78421,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 4,
+    "dia": 5,
     "situacao": "NÃO INICIADA"
    },
    "historico_postergacoes": [],
@@ -78620,7 +78636,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 9,
+    "dia": 12,
     "situacao": "NÃO INICIADA"
    },
    "historico_postergacoes": [],
@@ -78640,7 +78656,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 9,
+    "dia": 12,
     "situacao": "NÃO INICIADA"
    },
    "historico_postergacoes": [],
@@ -79000,7 +79016,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 16,
+    "dia": 13,
     "situacao": "NÃO INICIADA"
    },
    "historico_postergacoes": [],
@@ -79020,7 +79036,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 16,
+    "dia": 13,
     "situacao": "NÃO INICIADA"
    },
    "historico_postergacoes": [],
@@ -83696,7 +83712,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
-    "dia": 26,
+    "dia": 29,
     "situacao": "NÃO INICIADA"
    },
    "historico_postergacoes": [],
@@ -84544,7 +84560,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
-    "dia": 26,
+    "dia": 29,
     "situacao": "NÃO INICIADA"
    },
    "historico_postergacoes": [],
@@ -84584,7 +84600,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
-    "dia": 26,
+    "dia": 27,
     "situacao": "NÃO INICIADA"
    },
    "historico_postergacoes": [],
@@ -84604,7 +84620,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
-    "dia": 26,
+    "dia": 27,
     "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
@@ -84645,7 +84661,7 @@
     "ano": 2026,
     "mes": 10,
     "dia": 27,
-    "situacao": "NÃO INICIADA"
+    "situacao": "CANCELADA"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -84685,7 +84701,7 @@
     "ano": 2026,
     "mes": 10,
     "dia": 27,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -84705,7 +84721,7 @@
     "ano": 2026,
     "mes": 10,
     "dia": 28,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -84724,8 +84740,8 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
-    "dia": 28,
-    "situacao": "NÃO INICIADA"
+    "dia": 27,
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -84744,8 +84760,8 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
-    "dia": 28,
-    "situacao": "NÃO INICIADA"
+    "dia": 27,
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -84765,7 +84781,7 @@
     "ano": 2026,
     "mes": 10,
     "dia": 28,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -84785,7 +84801,7 @@
     "ano": 2026,
     "mes": 10,
     "dia": 28,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -84803,11 +84819,19 @@
    "rastreamento_desde": "2026-10-18",
    "posicao_atual": {
     "ano": 2026,
-    "mes": 10,
-    "dia": 28,
+    "mes": 11,
+    "dia": 13,
     "situacao": "NÃO INICIADA"
    },
-   "historico_postergacoes": [],
+   "historico_postergacoes": [
+    {
+     "de_ano": 2026,
+     "de_mes": 10,
+     "para_ano": 2026,
+     "para_mes": 11,
+     "detectado_em": "2026-10-27"
+    }
+   ],
    "saiu_do_pipeline_em": null,
    "situacao_na_saida": null
   },
@@ -84825,7 +84849,7 @@
     "ano": 2026,
     "mes": 10,
     "dia": 28,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -84845,7 +84869,7 @@
     "ano": 2026,
     "mes": 10,
     "dia": 28,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -85174,7 +85198,7 @@
   "49719": {
    "pagador": "POXPUR",
    "grupo": "Grupo POXPUR",
-   "peso_ton": 33.0,
+   "peso_ton": 36.0,
    "primeiro_visto_em": "2026-10-18",
    "primeira_posicao": {
     "ano": 2026,
@@ -85184,7 +85208,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 6,
+    "dia": 9,
     "situacao": "NÃO INICIADA"
    },
    "historico_postergacoes": [],
@@ -85314,7 +85338,7 @@
   "49723": {
    "pagador": "POXPUR",
    "grupo": "Grupo POXPUR",
-   "peso_ton": 33.0,
+   "peso_ton": 36.0,
    "primeiro_visto_em": "2026-10-18",
    "primeira_posicao": {
     "ano": 2026,
@@ -85324,7 +85348,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 13,
+    "dia": 16,
     "situacao": "NÃO INICIADA"
    },
    "historico_postergacoes": [],
@@ -85464,7 +85488,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 19,
+    "dia": 23,
     "situacao": "NÃO INICIADA"
    },
    "historico_postergacoes": [],
@@ -85623,11 +85647,19 @@
    "rastreamento_desde": "2026-10-18",
    "posicao_atual": {
     "ano": 2026,
-    "mes": 12,
-    "dia": 4,
+    "mes": 11,
+    "dia": 30,
     "situacao": "NÃO INICIADA"
    },
-   "historico_postergacoes": [],
+   "historico_postergacoes": [
+    {
+     "de_ano": 2026,
+     "de_mes": 12,
+     "para_ano": 2026,
+     "para_mes": 11,
+     "detectado_em": "2026-10-27"
+    }
+   ],
    "saiu_do_pipeline_em": null,
    "situacao_na_saida": null
   },
@@ -87933,7 +87965,7 @@
   },
   "49911": {
    "pagador": "JJ PITOL REPRESENTACOES",
-   "grupo": "Grupo JJ",
+   "grupo": "Grupo JJ PITOL",
    "peso_ton": 0.0,
    "primeiro_visto_em": "2026-10-25",
    "primeira_posicao": {
@@ -88064,7 +88096,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
-    "dia": 26,
+    "dia": 27,
     "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
@@ -88104,7 +88136,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
-    "dia": 26,
+    "dia": 29,
     "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
@@ -88124,7 +88156,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
-    "dia": 26,
+    "dia": 27,
     "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
@@ -88144,7 +88176,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
-    "dia": 26,
+    "dia": 27,
     "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
@@ -88164,7 +88196,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
-    "dia": 26,
+    "dia": 27,
     "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
@@ -88204,7 +88236,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
-    "dia": 26,
+    "dia": 27,
     "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
@@ -88224,7 +88256,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 10,
-    "dia": 26,
+    "dia": 27,
     "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
@@ -88403,11 +88435,19 @@
    "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
-    "mes": 11,
-    "dia": 4,
-    "situacao": "NÃO INICIADA"
+    "mes": 10,
+    "dia": 27,
+    "situacao": "EM ANDAMENTO"
    },
-   "historico_postergacoes": [],
+   "historico_postergacoes": [
+    {
+     "de_ano": 2026,
+     "de_mes": 11,
+     "para_ano": 2026,
+     "para_mes": 10,
+     "detectado_em": "2026-10-27"
+    }
+   ],
    "saiu_do_pipeline_em": null,
    "situacao_na_saida": null
   },
@@ -88423,11 +88463,19 @@
    "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
-    "mes": 11,
-    "dia": 4,
-    "situacao": "NÃO INICIADA"
+    "mes": 10,
+    "dia": 27,
+    "situacao": "EM ANDAMENTO"
    },
-   "historico_postergacoes": [],
+   "historico_postergacoes": [
+    {
+     "de_ano": 2026,
+     "de_mes": 11,
+     "para_ano": 2026,
+     "para_mes": 10,
+     "detectado_em": "2026-10-27"
+    }
+   ],
    "saiu_do_pipeline_em": null,
    "situacao_na_saida": null
   },
@@ -88443,11 +88491,19 @@
    "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
-    "mes": 11,
-    "dia": 4,
-    "situacao": "NÃO INICIADA"
+    "mes": 10,
+    "dia": 27,
+    "situacao": "EM ANDAMENTO"
    },
-   "historico_postergacoes": [],
+   "historico_postergacoes": [
+    {
+     "de_ano": 2026,
+     "de_mes": 11,
+     "para_ano": 2026,
+     "para_mes": 10,
+     "detectado_em": "2026-10-27"
+    }
+   ],
    "saiu_do_pipeline_em": null,
    "situacao_na_saida": null
   },
@@ -88850,9 +88906,290 @@
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
    "situacao_na_saida": null
+  },
+  "49917": {
+   "pagador": "NSA INDUSTRIA E COMERCIO LTDA",
+   "grupo": "Grupo NSA",
+   "peso_ton": 15.0,
+   "primeiro_visto_em": "2026-10-27",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-27",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 27,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49918": {
+   "pagador": "NSA INDUSTRIA E COMERCIO LTDA",
+   "grupo": "Grupo NSA",
+   "peso_ton": 15.0,
+   "primeiro_visto_em": "2026-10-27",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-27",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 27,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49919": {
+   "pagador": "NEXUS PRINT",
+   "grupo": "Grupo NEXUS",
+   "peso_ton": 25.0,
+   "primeiro_visto_em": "2026-10-27",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-27",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 27,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49926": {
+   "pagador": "TRANSPORTES POLONI S/A",
+   "grupo": "Grupo Poloni",
+   "peso_ton": 27.0,
+   "primeiro_visto_em": "2026-10-27",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-27",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 27,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49927": {
+   "pagador": "COMPANHIA SIDERURGICA DO ESPIRITO SANTO S.A.",
+   "grupo": "Grupo Simec",
+   "peso_ton": 20.0,
+   "primeiro_visto_em": "2026-10-27",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-27",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 27,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49928": {
+   "pagador": "COMPANHIA SIDERURGICA DO ESPIRITO SANTO S.A.",
+   "grupo": "Grupo Simec",
+   "peso_ton": 18.0,
+   "primeiro_visto_em": "2026-10-27",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 10
+   },
+   "rastreamento_desde": "2026-10-27",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 10,
+    "dia": 27,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49925": {
+   "pagador": "CRISTAL TINTAS",
+   "grupo": "Grupo CRISTAL",
+   "peso_ton": 38.0,
+   "primeiro_visto_em": "2026-10-27",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-10-27",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 4,
+    "situacao": "NÃO INICIADA"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49929": {
+   "pagador": "AURIQUIMICA - SP",
+   "grupo": "Grupo AURIQUIMICA",
+   "peso_ton": 32.0,
+   "primeiro_visto_em": "2026-10-27",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-10-27",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 4,
+    "situacao": "NÃO INICIADA"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49916": {
+   "pagador": "IMPERTELA INDUSTRAL LTDA",
+   "grupo": "Grupo IMPERTELA",
+   "peso_ton": 36.0,
+   "primeiro_visto_em": "2026-10-27",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-10-27",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 6,
+    "situacao": "NÃO INICIADA"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49924": {
+   "pagador": "CRISTAL TINTAS",
+   "grupo": "Grupo CRISTAL",
+   "peso_ton": 38.0,
+   "primeiro_visto_em": "2026-10-27",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-10-27",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 13,
+    "situacao": "NÃO INICIADA"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49923": {
+   "pagador": "CRISTAL TINTAS",
+   "grupo": "Grupo CRISTAL",
+   "peso_ton": 38.0,
+   "primeiro_visto_em": "2026-10-27",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-10-27",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 19,
+    "situacao": "NÃO INICIADA"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49922": {
+   "pagador": "CRISTAL TINTAS",
+   "grupo": "Grupo CRISTAL",
+   "peso_ton": 38.0,
+   "primeiro_visto_em": "2026-10-27",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-10-27",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 27,
+    "situacao": "NÃO INICIADA"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49921": {
+   "pagador": "CRISTAL TINTAS",
+   "grupo": "Grupo CRISTAL",
+   "peso_ton": 38.0,
+   "primeiro_visto_em": "2026-10-27",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 12
+   },
+   "rastreamento_desde": "2026-10-27",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 12,
+    "dia": 4,
+    "situacao": "NÃO INICIADA"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "49920": {
+   "pagador": "CRISTAL TINTAS",
+   "grupo": "Grupo CRISTAL",
+   "peso_ton": 38.0,
+   "primeiro_visto_em": "2026-10-27",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 12
+   },
+   "rastreamento_desde": "2026-10-27",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 12,
+    "dia": 11,
+    "situacao": "NÃO INICIADA"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
   }
  },
- "ultima_atualizacao": "2026-10-26",
+ "ultima_atualizacao": "2026-10-27",
  "observacao_18_10": "Atualizacao 18/10 22h: aba IMPLANTADOS completa (jan a dez). Cargas ausentes da aba foram marcadas como saida.",
- "observacao_25_10": "Atualizacao 25/10: aba IMPLANTADOS completa (jan a dez). Cargas ausentes da aba marcadas como saida."
+ "observacao_25_10": "Atualizacao 25/10: aba IMPLANTADOS completa (jan a dez). Cargas ausentes da aba marcadas como saida.",
+ "observacao_27_10": "Atualizacao 27/10: aba IMPLANTADOS completa (jan a dez). Cargas ausentes da aba marcadas como saida."
 }
