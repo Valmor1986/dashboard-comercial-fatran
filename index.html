@@ -1866,9 +1866,43 @@ function renderImplantRow(implCalc, jaFaturadoTon){
     {label:'Total cancelado', value: ton(t.canc), tone:'danger-tone'},
     {label:'Total postergado', value: ton(postergadoSeguinte), tone:''},
   ];
-  zone.innerHTML = cards.map(c=>
-    '<div class="kpi implant '+c.tone+'"><div class="label">'+c.label+'</div><div class="value">'+c.value+'</div></div>').join('')+
-    '<div class="hint" style="grid-column:1/-1;margin-top:-6px;color:#8895a1;font-size:12px;">Total implantado = já líquido de cancelado · Postergado mostra o que saiu deste período e foi pro mês seguinte (não o que chegou nele)</div>';
+  const tipos = {'Total cancelado':'canc', 'Total postergado':'post'};
+  zone.innerHTML = cards.map(c=>{
+    const tp = tipos[c.label];
+    return '<div class="kpi implant '+c.tone+(tp?' kpi-click':'')+'"'+(tp?' data-impl="'+tp+'" title="Clique para ver por cliente"':'')+'><div class="label">'+c.label+'</div><div class="value">'+c.value+'</div></div>';
+  }).join('')+
+    '<div class="hint" style="grid-column:1/-1;margin-top:-6px;color:#8895a1;font-size:12px;">Total implantado = já líquido de cancelado · Postergado mostra o que saiu deste período e foi pro mês seguinte (não o que chegou nele) · Clique em Cancelado ou Postergado para ver por cliente</div>';
+  zone.querySelectorAll('[data-impl]').forEach(el=>{ el.onclick = ()=> abrirDrillImplant(el.dataset.impl); });
+}
+function abrirDrillImplant(tipo){
+  const g = {};
+  let titulo, campo, rows;
+  if(tipo==='canc'){
+    titulo = 'Cancelado em '+periodLabel(); campo = IF.CANC; rows = implantCur();
+  } else {
+    titulo = 'Postergado de '+periodLabel()+' para o mês seguinte'; campo = IF.POST;
+    const lista = SEL.meses.size? [...SEL.meses] : [1,2,3,4,5,6,7,8,9,10,11,12];
+    const wanted = new Set();
+    lista.forEach(m=> wanted.add((m===12? SEL.ano+1 : SEL.ano)+'-'+(m===12? 1 : m+1)));
+    rows = implantSubset().filter(r=> wanted.has(r[IF.ANO]+'-'+r[IF.MES]));
+  }
+  rows.forEach(r=>{
+    const v = r[campo]; if(!(v>0)) return;
+    const k = r[IF.CLI];
+    g[k] = g[k] || {ton:0, n:0};
+    g[k].ton += v; g[k].n += 1;
+  });
+  const lin = Object.keys(g).map(k=>({nome: DATA.dims.clientes[k]||'N/D', ton:g[k].ton, n:g[k].n})).sort((a,b)=> b.ton-a.ton);
+  const tot = lin.reduce((a,l)=>a+l.ton,0);
+  let html = '<b>'+titulo+'</b> · '+lin.length+' cliente'+(lin.length===1?'':'s')+' · '+ton(tot);
+  if(!lin.length){
+    html += '<div class="drill-empty">Nenhum cliente nessa condição.</div>';
+  } else {
+    html += '<table class="drill-table"><thead><tr><th>Cliente</th><th style="text-align:right">Peso (t)</th><th style="text-align:right">% do total</th><th style="text-align:right">Cargas</th></tr></thead><tbody>'+
+      lin.map(l=>'<tr><td>'+l.nome+'</td><td style="text-align:right">'+ton(l.ton)+'</td><td style="text-align:right">'+(tot? (l.ton/tot*100).toFixed(1).replace('.',','):'0')+'%</td><td style="text-align:right">'+l.n+'</td></tr>').join('')+
+      '<tr><td><b>Total</b></td><td style="text-align:right"><b>'+ton(tot)+'</b></td><td style="text-align:right"><b>100%</b></td><td style="text-align:right"><b>'+lin.reduce((a,l)=>a+l.n,0)+'</b></td></tr></tbody></table>';
+  }
+  showInfo(html, true);
 }
 
 function renderClienteDetalhe(){
