@@ -259,6 +259,8 @@
   .info-modal-close:hover{background:#F2F4F6; color:var(--navy);}
   .kpi.kpi-click{cursor:pointer; transition:box-shadow .15s;}
   .kpi.kpi-click:hover{box-shadow:0 0 0 2px var(--gold) inset;}
+  .kpi.kpi-impl-click{cursor:pointer; transition:box-shadow .15s;}
+  .kpi.kpi-impl-click:hover{box-shadow:0 0 0 2px var(--gold) inset;}
   .drill-table{width:100%; border-collapse:collapse; font-size:12px; margin-top:8px;}
   .drill-table th{text-align:left; font-size:10.5px; text-transform:uppercase; letter-spacing:.3px; color:var(--muted); border-bottom:2px solid #E4E8EC; padding:6px 8px;}
   .drill-table td{padding:6px 8px; border-bottom:1px solid #EEF1F4;}
@@ -1869,7 +1871,7 @@ function renderImplantRow(implCalc, jaFaturadoTon){
   const tipos = {'Total cancelado':'canc', 'Total postergado':'post'};
   zone.innerHTML = cards.map(c=>{
     const tp = tipos[c.label];
-    return '<div class="kpi implant '+c.tone+(tp?' kpi-click':'')+'"'+(tp?' data-impl="'+tp+'" title="Clique para ver por cliente"':'')+'><div class="label">'+c.label+'</div><div class="value">'+c.value+'</div></div>';
+    return '<div class="kpi implant '+c.tone+(tp?' kpi-impl-click':'')+'"'+(tp?' data-impl="'+tp+'" title="Clique para ver por cliente"':'')+'><div class="label">'+c.label+'</div><div class="value">'+c.value+'</div></div>';
   }).join('')+
     '<div class="hint" style="grid-column:1/-1;margin-top:-6px;color:#8895a1;font-size:12px;">Total implantado = já líquido de cancelado · Postergado mostra o que saiu deste período e foi pro mês seguinte (não o que chegou nele) · Clique em Cancelado ou Postergado para ver por cliente</div>';
   zone.querySelectorAll('[data-impl]').forEach(el=>{ el.onclick = ()=> abrirDrillImplant(el.dataset.impl); });
