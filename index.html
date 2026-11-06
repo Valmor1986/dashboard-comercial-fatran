@@ -1542,7 +1542,7 @@ function forecastDoPeriodo(rows, ano, mesesSet){
 // reconstruir isso). Esse ledger ainda não alimenta nenhuma tela do painel; é o material bruto pra,
 // depois de alguns ciclos de atualização, construir uma visão de "consultar agosto meses depois e
 // ver o que aconteceu com cada carga" sem depender só do snapshot do mês corrente.
-const IF = {ANO:0, MES:1, DIA:2, CLI:3, SEG:4, TOTAL:5, CANC:6, POST:7, ORIG:8, DEST:9};
+const IF = {ANO:0, MES:1, DIA:2, CLI:3, SEG:4, TOTAL:5, CANC:6, POST:7, ORIG:8, DEST:9, EMB:10};
 function implantAll(){ return (DATA.implantados && DATA.implantados.facts) || []; }
 function implantSubset(){
   return implantAll().filter(r=>
@@ -1871,38 +1871,64 @@ function renderImplantRow(implCalc, jaFaturadoTon){
   const tipos = {'Total cancelado':'canc', 'Total postergado':'post'};
   zone.innerHTML = cards.map(c=>{
     const tp = tipos[c.label];
-    return '<div class="kpi implant '+c.tone+(tp?' kpi-impl-click':'')+'"'+(tp?' data-impl="'+tp+'" title="Clique para ver por cliente"':'')+'><div class="label">'+c.label+'</div><div class="value">'+c.value+'</div></div>';
+    const sub = tp? '<div style="font-size:11.5px;color:#8895a1;margin-top:2px;">\u2248 '+brl(implantValorTipo(tp).val)+' não faturado</div>' : '';
+    return '<div class="kpi implant '+c.tone+(tp?' kpi-impl-click':'')+'"'+(tp?' data-impl="'+tp+'" title="Clique para ver por cliente"':'')+'><div class="label">'+c.label+'</div><div class="value">'+c.value+'</div>'+sub+'</div>';
   }).join('')+
     '<div class="hint" style="grid-column:1/-1;margin-top:-6px;color:#8895a1;font-size:12px;">Total implantado = já líquido de cancelado · Postergado mostra o que saiu deste período e foi pro mês seguinte (não o que chegou nele) · Clique em Cancelado ou Postergado para ver por cliente</div>';
   zone.querySelectorAll('[data-impl]').forEach(el=>{ el.onclick = ()=> abrirDrillImplant(el.dataset.impl); });
 }
+// Valor estimado NAO faturado = peso (cancelado ou postergado) x ticket medio historico do cliente
+// (faturamento liquido / toneladas de 100% da operacao do cliente; sem historico usa o ticket geral).
+function implantRowsTipo(tipo){
+  if(tipo==='canc') return {rows: implantCur(), campo: IF.CANC};
+  const lista = SEL.meses.size? [...SEL.meses] : [1,2,3,4,5,6,7,8,9,10,11,12];
+  const wanted = new Set();
+  lista.forEach(m=> wanted.add((m===12? SEL.ano+1 : SEL.ano)+'-'+(m===12? 1 : m+1)));
+  return {rows: implantSubset().filter(r=> wanted.has(r[IF.ANO]+'-'+r[IF.MES])), campo: IF.POST};
+}
+function implantValorTipo(tipo){
+  const {rows, campo} = implantRowsTipo(tipo);
+  let ton=0, val=0;
+  rows.forEach(r=>{ const v=r[campo]; if(!(v>0)) return; ton+=v; val+=v*ticketMedioCliente(r[IF.CLI]); });
+  return {ton, val};
+}
+function toggleEmbImp(id){
+  document.querySelectorAll('tr[data-pai="'+id+'"]').forEach(tr=>{ tr.style.display = tr.style.display==='none' ? '' : 'none'; });
+  const c = document.getElementById('seta-'+id); if(c) c.textContent = c.textContent==='\u25B6' ? '\u25BC' : '\u25B6';
+}
 function abrirDrillImplant(tipo){
+  const titulo = tipo==='canc' ? 'Cancelado em '+periodLabel() : 'Postergado de '+periodLabel()+' para o mês seguinte';
+  const {rows, campo} = implantRowsTipo(tipo);
+  const embNomes = (DATA.implantados && DATA.implantados.embarcadores) || [];
   const g = {};
-  let titulo, campo, rows;
-  if(tipo==='canc'){
-    titulo = 'Cancelado em '+periodLabel(); campo = IF.CANC; rows = implantCur();
-  } else {
-    titulo = 'Postergado de '+periodLabel()+' para o mês seguinte'; campo = IF.POST;
-    const lista = SEL.meses.size? [...SEL.meses] : [1,2,3,4,5,6,7,8,9,10,11,12];
-    const wanted = new Set();
-    lista.forEach(m=> wanted.add((m===12? SEL.ano+1 : SEL.ano)+'-'+(m===12? 1 : m+1)));
-    rows = implantSubset().filter(r=> wanted.has(r[IF.ANO]+'-'+r[IF.MES]));
-  }
   rows.forEach(r=>{
     const v = r[campo]; if(!(v>0)) return;
     const k = r[IF.CLI];
-    g[k] = g[k] || {ton:0, n:0};
-    g[k].ton += v; g[k].n += 1;
+    const o = g[k] = g[k] || {ton:0, n:0, emb:{}};
+    o.ton += v; o.n += 1;
+    const e = r[IF.EMB]; const en = (e!=null && e>=0 && embNomes[e]) ? embNomes[e] : 'Não informado';
+    const x = o.emb[en] = o.emb[en] || {ton:0, n:0};
+    x.ton += v; x.n += 1;
   });
-  const lin = Object.keys(g).map(k=>({nome: DATA.dims.clientes[k]||'N/D', ton:g[k].ton, n:g[k].n})).sort((a,b)=> b.ton-a.ton);
-  const tot = lin.reduce((a,l)=>a+l.ton,0);
-  let html = '<b>'+titulo+'</b> · '+lin.length+' cliente'+(lin.length===1?'':'s')+' · '+ton(tot);
+  const lin = Object.keys(g).map(k=>{
+    const tk = ticketMedioCliente(+k);
+    return {id:+k, nome: DATA.dims.clientes[k]||'N/D', ton:g[k].ton, n:g[k].n, tk, val:g[k].ton*tk,
+      emb: Object.keys(g[k].emb).map(n=>({nome:n, ton:g[k].emb[n].ton, n:g[k].emb[n].n, val:g[k].emb[n].ton*tk})).sort((a,b)=>b.val-a.val)};
+  }).sort((a,b)=> b.val-a.val);
+  const tot = lin.reduce((a,l)=>a+l.ton,0), totV = lin.reduce((a,l)=>a+l.val,0), totN = lin.reduce((a,l)=>a+l.n,0);
+  const R = 'style="text-align:right"';
+  let html = '<b>'+titulo+'</b> · '+lin.length+' cliente'+(lin.length===1?'':'s')+' · '+ton(tot)+' · valor estimado não faturado <b>'+brl(totV)+'</b>';
   if(!lin.length){
     html += '<div class="drill-empty">Nenhum cliente nessa condição.</div>';
   } else {
-    html += '<table class="drill-table"><thead><tr><th>Cliente</th><th style="text-align:right">Peso (t)</th><th style="text-align:right">% do total</th><th style="text-align:right">Cargas</th></tr></thead><tbody>'+
-      lin.map(l=>'<tr><td>'+l.nome+'</td><td style="text-align:right">'+ton(l.ton)+'</td><td style="text-align:right">'+(tot? (l.ton/tot*100).toFixed(1).replace('.',','):'0')+'%</td><td style="text-align:right">'+l.n+'</td></tr>').join('')+
-      '<tr><td><b>Total</b></td><td style="text-align:right"><b>'+ton(tot)+'</b></td><td style="text-align:right"><b>100%</b></td><td style="text-align:right"><b>'+lin.reduce((a,l)=>a+l.n,0)+'</b></td></tr></tbody></table>';
+    html += '<table class="drill-table"><thead><tr><th>Cliente / Embarcador</th><th '+R+'>Ticket médio (R$/t)</th><th '+R+'>Peso (t)</th><th '+R+'>Valor estimado (R$)</th><th '+R+'>% do valor</th><th '+R+'>Cargas</th></tr></thead><tbody>'+
+      lin.map(l=>{
+        const id = 'imp'+tipo+'_'+l.id;
+        return '<tr style="cursor:pointer;font-weight:600" onclick="toggleEmbImp(\''+id+'\')"><td><span id="seta-'+id+'">\u25B6</span> '+l.nome+'</td><td '+R+'>'+brl(l.tk).replace('R$','R$ ')+'</td><td '+R+'>'+ton(l.ton)+'</td><td '+R+'>'+brl(l.val)+'</td><td '+R+'>'+(totV? (l.val/totV*100).toFixed(1).replace('.',','):'0')+'%</td><td '+R+'>'+l.n+'</td></tr>'+
+          l.emb.map(e=>'<tr data-pai="'+id+'" style="display:none;background:#F7F9FB;color:#55636F"><td style="padding-left:28px">'+e.nome+'</td><td '+R+'>'+brl(l.tk).replace('R$','R$ ')+'</td><td '+R+'>'+ton(e.ton)+'</td><td '+R+'>'+brl(e.val)+'</td><td '+R+'>'+(totV? (e.val/totV*100).toFixed(1).replace('.',','):'0')+'%</td><td '+R+'>'+e.n+'</td></tr>').join('');
+      }).join('')+
+      '<tr><td><b>Total</b></td><td '+R+'>'+(tot? brl(totV/tot):'-')+'</td><td '+R+'><b>'+ton(tot)+'</b></td><td '+R+'><b>'+brl(totV)+'</b></td><td '+R+'><b>100%</b></td><td '+R+'><b>'+totN+'</b></td></tr></tbody></table>'+
+      '<div class="hint" style="margin-top:8px;color:#8895a1;font-size:12px;">Valor estimado = peso x ticket médio histórico do cliente (faturamento líquido / toneladas de toda a operação do cliente). É uma estimativa de referência, não o frete real da carga. Clique no cliente para ver os embarcadores.</div>';
   }
   showInfo(html, true);
 }
