@@ -71967,6 +71967,20 @@
      "para_ano": 2026,
      "para_mes": 11,
      "detectado_em": "2026-11-12"
+    },
+    {
+     "de_ano": 2026,
+     "de_mes": 11,
+     "para_ano": 2026,
+     "para_mes": 9,
+     "detectado_em": "2026-11-12"
+    },
+    {
+     "de_ano": 2026,
+     "de_mes": 9,
+     "para_ano": 2026,
+     "para_mes": 11,
+     "detectado_em": "2026-11-12"
     }
    ],
    "saiu_do_pipeline_em": null,
@@ -92229,7 +92243,7 @@
   },
   "50091": {
    "pagador": "PPS COMPOSITOS LTDA",
-   "grupo": "PPS COMPOSITOS LTDA",
+   "grupo": "Grupo PPS compositos",
    "peso_ton": 33.0,
    "primeiro_visto_em": "2026-11-10",
    "primeira_posicao": {
@@ -93837,7 +93851,7 @@
   },
   "50144": {
    "pagador": "R D R TRANSPORTES LTDA EM RECUPERACAO JUDICIAL",
-   "grupo": "R D R TRANSPORTES LTDA EM RECUPERACAO JUDICIAL",
+   "grupo": "Grupo RDR Transportes",
    "peso_ton": 0.0,
    "primeiro_visto_em": "2026-11-12",
    "primeira_posicao": {
@@ -93877,7 +93891,7 @@
   },
   "50153": {
    "pagador": "R D R TRANSPORTES LTDA EM RECUPERACAO JUDICIAL",
-   "grupo": "R D R TRANSPORTES LTDA EM RECUPERACAO JUDICIAL",
+   "grupo": "Grupo RDR Transportes",
    "peso_ton": 0.0,
    "primeiro_visto_em": "2026-11-12",
    "primeira_posicao": {
