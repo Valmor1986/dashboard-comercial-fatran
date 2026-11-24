@@ -72037,6 +72037,20 @@
      "para_ano": 2026,
      "para_mes": 11,
      "detectado_em": "2026-11-24"
+    },
+    {
+     "de_ano": 2026,
+     "de_mes": 11,
+     "para_ano": 2026,
+     "para_mes": 9,
+     "detectado_em": "2026-11-24"
+    },
+    {
+     "de_ano": 2026,
+     "de_mes": 9,
+     "para_ano": 2026,
+     "para_mes": 11,
+     "detectado_em": "2026-11-24"
     }
    ],
    "saiu_do_pipeline_em": null,
@@ -77532,7 +77546,7 @@
     "ano": 2026,
     "mes": 11,
     "dia": 25,
-    "situacao": "POSTERGADA ( NÃO INICIADA )"
+    "situacao": "POSTERGADA ( EM ANDAMENTO)"
    },
    "historico_postergacoes": [
     {
@@ -78095,7 +78109,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 19,
+    "dia": 21,
     "situacao": "POSTERGADA ( EM ANDAMENTO)"
    },
    "historico_postergacoes": [
@@ -78183,8 +78197,8 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 23,
-    "situacao": "POSTERGADA ( NÃO INICIADA )"
+    "dia": 24,
+    "situacao": "POSTERGADA ( EM ANDAMENTO)"
    },
    "historico_postergacoes": [
     {
@@ -78897,7 +78911,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 18,
+    "dia": 19,
     "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
@@ -78918,7 +78932,7 @@
     "ano": 2026,
     "mes": 11,
     "dia": 25,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -78938,7 +78952,7 @@
     "ano": 2026,
     "mes": 11,
     "dia": 24,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -79277,7 +79291,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 23,
+    "dia": 25,
     "situacao": "NÃO INICIADA"
    },
    "historico_postergacoes": [],
@@ -79297,7 +79311,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 24,
+    "dia": 30,
     "situacao": "NÃO INICIADA"
    },
    "historico_postergacoes": [],
@@ -79318,7 +79332,7 @@
     "ano": 2026,
     "mes": 11,
     "dia": 25,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -79338,7 +79352,7 @@
     "ano": 2026,
     "mes": 11,
     "dia": 25,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -79398,7 +79412,7 @@
     "ano": 2026,
     "mes": 11,
     "dia": 27,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -79457,7 +79471,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 19,
+    "dia": 21,
     "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
@@ -84929,7 +84943,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 23,
+    "dia": 24,
     "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [
@@ -85437,8 +85451,8 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 19,
-    "situacao": "NÃO INICIADA"
+    "dia": 24,
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -85607,7 +85621,7 @@
   "49623": {
    "pagador": "CARBOMASTER",
    "grupo": "Grupo Carbomaster",
-   "peso_ton": 39.0,
+   "peso_ton": 37.0,
    "primeiro_visto_em": "2026-10-18",
    "primeira_posicao": {
     "ano": 2026,
@@ -85617,7 +85631,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 19,
+    "dia": 21,
     "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
@@ -85638,7 +85652,7 @@
     "ano": 2026,
     "mes": 11,
     "dia": 23,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -85697,7 +85711,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 19,
+    "dia": 21,
     "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
@@ -88804,11 +88818,19 @@
    "rastreamento_desde": "2026-10-25",
    "posicao_atual": {
     "ano": 2026,
-    "mes": 11,
-    "dia": 23,
+    "mes": 12,
+    "dia": 2,
     "situacao": "NÃO INICIADA"
    },
-   "historico_postergacoes": [],
+   "historico_postergacoes": [
+    {
+     "de_ano": 2026,
+     "de_mes": 11,
+     "para_ano": 2026,
+     "para_mes": 12,
+     "detectado_em": "2026-11-24"
+    }
+   ],
    "saiu_do_pipeline_em": null,
    "situacao_na_saida": null
   },
@@ -88826,7 +88848,7 @@
     "ano": 2026,
     "mes": 11,
     "dia": 23,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -88925,8 +88947,8 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 23,
-    "situacao": "NÃO INICIADA"
+    "dia": 24,
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [
     {
@@ -89131,6 +89153,20 @@
      "para_ano": 2026,
      "para_mes": 11,
      "detectado_em": "2026-11-19"
+    },
+    {
+     "de_ano": 2026,
+     "de_mes": 11,
+     "para_ano": 2026,
+     "para_mes": 10,
+     "detectado_em": "2026-11-24"
+    },
+    {
+     "de_ano": 2026,
+     "de_mes": 10,
+     "para_ano": 2026,
+     "para_mes": 11,
+     "detectado_em": "2026-11-24"
     },
     {
      "de_ano": 2026,
@@ -90097,7 +90133,7 @@
   "49935": {
    "pagador": "IMERYS",
    "grupo": "Grupo Imerys",
-   "peso_ton": 32.0,
+   "peso_ton": 27.0,
    "primeiro_visto_em": "2026-10-28",
    "primeira_posicao": {
     "ano": 2026,
@@ -90107,7 +90143,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 19,
+    "dia": 23,
     "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
@@ -90167,8 +90203,8 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 23,
-    "situacao": "NÃO INICIADA"
+    "dia": 24,
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -91088,7 +91124,7 @@
     "ano": 2026,
     "mes": 12,
     "dia": 1,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [
     {
@@ -91415,7 +91451,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 19,
+    "dia": 23,
     "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
@@ -91479,8 +91515,8 @@
     "situacao": "NÃO INICIADA"
    },
    "historico_postergacoes": [],
-   "saiu_do_pipeline_em": null,
-   "situacao_na_saida": null
+   "saiu_do_pipeline_em": "2026-11-24",
+   "situacao_na_saida": "NÃO INICIADA"
   },
   "49988": {
    "pagador": "TRAFFIC",
@@ -91563,8 +91599,8 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 23,
-    "situacao": "NÃO INICIADA"
+    "dia": 24,
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -91584,7 +91620,7 @@
     "ano": 2026,
     "mes": 11,
     "dia": 24,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -91604,7 +91640,7 @@
     "ano": 2026,
     "mes": 11,
     "dia": 25,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -92891,8 +92927,8 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 23,
-    "situacao": "NÃO INICIADA"
+    "dia": 24,
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -93078,11 +93114,19 @@
    "rastreamento_desde": "2026-11-10",
    "posicao_atual": {
     "ano": 2026,
-    "mes": 12,
-    "dia": 4,
+    "mes": 11,
+    "dia": 30,
     "situacao": "NÃO INICIADA"
    },
-   "historico_postergacoes": [],
+   "historico_postergacoes": [
+    {
+     "de_ano": 2026,
+     "de_mes": 12,
+     "para_ano": 2026,
+     "para_mes": 11,
+     "detectado_em": "2026-11-24"
+    }
+   ],
    "saiu_do_pipeline_em": null,
    "situacao_na_saida": null
   },
@@ -93098,11 +93142,19 @@
    "rastreamento_desde": "2026-11-10",
    "posicao_atual": {
     "ano": 2026,
-    "mes": 12,
-    "dia": 4,
+    "mes": 11,
+    "dia": 30,
     "situacao": "NÃO INICIADA"
    },
-   "historico_postergacoes": [],
+   "historico_postergacoes": [
+    {
+     "de_ano": 2026,
+     "de_mes": 12,
+     "para_ano": 2026,
+     "para_mes": 11,
+     "detectado_em": "2026-11-24"
+    }
+   ],
    "saiu_do_pipeline_em": null,
    "situacao_na_saida": null
   },
@@ -93179,8 +93231,8 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 27,
-    "situacao": "NÃO INICIADA"
+    "dia": 25,
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -93199,8 +93251,8 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 27,
-    "situacao": "NÃO INICIADA"
+    "dia": 25,
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -93219,7 +93271,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 18,
+    "dia": 19,
     "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
@@ -93260,7 +93312,7 @@
     "ano": 2026,
     "mes": 11,
     "dia": 24,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -93280,7 +93332,7 @@
     "ano": 2026,
     "mes": 11,
     "dia": 24,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -93299,8 +93351,8 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 24,
-    "situacao": "NÃO INICIADA"
+    "dia": 26,
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -93308,7 +93360,7 @@
   },
   "50130": {
    "pagador": "ORIONTE COMERCIO DE TERMOPLASTICOS LTDA",
-   "grupo": "ORIONTE COMERCIO DE TERMOPLASTICOS LTDA",
+   "grupo": "Grupo Imerys",
    "peso_ton": 36.0,
    "primeiro_visto_em": "2026-11-12",
    "primeira_posicao": {
@@ -93319,7 +93371,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 19,
+    "dia": 23,
     "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
@@ -93359,7 +93411,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 23,
+    "dia": 24,
     "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
@@ -93379,7 +93431,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 23,
+    "dia": 24,
     "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
@@ -93399,7 +93451,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 23,
+    "dia": 24,
     "situacao": "NÃO INICIADA"
    },
    "historico_postergacoes": [],
@@ -93439,7 +93491,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 19,
+    "dia": 21,
     "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
@@ -93459,7 +93511,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 18,
+    "dia": 19,
     "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
@@ -93539,7 +93591,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 18,
+    "dia": 19,
     "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
@@ -93559,7 +93611,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 18,
+    "dia": 19,
     "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
@@ -93879,7 +93931,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 23,
+    "dia": 24,
     "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
@@ -94569,7 +94621,7 @@
   "50192": {
    "pagador": "COOPERATIVA AGRARIA MISTA DE CASTELO (NOVO)",
    "grupo": "Grupo CACAL",
-   "peso_ton": 39.0,
+   "peso_ton": 38.0,
    "primeiro_visto_em": "2026-11-16",
    "primeira_posicao": {
     "ano": 2026,
@@ -94579,7 +94631,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 18,
+    "dia": 23,
     "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
@@ -94619,7 +94671,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 23,
+    "dia": 25,
     "situacao": "NÃO INICIADA"
    },
    "historico_postergacoes": [],
@@ -94639,7 +94691,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 23,
+    "dia": 25,
     "situacao": "NÃO INICIADA"
    },
    "historico_postergacoes": [],
@@ -94659,8 +94711,8 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 23,
-    "situacao": "NÃO INICIADA"
+    "dia": 24,
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -94679,8 +94731,8 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 23,
-    "situacao": "NÃO INICIADA"
+    "dia": 24,
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -95079,7 +95131,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 18,
+    "dia": 19,
     "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
@@ -95109,7 +95161,7 @@
   "50247": {
    "pagador": "CIPATEX",
    "grupo": "Grupo Cipatex",
-   "peso_ton": 36.0,
+   "peso_ton": 33.0,
    "primeiro_visto_em": "2026-11-18",
    "primeira_posicao": {
     "ano": 2026,
@@ -95119,7 +95171,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 18,
+    "dia": 21,
     "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
@@ -95159,8 +95211,8 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 19,
-    "situacao": "NÃO INICIADA"
+    "dia": 24,
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -95179,7 +95231,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 23,
+    "dia": 24,
     "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
@@ -95199,7 +95251,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 23,
+    "dia": 24,
     "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
@@ -95219,7 +95271,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 23,
+    "dia": 26,
     "situacao": "NÃO INICIADA"
    },
    "historico_postergacoes": [],
@@ -95239,8 +95291,8 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 23,
-    "situacao": "NÃO INICIADA"
+    "dia": 24,
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -95260,7 +95312,7 @@
     "ano": 2026,
     "mes": 11,
     "dia": 23,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -95280,7 +95332,7 @@
     "ano": 2026,
     "mes": 11,
     "dia": 23,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -95300,7 +95352,7 @@
     "ano": 2026,
     "mes": 11,
     "dia": 24,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -95320,7 +95372,7 @@
     "ano": 2026,
     "mes": 11,
     "dia": 24,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -95340,7 +95392,7 @@
     "ano": 2026,
     "mes": 11,
     "dia": 24,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -95360,7 +95412,7 @@
     "ano": 2026,
     "mes": 11,
     "dia": 24,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -95380,7 +95432,7 @@
     "ano": 2026,
     "mes": 11,
     "dia": 24,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -95400,7 +95452,7 @@
     "ano": 2026,
     "mes": 11,
     "dia": 25,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -95420,7 +95472,7 @@
     "ano": 2026,
     "mes": 11,
     "dia": 25,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -95440,7 +95492,7 @@
     "ano": 2026,
     "mes": 11,
     "dia": 25,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -95460,7 +95512,7 @@
     "ano": 2026,
     "mes": 11,
     "dia": 25,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -95480,7 +95532,7 @@
     "ano": 2026,
     "mes": 11,
     "dia": 25,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -95500,7 +95552,7 @@
     "ano": 2026,
     "mes": 11,
     "dia": 25,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -95520,7 +95572,7 @@
     "ano": 2026,
     "mes": 11,
     "dia": 25,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -95540,7 +95592,7 @@
     "ano": 2026,
     "mes": 11,
     "dia": 25,
-    "situacao": "NÃO INICIADA"
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -95959,7 +96011,7 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 18,
+    "dia": 19,
     "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
@@ -95999,8 +96051,8 @@
    "posicao_atual": {
     "ano": 2026,
     "mes": 11,
-    "dia": 19,
-    "situacao": "NÃO INICIADA"
+    "dia": 22,
+    "situacao": "EM ANDAMENTO"
    },
    "historico_postergacoes": [],
    "saiu_do_pipeline_em": null,
@@ -96040,6 +96092,926 @@
     "ano": 2026,
     "mes": 12,
     "dia": 8,
+    "situacao": "NÃO INICIADA"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "50260": {
+   "pagador": "DRIFT COMERCIO DE ALIMENTOS S/A",
+   "grupo": "Grupo Carone",
+   "peso_ton": 1.0,
+   "primeiro_visto_em": "2026-11-24",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-11-24",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 19,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "50261": {
+   "pagador": "DRIFT COMERCIO DE ALIMENTOS S/A.",
+   "grupo": "Grupo Carone",
+   "peso_ton": 1.0,
+   "primeiro_visto_em": "2026-11-24",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-11-24",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 19,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "50262": {
+   "pagador": "DRIFT COMERCIO DE ALIMENTOS S/A.",
+   "grupo": "Grupo Carone",
+   "peso_ton": 0.0,
+   "primeiro_visto_em": "2026-11-24",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-11-24",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 19,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "50263": {
+   "pagador": "OSVALDO PERIM SUPERMERCADOS LTDA",
+   "grupo": "Grupo Perim",
+   "peso_ton": 0.0,
+   "primeiro_visto_em": "2026-11-24",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-11-24",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 19,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "50264": {
+   "pagador": "OSVALDO PERIM SUPERMERCADOS LTDA",
+   "grupo": "Grupo Perim",
+   "peso_ton": 3.0,
+   "primeiro_visto_em": "2026-11-24",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-11-24",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 19,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "50265": {
+   "pagador": "OSVALDO PERIM SUPERMERCADOS LTDA",
+   "grupo": "Grupo Perim",
+   "peso_ton": 0.0,
+   "primeiro_visto_em": "2026-11-24",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-11-24",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 19,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "50266": {
+   "pagador": "OSVALDO PERIM SUPERMERCADOS LTDA",
+   "grupo": "Grupo Perim",
+   "peso_ton": 0.0,
+   "primeiro_visto_em": "2026-11-24",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-11-24",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 19,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "50267": {
+   "pagador": "OSVALDO PERIM SUPERMERCADOS LTDA",
+   "grupo": "Grupo Perim",
+   "peso_ton": 0.0,
+   "primeiro_visto_em": "2026-11-24",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-11-24",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 19,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "50268": {
+   "pagador": "OSVALDO PERIM SUPERMERCADOS LTDA",
+   "grupo": "Grupo Perim",
+   "peso_ton": 1.0,
+   "primeiro_visto_em": "2026-11-24",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-11-24",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 19,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "50271": {
+   "pagador": "RONDELI COMERCIO IMPORTACAO E EXPORTACAO LTDA",
+   "grupo": "Grupo Rondeli",
+   "peso_ton": 1.0,
+   "primeiro_visto_em": "2026-11-24",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-11-24",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 19,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "50272": {
+   "pagador": "RONDELI COMERCIO IMPORTACAO E EXPORTACAO LTDA",
+   "grupo": "Grupo Rondeli",
+   "peso_ton": 0.0,
+   "primeiro_visto_em": "2026-11-24",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-11-24",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 19,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "50273": {
+   "pagador": "RONDELLI COMERCIO E TRANSPORTE LTDA",
+   "grupo": "Grupo Rondeli",
+   "peso_ton": 0.0,
+   "primeiro_visto_em": "2026-11-24",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-11-24",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 19,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "50274": {
+   "pagador": "RONDELI COMERCIO IMPORTACAO E EXPORTACAO LTDA",
+   "grupo": "Grupo Rondeli",
+   "peso_ton": 0.0,
+   "primeiro_visto_em": "2026-11-24",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-11-24",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 19,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "50275": {
+   "pagador": "RONDELI COMERCIO IMPORTACAO E EXPORTACAO LTDA",
+   "grupo": "Grupo Rondeli",
+   "peso_ton": 0.0,
+   "primeiro_visto_em": "2026-11-24",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-11-24",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 19,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "50276": {
+   "pagador": "TRANSPORTES DELLA VOLPE S A COMERCIO E INDUSTRIA",
+   "grupo": "TRANSPORTES DELLA VOLPE S A COMERCIO E INDUSTRIA",
+   "peso_ton": 25.0,
+   "primeiro_visto_em": "2026-11-24",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-11-24",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 23,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "50277": {
+   "pagador": "TRANSPORTES DELLA VOLPE S A COMERCIO E INDUSTRIA",
+   "grupo": "TRANSPORTES DELLA VOLPE S A COMERCIO E INDUSTRIA",
+   "peso_ton": 25.0,
+   "primeiro_visto_em": "2026-11-24",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-11-24",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 23,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "50269": {
+   "pagador": "IBRATIN",
+   "grupo": "Grupo IBRATIN",
+   "peso_ton": 38.0,
+   "primeiro_visto_em": "2026-11-24",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-11-24",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 24,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "50270": {
+   "pagador": "SUPERMERCADO ASSIS LTDA",
+   "grupo": "Grupo Assis Supermercado",
+   "peso_ton": 25.0,
+   "primeiro_visto_em": "2026-11-24",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-11-24",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 24,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "50279": {
+   "pagador": "EPOCA COMERCIO",
+   "grupo": "EPOCA COMERCIO",
+   "peso_ton": 25.0,
+   "primeiro_visto_em": "2026-11-24",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-11-24",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 24,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "50282": {
+   "pagador": "GV DO BRASIL INDUSTRIA E COMERCIO DE ACO LTDA",
+   "grupo": "Grupo Simec",
+   "peso_ton": 34.0,
+   "primeiro_visto_em": "2026-11-24",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-11-24",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 24,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "50285": {
+   "pagador": "USINA FORTALEZA IND E COM DE MASSA FINA LTDA",
+   "grupo": "Grupo Usina Fortaleza",
+   "peso_ton": 38.0,
+   "primeiro_visto_em": "2026-11-24",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-11-24",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 24,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "50280": {
+   "pagador": "INDUSTRIA QUIMICA ANASTACIO S A",
+   "grupo": "INDUSTRIA QUIMICA ANASTACIO S A",
+   "peso_ton": 33.0,
+   "primeiro_visto_em": "2026-11-24",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-11-24",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 24,
+    "situacao": "NÃO INICIADA"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "50281": {
+   "pagador": "RECOM COMERCIO E DISTRIBUICAO DE PRODUTOS FARMACEUTICOS LTDA",
+   "grupo": "Grupo RECOM",
+   "peso_ton": 0.0,
+   "primeiro_visto_em": "2026-11-24",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-11-24",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 25,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "50284": {
+   "pagador": "OSVALDO PERIM SUPERMERCADOS LTDA",
+   "grupo": "Grupo Perim",
+   "peso_ton": 1.0,
+   "primeiro_visto_em": "2026-11-24",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-11-24",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 25,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "50287": {
+   "pagador": "OSVALDO PERIM SUPERMERCADOS LTDA",
+   "grupo": "Grupo Perim",
+   "peso_ton": 2.0,
+   "primeiro_visto_em": "2026-11-24",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-11-24",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 25,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "50288": {
+   "pagador": "OSVALDO PERIM SUPERMERCADOS LTDA",
+   "grupo": "Grupo Perim",
+   "peso_ton": 2.0,
+   "primeiro_visto_em": "2026-11-24",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-11-24",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 25,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "50289": {
+   "pagador": "OSVALDO PERIM SUPERMERCADOS LTDA",
+   "grupo": "Grupo Perim",
+   "peso_ton": 2.0,
+   "primeiro_visto_em": "2026-11-24",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-11-24",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 25,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "50290": {
+   "pagador": "OSVALDO PERIM SUPERMERCADOS LTDA",
+   "grupo": "Grupo Perim",
+   "peso_ton": 2.0,
+   "primeiro_visto_em": "2026-11-24",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-11-24",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 25,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "50291": {
+   "pagador": "DRIFT COMERCIO DE ALIMENTOS S/A.",
+   "grupo": "Grupo Carone",
+   "peso_ton": 1.0,
+   "primeiro_visto_em": "2026-11-24",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-11-24",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 25,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "50292": {
+   "pagador": "RONDELLI COMERCIO E TRANSPORTE LTDA",
+   "grupo": "Grupo Rondeli",
+   "peso_ton": 1.0,
+   "primeiro_visto_em": "2026-11-24",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-11-24",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 25,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "50293": {
+   "pagador": "RONDELLI COMERCIO E TRANSPORTE LTDA",
+   "grupo": "Grupo Rondeli",
+   "peso_ton": 1.0,
+   "primeiro_visto_em": "2026-11-24",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-11-24",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 25,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "50294": {
+   "pagador": "RONDELLI COMERCIO E TRANSPORTE LTDA",
+   "grupo": "Grupo Rondeli",
+   "peso_ton": 1.0,
+   "primeiro_visto_em": "2026-11-24",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-11-24",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 25,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "50283": {
+   "pagador": "IBRATIN",
+   "grupo": "Grupo IBRATIN",
+   "peso_ton": 33.0,
+   "primeiro_visto_em": "2026-11-24",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-11-24",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 27,
+    "situacao": "EM ANDAMENTO"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "50278": {
+   "pagador": "CCB CENTRAL DE COMPRAS DO BRASIL LTDA",
+   "grupo": "Grupo CCB",
+   "peso_ton": 23.0,
+   "primeiro_visto_em": "2026-11-24",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-11-24",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 27,
+    "situacao": "NÃO INICIADA"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "50286": {
+   "pagador": "MATSUKO INDUSTRIA",
+   "grupo": "Grupo MATSUKO",
+   "peso_ton": 36.0,
+   "primeiro_visto_em": "2026-11-24",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 11
+   },
+   "rastreamento_desde": "2026-11-24",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 11,
+    "dia": 27,
+    "situacao": "NÃO INICIADA"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "50295": {
+   "pagador": "CARBOMASTER",
+   "grupo": "Grupo Carbomaster",
+   "peso_ton": 39.0,
+   "primeiro_visto_em": "2026-11-24",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 12
+   },
+   "rastreamento_desde": "2026-11-24",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 12,
+    "dia": 11,
+    "situacao": "NÃO INICIADA"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "50296": {
+   "pagador": "CARBOMASTER",
+   "grupo": "Grupo Carbomaster",
+   "peso_ton": 39.0,
+   "primeiro_visto_em": "2026-11-24",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 12
+   },
+   "rastreamento_desde": "2026-11-24",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 12,
+    "dia": 14,
+    "situacao": "NÃO INICIADA"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "50297": {
+   "pagador": "CARBOMASTER",
+   "grupo": "Grupo Carbomaster",
+   "peso_ton": 39.0,
+   "primeiro_visto_em": "2026-11-24",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 12
+   },
+   "rastreamento_desde": "2026-11-24",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 12,
+    "dia": 16,
+    "situacao": "NÃO INICIADA"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "50298": {
+   "pagador": "CARBOMASTER",
+   "grupo": "Grupo Carbomaster",
+   "peso_ton": 39.0,
+   "primeiro_visto_em": "2026-11-24",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 12
+   },
+   "rastreamento_desde": "2026-11-24",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 12,
+    "dia": 18,
+    "situacao": "NÃO INICIADA"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "50299": {
+   "pagador": "CARBOMASTER",
+   "grupo": "Grupo Carbomaster",
+   "peso_ton": 39.0,
+   "primeiro_visto_em": "2026-11-24",
+   "primeira_posicao": {
+    "ano": 2026,
+    "mes": 12
+   },
+   "rastreamento_desde": "2026-11-24",
+   "posicao_atual": {
+    "ano": 2026,
+    "mes": 12,
+    "dia": 18,
+    "situacao": "NÃO INICIADA"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "50305": {
+   "pagador": "CARBOMASTER",
+   "grupo": "Grupo Carbomaster",
+   "peso_ton": 39.0,
+   "primeiro_visto_em": "2026-11-24",
+   "primeira_posicao": {
+    "ano": 2027,
+    "mes": 1
+   },
+   "rastreamento_desde": "2026-11-24",
+   "posicao_atual": {
+    "ano": 2027,
+    "mes": 1,
+    "dia": 13,
+    "situacao": "NÃO INICIADA"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "50303": {
+   "pagador": "CARBOMASTER",
+   "grupo": "Grupo Carbomaster",
+   "peso_ton": 39.0,
+   "primeiro_visto_em": "2026-11-24",
+   "primeira_posicao": {
+    "ano": 2027,
+    "mes": 1
+   },
+   "rastreamento_desde": "2026-11-24",
+   "posicao_atual": {
+    "ano": 2027,
+    "mes": 1,
+    "dia": 15,
+    "situacao": "NÃO INICIADA"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "50302": {
+   "pagador": "CARBOMASTER",
+   "grupo": "Grupo Carbomaster",
+   "peso_ton": 39.0,
+   "primeiro_visto_em": "2026-11-24",
+   "primeira_posicao": {
+    "ano": 2027,
+    "mes": 1
+   },
+   "rastreamento_desde": "2026-11-24",
+   "posicao_atual": {
+    "ano": 2027,
+    "mes": 1,
+    "dia": 19,
+    "situacao": "NÃO INICIADA"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "50301": {
+   "pagador": "CARBOMASTER",
+   "grupo": "Grupo Carbomaster",
+   "peso_ton": 39.0,
+   "primeiro_visto_em": "2026-11-24",
+   "primeira_posicao": {
+    "ano": 2027,
+    "mes": 1
+   },
+   "rastreamento_desde": "2026-11-24",
+   "posicao_atual": {
+    "ano": 2027,
+    "mes": 1,
+    "dia": 21,
+    "situacao": "NÃO INICIADA"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "50304": {
+   "pagador": "CARBOMASTER",
+   "grupo": "Grupo Carbomaster",
+   "peso_ton": 39.0,
+   "primeiro_visto_em": "2026-11-24",
+   "primeira_posicao": {
+    "ano": 2027,
+    "mes": 1
+   },
+   "rastreamento_desde": "2026-11-24",
+   "posicao_atual": {
+    "ano": 2027,
+    "mes": 1,
+    "dia": 25,
+    "situacao": "NÃO INICIADA"
+   },
+   "historico_postergacoes": [],
+   "saiu_do_pipeline_em": null,
+   "situacao_na_saida": null
+  },
+  "50300": {
+   "pagador": "CARBOMASTER",
+   "grupo": "Grupo Carbomaster",
+   "peso_ton": 39.0,
+   "primeiro_visto_em": "2026-11-24",
+   "primeira_posicao": {
+    "ano": 2027,
+    "mes": 1
+   },
+   "rastreamento_desde": "2026-11-24",
+   "posicao_atual": {
+    "ano": 2027,
+    "mes": 1,
+    "dia": 27,
     "situacao": "NÃO INICIADA"
    },
    "historico_postergacoes": [],
