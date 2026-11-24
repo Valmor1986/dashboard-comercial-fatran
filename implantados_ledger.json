@@ -72023,6 +72023,20 @@
      "para_ano": 2026,
      "para_mes": 11,
      "detectado_em": "2026-11-19"
+    },
+    {
+     "de_ano": 2026,
+     "de_mes": 11,
+     "para_ano": 2026,
+     "para_mes": 9,
+     "detectado_em": "2026-11-24"
+    },
+    {
+     "de_ano": 2026,
+     "de_mes": 9,
+     "para_ano": 2026,
+     "para_mes": 11,
+     "detectado_em": "2026-11-24"
     }
    ],
    "saiu_do_pipeline_em": null,
@@ -89117,6 +89131,20 @@
      "para_ano": 2026,
      "para_mes": 11,
      "detectado_em": "2026-11-19"
+    },
+    {
+     "de_ano": 2026,
+     "de_mes": 11,
+     "para_ano": 2026,
+     "para_mes": 10,
+     "detectado_em": "2026-11-24"
+    },
+    {
+     "de_ano": 2026,
+     "de_mes": 10,
+     "para_ano": 2026,
+     "para_mes": 11,
+     "detectado_em": "2026-11-24"
     }
    ],
    "saiu_do_pipeline_em": null,
@@ -96019,7 +96047,7 @@
    "situacao_na_saida": null
   }
  },
- "ultima_atualizacao": "2026-11-19",
+ "ultima_atualizacao": "2026-11-24",
  "observacao_18_10": "Atualizacao 18/10 22h: aba IMPLANTADOS completa (jan a dez). Cargas ausentes da aba foram marcadas como saida.",
  "observacao_25_10": "Atualizacao 25/10: aba IMPLANTADOS completa (jan a dez). Cargas ausentes da aba marcadas como saida.",
  "observacao_27_10": "Atualizacao 27/10: aba IMPLANTADOS completa (jan a dez). Cargas ausentes da aba marcadas como saida.",
@@ -96029,5 +96057,6 @@
  "observacao_12_11": "Atualizacao 12/11: aba IMPLANTADOS completa (jan a dez). Cargas ausentes da aba marcadas como saida.",
  "observacao_16_11": "Atualizacao 16/11: aba IMPLANTADOS completa (jan a dez). Cargas ausentes da aba marcadas como saida.",
  "observacao_18_11": "Atualizacao 18/11: aba IMPLANTADOS completa (jan a dez). Cargas ausentes da aba marcadas como saida.",
- "observacao_19_11": "Atualizacao 19/11: aba IMPLANTADOS completa (jan a dez). Cargas ausentes da aba marcadas como saida."
+ "observacao_19_11": "Atualizacao 19/11: aba IMPLANTADOS completa (jan a dez). Cargas ausentes da aba marcadas como saida.",
+ "observacao_24_11": "Atualizacao 24/11: aba IMPLANTADOS completa (jan a dez). Cargas ausentes da aba marcadas como saida."
 }
