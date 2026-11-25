@@ -44,7 +44,7 @@ details{background:var(--card);border:1px solid var(--line);border-radius:12px;p
 @media(max-width:900px){.kpis{grid-template-columns:repeat(2,1fr)}.two,.dg{grid-template-columns:1fr}}
 @media print{.rasc,.top,.filters,.tabs,.opts,.btn{display:none!important}.pane{display:none!important}#v-ret{display:block!important;overflow:visible}body{display:block}}
 .chip{display:inline-block;padding:6px 11px;border:1px solid var(--line);border-radius:16px;background:#fff;font-size:12px;cursor:pointer;margin:0 6px 6px 0}.chip.on{background:var(--navy);color:#fff;border-color:var(--navy)}</style></head><body>
-<div class="rasc">Mapa de Expansão: dados de frete até jun/2026. Comercial e Retenção usam o faturamento mais recente do painel.</div>
+
 <div class="top"><div class="logo">FATRAN</div><button data-p="com" class="on">Comercial</button><button data-p="ret">Retenção e Aquisição</button><button data-p="exp">Expansão</button></div>
 <div class="pane on" id="v-com"><iframe id="fCom" title="Painel Comercial"></iframe></div>
 <div class="pane" id="v-ret"><div class="wrap" id="retRoot">
@@ -53,6 +53,7 @@ details{background:var(--card);border:1px solid var(--line);border-radius:12px;p
 <div class="f"><label for="fMes">Mês</label><select id="fMes"></select></div>
 <div class="f"><label for="fOp">Operação</label><select id="fOp"><option value="">Total</option><option value="0">Frota própria</option><option value="1">Subcontratação</option></select></div>
 <div class="f"><label for="fSeg">Segmento</label><select id="fSeg"></select></div>
+<div class="f"><label for="fBand">Tempo sem comprar</label><select id="fBand"><option value="">Todos (60 a 179 dias)</option><option value="0">Até 30 dias</option><option value="31">31 a 59 dias</option><option value="60">60 a 90 dias</option><option value="91">91 a 120 dias</option><option value="121">121 a 179 dias</option><option value="180">Acima de 180 dias (inativos)</option><option value="saz">Sazonais</option></select></div>
 <div class="f"><label for="fVend">Vendedor</label><select id="fVend"></select></div>
 <div class="f"><label for="fCli">Cliente</label><input id="fCli" list="cliL" placeholder="Digite para buscar"><datalist id="cliL"></datalist></div>
 <button class="btn l" id="bClr" type="button">Limpar</button><span style="flex:1"></span><button class="btn" id="bRes" type="button">Resumo para diretoria</button>
@@ -97,8 +98,8 @@ const MN=['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez
 const lab=m=>MN[m%12]+'/'+String(Math.floor(m/12)).slice(2);
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const sh=s=>String(s).split(' ').slice(0,2).join(' ');
-const S={mes:null,op:'',seg:'',vend:'',cli:'',tab:'per',sel:null,gb:'v',minRed:0.1,baseRed:10000,minPer:0,fx:'',sort:{},resumo:false};
-let CM={},ATTR=[],MAXM=0,CUT=0,PARCIAL=false,R=null;
+const S={mes:null,op:'',seg:'',vend:'',cli:'',tab:'per',sel:null,gb:'v',minRed:0.1,baseRed:10000,minPer:0,fx:'',band:'',sv:'cli',sort:{},resumo:false};
+let SUBF=null,CL={},CM={},ATTR=[],MAXM=0,CUT=0,PARCIAL=false,R=null;
 function buildCM(op){
   const D=DATA,F=D.facts,cm={};
   for(const f of F){ if(f[9]==null)continue; if(op!==''&&String(f[6])!==op)continue;
@@ -127,9 +128,10 @@ function initRet(){
   $('#fMes').onchange=e=>{S.mes=+e.target.value;S.sel=null;rr()};
   $('#fOp').onchange=e=>{S.op=e.target.value;S.sel=null;if(!CM[S.op])CM[S.op]=buildCM(S.op);rr()};
   $('#fSeg').onchange=e=>{S.seg=e.target.value;S.sel=null;rr()};
+  $('#fBand').onchange=e=>{S.band=e.target.value;S.sel=null;rr()};
   $('#fVend').onchange=e=>{S.vend=e.target.value;S.sel=null;rr()};
   $('#fCli').oninput=e=>{const v=e.target.value;if(v===''){S.cli='';rr()}else{const i=dm.clientes.indexOf(v);if(i>=0){S.cli=i;rr()}}};
-  $('#bClr').onclick=()=>{S.op='';S.seg='';S.vend='';S.cli='';S.sel=null;$('#fOp').value='';$('#fSeg').value='';$('#fVend').value='';$('#fCli').value='';rr()};
+  $('#bClr').onclick=()=>{S.op='';S.seg='';S.vend='';S.cli='';S.band='';S.sel=null;$('#fBand').value='';$('#fOp').value='';$('#fSeg').value='';$('#fVend').value='';$('#fCli').value='';rr()};
   $('#bRes').onclick=()=>{S.resumo=!S.resumo;$('#retRoot').classList.toggle('resumo',S.resumo);$('#bRes').textContent=S.resumo?'Voltar ao painel':'Resumo para diretoria';rr()};
   document.querySelectorAll('#gseg span').forEach(e=>e.onclick=()=>{S.gb=e.dataset.g;document.querySelectorAll('#gseg span').forEach(x=>x.classList.toggle('on',x===e));vd()});
   rr();
@@ -144,48 +146,69 @@ function seasonal(arr,L,T){const dl=new Date(L*864e5),dt=new Date(T*864e5),ys=[]
     if(b<a||arr[0]>a-30)continue;
     if(hasIn(arr,a-120,a-1)&&!hasIn(arr,a,b)&&hasIn(arr,b+1,b+120))ys.push(dt.getUTCFullYear()-k)}
   return ys}
-const fxN=d=>d<90?'60':d<120?'90':d<180?'120':'180';
-const FXL={'60':'60 a 89 dias','90':'90 a 119 dias','120':'120 a 179 dias','180':'Inativo (180+ dias)','saz':'Sazonais'};
+const fxN=d=>d<=30?'0':d<=59?'31':d<=90?'60':d<=120?'91':d<=179?'121':'180';
+const FXL={'0':'Até 30 dias','31':'31 a 59 dias','60':'60 a 90 dias','91':'91 a 120 dias','121':'121 a 179 dias','180':'Acima de 180 dias (inativos)','saz':'Sazonais'};
 const dstr=o=>{const d=new Date(o*864e5);return String(d.getUTCDate()).padStart(2,'0')+'/'+String(d.getUTCMonth()+1).padStart(2,'0')+'/'+d.getUTCFullYear()};
 function compute(){
   const D=DATA,dm=D.dims,M=S.mes,cm=CM[S.op]||(CM[S.op]=buildCM(S.op));
   if(!LDC[S.op])LDC[S.op]=buildLD(S.op);const LD=LDC[S.op];
   const T=M>=MAXM?CUT:dOrd(Math.floor(M/12),M%12+1,0);
-  let per=[];const nov=[],saz=[],red=[];let refAll=0,actual=0,novM=0,sPw=0;
+  let per=[];const nov=[],saz=[],red=[],all=[];let refAll=0,actual=0,novM=0,sPw=0;CL={};
   for(const cs in cm){const c=+cs,a=ATTR[c];
     if(S.cli!==''&&c!==S.cli)continue;if(S.seg!==''&&a.s!==+S.seg)continue;if(S.vend!==''&&a.v!==+S.vend)continue;
     const mp=cm[c];let first=1e9,tot=0;for(const [m,v] of mp){if(m<first)first=m;tot+=v[0]}
-    if(tot<=0)continue;
+    if(tot<=0||first>M)continue;
     const g=m=>{const v=mp.get(m);return v?v[0]:0};
+    const arr=LD[c];let L=-1;
+    if(arr&&arr.length){let li=arr.length-1;while(li>=0&&arr[li]>T)li--;if(li>=0)L=arr[li]}
+    const days=L<0?null:T-L;
+    let ys=[];if(days!==null&&days>=60&&days<=730)ys=seasonal(arr,L,T);
+    const isSaz=ys.length>0,bnd=days===null?'':fxN(days);
+    if(S.band){if(days===null||days>730)continue;if(S.band==='saz'){if(!isSaz)continue}else if(isSaz||bnd!==S.band)continue}
+    CL[c]={bnd,isSaz};
     let ref=0;for(let m=M-6;m<=M-1;m++)ref+=g(m);ref/=6;refAll+=ref;const fm=g(M);actual+=fm;
     if(first===M){let fat=0,ton=0,ft=0;for(const [m,v] of mp){if(m>=M){fat+=v[0];ton+=v[1];ft+=v[2]}}nov.push({c,n:a.n,v:a.v,s:a.s,first,fat,ton,pt:fat>0?ft/fat:0});novM+=fm;continue}
-    if(first>M)continue;
-    let isPer=false;const arr=LD[c];
-    if(arr&&arr.length){let li=arr.length-1;while(li>=0&&arr[li]>T)li--;
-      if(li>=0){const L=arr[li],days=T-L;
-        if(days>=60&&days<=730){const dl=new Date(L*864e5),mL=dl.getUTCFullYear()*12+dl.getUTCMonth(),den=Math.max(1,Math.min(12,mL-first+1));
-          let rf=0,tn=0;for(let m=mL-11;m<=mL;m++){const v=mp.get(m);if(v){rf+=v[0];tn+=v[1]}}rf/=den;tn/=den;
-          if(rf>=S.minPer){isPer=true;const ys=seasonal(arr,L,T);
-            const it={c,n:a.n,v:a.v,s:a.s,days,fx:fxN(days),lastd:L,ref:rf,ton:tn,ys,w:ref};
-            if(ys.length){it.fx='saz';saz.push(it)}else{per.push(it);sPw+=ref}}}}}
+    let isPer=false;
+    if(days!==null&&days<=730){const dl=new Date(L*864e5),mL=dl.getUTCFullYear()*12+dl.getUTCMonth(),den=Math.max(1,Math.min(12,mL-first+1));
+      let rf=0,tn=0;for(let m=mL-11;m<=mL;m++){const v=mp.get(m);if(v){rf+=v[0];tn+=v[1]}}rf/=den;tn/=den;
+      if(rf>=S.minPer){const it={c,n:a.n,v:a.v,s:a.s,days,fx:isSaz?'saz':bnd,lastd:L,ref:rf,ton:tn,ys,w:ref};
+        if(days>=60)isPer=true;
+        if(S.band)all.push(it);
+        else if(isSaz)saz.push(it);
+        else if(days>=60)(days<180?per:all).push(it)}}
     if(isPer)continue;
     let rec=0,pri=0;for(let m=M-2;m<=M;m++)rec+=g(m);for(let m=M-14;m<=M-3;m++)pri+=g(m);rec/=3;pri/=12;
     if(pri>=S.baseRed&&rec>0&&rec<=(1-S.minRed)*pri)red.push({c,n:a.n,v:a.v,s:a.s,pri,rec,dd:pri-rec,pc:1-rec/pri});
   }
-  const ina=per.filter(x=>x.fx==='180');per=per.filter(x=>x.fx!=='180');sPw=per.reduce((t,x)=>t+x.w,0);
+  let ina=[];
+  if(S.band){per=all;}else{ina=all}
+  const perdBand=S.band===''||['60','91','121','180'].includes(S.band);
+  sPw=perdBand?per.reduce((t,x)=>t+x.w,0):0;
   // cancelados
   const imp=D.implantados,tc=imp.ticket_por_cliente,ts=imp.ticket_por_segmento,tg=imp.ticket_medio_geral,cn={};
-  for(const f of imp.facts){if(f[0]*12+f[1]-1!==M||!f[6])continue;const c=f[3];
+  for(const f of imp.facts){if(f[0]*12+f[1]-1!==M||!f[6])continue;const c=f[3];if(S.band&&!CL[c])continue;
     if(S.cli!==''&&c!==S.cli)continue;const a=ATTR[c];if(S.seg!==''&&f[4]!==+S.seg)continue;if(S.vend!==''&&a.v!==+S.vend)continue;
     const r=cn[c]||(cn[c]={c,n:dm.clientes[c],s:f[4],t:0,np:0,emb:{}});r.t+=f[6];r.np++;const e=f[10];r.emb[e]=(r.emb[e]||0)+f[6]}
   const can=Object.values(cn).map(r=>{const tk=(tc[r.c]||ts[r.s]||tg);return Object.assign(r,{tk,val:r.t*tk})});
+  // subcontratacao
+  if(!SUBF){SUBF={};for(const f of D.facts){if(f[6]!==1||f[9]==null)continue;const mi=f[0]*12+f[1]-1;(SUBF[mi]=SUBF[mi]||[]).push(f)}}
+  const scl={},sct={},av3={};let sT=[0,0,0];
+  if(S.op!=='0'){
+    const okc=c=>!((S.cli!==''&&c!==S.cli)||(S.seg!==''&&ATTR[c].s!==+S.seg)||(S.vend!==''&&ATTR[c].v!==+S.vend)||(S.band&&!CL[c]));
+    for(const f of (SUBF[M]||[])){const c=f[3];if(!okc(c))continue;const a=ATTR[c];
+      const r=scl[c]||(scl[c]={c,n:a.n,v:a.v,s:a.s,fat:0,ton:0,pago:0});r.fat+=f[9];r.ton+=f[10];r.pago+=f[11];
+      const t=sct[f[8]]||(sct[f[8]]={n:dm.terceiros[f[8]]||'(sem nome)',fat:0,ton:0,pago:0,cl:new Set()});t.fat+=f[9];t.ton+=f[10];t.pago+=f[11];t.cl.add(c);sT[0]+=f[9];sT[1]+=f[10];sT[2]+=f[11]}
+    for(let m=M-3;m<=M-1;m++)for(const f of (SUBF[m]||[])){if(scl[f[3]])av3[f[3]]=(av3[f[3]]||0)+f[9]/3}}
+  const fin=r=>{r.mg=r.fat-r.pago;r.mp=r.fat>0?r.mg/r.fat:0;r.tk=r.ton>0?r.fat/r.ton:0;return r};
+  const subC=Object.values(scl).map(r=>{fin(r);r.avg3=av3[r.c]||0;r.vr=r.avg3>0?r.fat/r.avg3-1:-9;return r}).sort((x,y)=>y.fat-x.fat);
+  const subT=Object.values(sct).map(r=>{r.nc=r.cl.size;return fin(r)}).sort((x,y)=>y.fat-x.fat);
   const sortBy=(l,k)=>l.sort((x,y)=>y[k]-x[k]);sortBy(nov,'fat');sortBy(per,'ref');sortBy(saz,'ref');sortBy(red,'dd');sortBy(can,'val');
   const sP=per.reduce((s,x)=>s+x.ref,0),sZ=saz.reduce((s,x)=>s+x.ref,0),sR=red.reduce((s,x)=>s+x.dd,0);
-  R={nov,per,ina,saz,red,can,refAll,actual,novM,sP,sZ,sPw,sR,sN:nov.reduce((s,x)=>s+x.fat,0),sC:can.reduce((s,x)=>s+x.val,0),tC:can.reduce((s,x)=>s+x.t,0)};
+  R={sub:S.sv==='cli'?subC:subT,sT,nov,per,ina,saz,red,can,refAll,actual,novM,sP,sZ,sPw,sR,sN:nov.reduce((s,x)=>s+x.fat,0),sC:can.reduce((s,x)=>s+x.val,0),tC:can.reduce((s,x)=>s+x.t,0)};
 }
 function rr(){compute();kp();wf();vd();tabs();table()}
 function kp(){
-  const K=[['nov','Clientes novos',R.nov.length,brlc(R.sN)+' faturados desde a entrada','g'],['per','Sem comprar 60 a 179 dias',R.per.length,brlc(R.sP)+' por mês · '+R.ina.length+' inativos 180+ · '+R.saz.length+' sazonais','r'],['red','Reduziram o consumo',R.red.length,brlc(R.sR)+' por mês a menos','y'],['can','Cancelamentos',R.can.length+' clientes',nf(R.tC)+' t · '+brlc(R.sC)+' est.','r']];
+  const K=[['nov','Clientes novos',R.nov.length,brlc(R.sN)+' faturados desde a entrada','g'],['per',S.band===''?'Sem comprar 60 a 179 dias':'Sem comprar: '+FXL[S.band],R.per.length,brlc(R.sP)+' por mês'+(S.band===''?' · '+R.ina.length+' inativos 180+ · '+R.saz.length+' sazonais':''),'r'],['red','Reduziram o consumo',R.red.length,brlc(R.sR)+' por mês a menos','y'],['can','Cancelamentos',R.can.length+' clientes',nf(R.tC)+' t · '+brlc(R.sC)+' est.','r']];
   const net=R.novM-R.sPw-R.sR;let h=K.map(k=>'<div class="kpi '+k[4]+(S.tab===k[0]?' sel':'')+'" data-t="'+k[0]+'"><div class="l">'+k[1]+'</div><div class="v">'+k[2]+'</div><div class="s">'+k[3]+'</div></div>').join('');
   h+='<div class="kpi n"><div class="l">Saldo líquido da carteira</div><div class="v" style="color:'+(net<0?'var(--bad)':'var(--ok)')+'">'+brlc(net)+'</div><div class="s">novos no mês menos perdidos menos queda, por mês</div></div>';
   $('#kp').innerHTML=h;document.querySelectorAll('.kpi[data-t]').forEach(e=>e.onclick=()=>{S.tab=e.dataset.t;S.sel=null;rr()});
@@ -193,7 +216,7 @@ function kp(){
 function wf(){
   const M=S.mes;$('#wfSub').textContent='Média mensal de '+lab(M-6)+' a '+lab(M-1)+' até '+lab(M)+'.';
   const res=R.actual-(R.refAll-R.sPw-R.sR+R.novM);
-  const st=[['Média 6 meses',R.refAll,'t'],['Sem comprar 60d+',-R.sPw,'d'],['Reduziram',-R.sR,'d'],['Novos',R.novM,'u'],['Demais variações',res,res<0?'d':'u'],[lab(M),R.actual,'t']];
+  const st=[['Média 6 meses',R.refAll,'t'],[S.band===''?'Sem comprar 60d+':'Sem comprar',-R.sPw,'d'],['Reduziram',-R.sR,'d'],['Novos',R.novM,'u'],['Demais variações',res,res<0?'d':'u'],[lab(M),R.actual,'t']];
   const W=640,H=250,m={l:8,r:8,t:26,b:44},iw=W-m.l-m.r,ih=H-m.t-m.b;
   let lo=Infinity,hi=-Infinity,run=0;st.forEach(s=>{if(s[2]==='t'){run=s[1];lo=Math.min(lo,run);hi=Math.max(hi,run)}else{lo=Math.min(lo,run,run+s[1]);hi=Math.max(hi,run,run+s[1]);run+=s[1]}});
   const mn=Math.max(0,lo-(hi-lo)*0.6),mx2=hi+(hi-lo)*0.08||1,y=v=>m.t+ih-(v-mn)/(mx2-mn)*ih,bw=iw/st.length;run=0;let h='<svg viewBox="0 0 '+W+' '+H+'" width="100%" role="img" aria-label="Ponte da receita mensal">';
@@ -209,34 +232,35 @@ function vd(){
   rows.forEach(([k,v])=>{h+='<tr><td>'+esc(S.gb==='v'?sh(k):k)+'</td><td class="num" style="color:var(--bad)">'+(v[0]?brlc(v[0]):'-')+'</td><td class="num">'+(v[1]?brlc(v[1]):'-')+'</td><td class="num" style="color:var(--ok)">'+(v[2]?brlc(v[2]):'-')+'</td></tr>'});
   $('#vd').innerHTML=(rows.length?h+'</table>':'<p class="note">Sem dados para os filtros.</p>')+'<p class="note">R$ por mês (perdidos e queda) e faturado desde a entrada (novos).</p>';
 }
-const TB=[['per','Sem comprar (perdidos)'],['red','Reduziram o consumo'],['can','Vendas canceladas'],['nov','Clientes novos']];
+const TB=[['per','Sem comprar (perdidos)'],['red','Reduziram o consumo'],['can','Vendas canceladas'],['nov','Clientes novos'],['sub','Subcontratação']];
 function tabs(){$('#tabs').innerHTML=TB.map(t=>'<div class="tab'+(S.tab===t[0]?' on':'')+'" data-t="'+t[0]+'">'+t[1]+' ('+R[t[0]].length+')</div>').join('');document.querySelectorAll('.tab').forEach(e=>e.onclick=()=>{S.tab=e.dataset.t;S.sel=null;rr()})}
 function cols(){const dm=DATA.dims,V=x=>sh(dm.vendedores[x.v]||''),G=x=>dm.segmentos[x.s];
   return {per:[['Cliente','n'],['Vendedor','v',V],['Segmento','s',G],['Dias sem comprar','days',x=>nf(x.days),1],['Faixa','fx',x=>FXL[x.fx]],['Última compra','lastd',x=>dstr(x.lastd),1],['Média mensal (12m até a última)','ref',x=>brl(x.ref),1],['Ton/mês','ton',x=>nf(x.ton)+' t',1],['Sazonal (anos com a mesma pausa)','ys',x=>x.ys.length?x.ys.join(', '):'-']],
   red:[['Cliente','n'],['Vendedor','v',V],['Segmento','s',G],['Média 12m antes','pri',x=>brl(x.pri),1],['Média últimos 3m','rec',x=>brl(x.rec),1],['Queda mensal','dd',x=>brl(x.dd),1],['Queda %','pc',x=>nf(x.pc*100)+'%',1],['Faixa','pc',x=>x.pc>=0.3?'30% ou mais':x.pc>=0.2?'20 a 30%':'10 a 20%']],
   can:[['Cliente','n'],['Segmento','s',G],['Programações','np',x=>x.np,1],['Ton canceladas','t',x=>nf(x.t)+' t',1],['Ticket R$/t','tk',x=>nf(x.tk),1],['Receita estimada','val',x=>brl(x.val),1]],
+  sub:S.sv==='cli'?[['Cliente','n'],['Vendedor','v',V],['Segmento','s',G],['Faturado','fat',x=>brl(x.fat),1],['Ton','ton',x=>nf(x.ton)+' t',1],['Ticket R$/t','tk',x=>nf(x.tk),1],['Pago ao terceiro','pago',x=>brl(x.pago),1],['Margem R$','mg',x=>brl(x.mg),1],['Margem %','mp',x=>nf(x.mp*100,1)+'%',1],['Média 3 meses antes','avg3',x=>brl(x.avg3),1],['Variação','vr',x=>x.vr===-9?'-':nf(x.vr*100)+'%',1]]:[['Transportadora (terceiro)','n'],['Clientes','nc',x=>x.nc,1],['Faturado','fat',x=>brl(x.fat),1],['Ton','ton',x=>nf(x.ton)+' t',1],['Pago ao terceiro','pago',x=>brl(x.pago),1],['Margem R$','mg',x=>brl(x.mg),1],['Margem %','mp',x=>nf(x.mp*100,1)+'%',1]],
   nov:[['Cliente','n'],['Vendedor','v',V],['Segmento','s',G],['1ª compra','first',x=>lab(x.first)],['Faturado desde a entrada','fat',x=>brl(x.fat),1],['Ton','ton',x=>nf(x.ton)+' t',1],['% terceiro','pt',x=>nf(x.pt*100)+'%',1]]}[S.tab]}
 function table(){
   const C=cols();let rows=R[S.tab].slice();let chips='';
-  if(S.tab==='per'){const lst=k=>k==='saz'?R.saz:k==='180'?R.ina:R.per.filter(x=>x.fx===k),cnt=k=>lst(k).length,val=k=>lst(k).reduce((s,x)=>s+x.ref,0);
-    chips='<div class="opts">'+[['','Em risco, 60 a 179 dias',R.per.length,R.sP],['60','60 a 89 dias',cnt('60'),val('60')],['90','90 a 119 dias',cnt('90'),val('90')],['120','120 a 179 dias',cnt('120'),val('120')],['180','Inativos (180+ dias)',cnt('180'),val('180')],['saz','Sazonais (à parte)',cnt('saz'),val('saz')]].map(c=>'<span class="chip'+(S.fx===c[0]?' on':'')+'" data-x="'+c[0]+'">'+c[1]+' · '+c[2]+' · '+brlc(c[3])+'</span>').join('')+'</div>';
-    rows=S.fx===''?R.per.slice():lst(S.fx).slice()}const sk=S.sort[S.tab];
+  const sk=S.sort[S.tab];
   if(sk){const k=sk[0],d=sk[1];rows.sort((a,b)=>{const x=a[k],y=b[k];return (typeof x==='string'?x.localeCompare(y,'pt-BR'):x-y)*d})}
   if(S.resumo)rows=rows.slice(0,5);
   const main=S.tab==='per'?'ref':S.tab==='red'?'dd':S.tab==='can'?'val':'fat',mx=Math.max(1,...rows.map(r=>r[main]));const colr=S.tab==='nov'?'var(--ok)':'var(--bad)';
   let h=chips+'<div class="opts"><b style="color:var(--navy);font-size:14px">'+TB.find(t=>t[0]===S.tab)[1]+'</b>';
   if(S.tab==='red')h+='<label>Queda mínima <select id="oMinRed">'+[0.1,0.2,0.3].map(v=>'<option value="'+v+'"'+(v===S.minRed?' selected':'')+'>'+v*100+'%</option>').join('')+'</select></label><label>Base mínima (R$/mês) <select id="oBase">'+[5000,10000,20000,50000].map(v=>'<option value="'+v+'"'+(v===S.baseRed?' selected':'')+'>'+brl(v)+'</option>').join('')+'</select></label>';
   if(S.tab==='per')h+='<label>Média mínima <select id="oMinPer">'+[0,5000,10000,20000].map(v=>'<option value="'+v+'"'+(v===S.minPer?' selected':'')+'>'+(v?brl(v)+'/mês':'Todos')+'</option>').join('')+'</select></label>';
+  if(S.tab==='sub'){h+='<span class="seg" id="sseg"><span data-s="cli" class="'+(S.sv==='cli'?'on':'')+'">Por cliente</span><span data-s="ter" class="'+(S.sv==='ter'?'on':'')+'">Por transportadora</span></span>'}
   h+='<span style="flex:1"></span><button class="btn l" id="bCopy" type="button">Copiar para Excel</button></div>';
   h+='<div class="tw"><table><tr>'+C.map((c,i)=>'<th data-k="'+c[1]+'" class="'+(c[3]?'num':'')+'">'+c[0]+(sk&&sk[0]===c[1]?(sk[1]>0?' ▲':' ▼'):'')+'</th>').join('')+'</tr>';
-  rows.forEach((r,i)=>{h+='<tr class="row'+(S.sel===r.c?' sel':'')+'" data-c="'+r.c+'">'+C.map(c=>{let v=c[2]?c[2](r):r[c[1]];if(c[1]===main)v='<span class="bar" style="width:'+Math.round(r[main]/mx*70)+'px;background:'+colr+'"></span>'+v;else v=esc(v);return '<td class="'+(c[3]?'num':'')+'">'+v+'</td>'}).join('')+'</tr>'});
+  rows.forEach((r,i)=>{h+='<tr class="row'+(S.sel===r.c?' sel':'')+'"'+(r.c==null?'':' data-c="'+r.c+'"')+'>'+C.map(c=>{let v=c[2]?c[2](r):r[c[1]];if(c[1]===main)v='<span class="bar" style="width:'+Math.round(r[main]/mx*70)+'px;background:'+colr+'"></span>'+v;else v=esc(v);return '<td class="'+(c[3]?'num':'')+'">'+v+'</td>'}).join('')+'</tr>'});
   if(!rows.length)h+='<tr><td colspan="'+C.length+'" class="note" style="padding:16px">Nenhum cliente com esses filtros.</td></tr>';
   if(S.tab==='can'&&S.op!=='')h+='</table></div><p class="note">A aba IMPLANTADOS não informa a frota. Os cancelamentos abaixo valem para o total (própria + subcontratação), mesmo com a operação filtrada. Respeitam mês, segmento, vendedor e cliente.</p><table style="display:none">';
-  $('#panel').innerHTML=h+'</table></div><div id="det"></div>';
+  const hint=S.tab==='sub'?'<p class="note" style="margin:0 0 10px">Subcontratação no mês: <b>'+brl(R.sT[0])+'</b> faturados, '+nf(R.sT[1])+' t, pago ao terceiro '+brl(R.sT[2])+', margem <b>'+brl(R.sT[0]-R.sT[2])+'</b> ('+nf(R.sT[0]?(R.sT[0]-R.sT[2])/R.sT[0]*100:0,1)+'%).'+(S.op==='0'?' Operação filtrada em frota própria: não há subcontratação.':'')+'</p>':S.tab==='per'&&S.band===''?'<p class="note" style="margin:0 0 10px">Mostrando 60 a 179 dias sem comprar. Use "Tempo sem comprar" no topo para ver inativos, sazonais ou clientes ativos.</p>':'';
+  $('#panel').innerHTML=hint+h+'</table></div><div id="det"></div>';
   document.querySelectorAll('#panel th').forEach(th=>th.onclick=()=>{const k=th.dataset.k,cur=S.sort[S.tab];S.sort[S.tab]=[k,cur&&cur[0]===k?-cur[1]:(k==='n'||k==='v'||k==='s'?1:-1)];table()});
-  document.querySelectorAll('tr.row').forEach(e=>e.onclick=()=>{S.sel=+e.dataset.c;table()});
-  document.querySelectorAll('.chip').forEach(e=>e.onclick=()=>{S.fx=e.dataset.x;S.sel=null;table()});
+  document.querySelectorAll('tr.row[data-c]').forEach(e=>e.onclick=()=>{S.sel=+e.dataset.c;table()});
   const o1=$('#oMinRed');if(o1)o1.onchange=e=>{S.minRed=+e.target.value;S.sel=null;rr()};const o2=$('#oBase');if(o2)o2.onchange=e=>{S.baseRed=+e.target.value;S.sel=null;rr()};const o3=$('#oMinPer');if(o3)o3.onchange=e=>{S.minPer=+e.target.value;S.sel=null;rr()};
+  document.querySelectorAll('#sseg span').forEach(e=>e.onclick=()=>{S.sv=e.dataset.s;S.sel=null;rr()});
   $('#bCopy').onclick=e=>{const t=C.map(c=>c[0]).join('\t')+'\n'+rows.map(r=>C.map(c=>{let v=c[2]?c[2](r):r[c[1]];return String(v).replace(/[\t\n]/g,' ')}).join('\t')).join('\n');const b=e.currentTarget;const done=m=>{const o=b.textContent;b.textContent=m;setTimeout(()=>b.textContent=o,1600)};try{navigator.clipboard.writeText(t).then(()=>done('Copiado'),()=>done('Não copiou'))}catch(x){done('Não copiou')}};
   if(S.sel!=null&&!S.resumo)detail(S.sel);
 }
