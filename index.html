@@ -68,7 +68,7 @@ details{background:var(--card);border:1px solid var(--line);border-radius:12px;p
 <li><b>Sem comprar (perdido):</b> dias desde a última compra até a data de referência (fim do mês escolhido, ou a data de corte do faturamento). Faixas: 60 a 89, 90 a 119, 120 a 179 e Inativo (180 dias ou mais, até 24 meses sem comprar). Valor: média mensal dos 12 meses até a última compra.</li><li><b>Sazonal:</b> cliente que, em pelo menos 1 dos 4 anos anteriores, teve a mesma pausa na mesma época do ano (ativo antes, sem compra na janela, voltou em até 120 dias). Sai da conta principal e fica em categoria própria.</li>
 <li><b>Reduziu consumo:</b> média dos 3 últimos meses (até o mês escolhido) contra a média dos 12 meses anteriores a eles. Queda mínima de 10, 20 ou 30% e base mínima escolhidas na aba. Quem já está parado há 60+ dias aparece só em Sem comprar.</li>
 <li><b>Cancelado:</b> toneladas canceladas na aba IMPLANTADOS no mês escolhido, vezes o ticket médio histórico do cliente (estimativa, não receita). Respeita mês, segmento, vendedor e cliente. Não tem frota, então não respeita o filtro de Operação.</li>
-<li><b>Cliente / Grupo:</b> grupo cadastrado na base. <b>Vendedor e segmento do cliente:</b> os que mais faturaram do cliente nos 12 meses até o mês escolhido (por valor). Sem compra nesse período, valem os da última compra.</li>
+<li><b>Cliente / Grupo:</b> o cliente é o tomador do serviço (pagador, CIF ou FOB), agrupado pelo grupo cadastrado na base. <b>Vendedor do cliente:</b> o do último CT-e emitido até o fim do mês escolhido, sem rateio. <b>Segmento:</b> o que mais faturou do cliente nos 12 meses até o mês escolhido.</li>
 <li><b>Substitutos:</b> tratados como no painel (valor negativo). Regra ainda a conferir com o BI.</li></ul></details>
 </div></div>
 <div class="pane" id="v-exp"><iframe id="fExp" title="Mapa de Expansão"></iframe></div>
@@ -108,15 +108,15 @@ function buildCM(op){
   return cm;
 }
 function buildAttr(M){
-  // vendedor e segmento do cliente = os que mais faturaram nos 12 meses ate o mes de analise.
-  // Sem compra nesse periodo: os da ultima compra antes dele.
+  // vendedor = o do ULTIMO CT-e emitido ate o fim do mes de analise (empate no dia: maior valor).
+  // segmento = o que mais faturou nos 12 meses ate o mes de analise (sem compra: o da ultima).
   const dm=DATA.dims,lo=M-11,v12={},s12={},lk={},lv={},ls={};
   for(const f of DATA.facts){if(f[9]==null||f[9]<=0)continue;const mi=f[0]*12+f[1]-1;if(mi>M)continue;const c=f[3];
     if(mi>=lo){(v12[c]=v12[c]||{})[f[4]]=((v12[c]||{})[f[4]]||0)+f[9];(s12[c]=s12[c]||{})[f[5]]=((s12[c]||{})[f[5]]||0)+f[9]}
     const k=f[0]*10000+f[1]*100+f[2];if(lk[c]===undefined||k>lk[c]){lk[c]=k;lv[c]={};ls[c]={}}
     if(k===lk[c]){lv[c][f[4]]=(lv[c][f[4]]||0)+f[9];ls[c][f[5]]=(ls[c][f[5]]||0)+f[9]}}
   const top=o=>{let b=null,n=-Infinity;for(const k in o)if(o[k]>n){n=o[k];b=k}return +b};
-  return dm.clientes.map((n,i)=>{const hv=v12[i]||lv[i],hs=s12[i]||ls[i];return {n,s:hs?top(hs):-1,v:hv?top(hv):-1}});
+  return dm.clientes.map((n,i)=>{const hs=s12[i]||ls[i];return {n,s:hs?top(hs):-1,v:lv[i]?top(lv[i]):-1}});
 }
 function initRet(){
   const D=DATA,dm=D.dims,F=D.facts;
