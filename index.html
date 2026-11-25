@@ -68,7 +68,7 @@ details{background:var(--card);border:1px solid var(--line);border-radius:12px;p
 <li><b>Sem comprar (perdido):</b> dias desde a última compra até a data de referência (fim do mês escolhido, ou a data de corte do faturamento). Faixas: 60 a 89, 90 a 119, 120 a 179 e Inativo (180 dias ou mais, até 24 meses sem comprar). Valor: média mensal dos 12 meses até a última compra.</li><li><b>Sazonal:</b> cliente que, em pelo menos 1 dos 4 anos anteriores, teve a mesma pausa na mesma época do ano (ativo antes, sem compra na janela, voltou em até 120 dias). Sai da conta principal e fica em categoria própria.</li>
 <li><b>Reduziu consumo:</b> média dos 3 últimos meses (até o mês escolhido) contra a média dos 12 meses anteriores a eles. Queda mínima de 10, 20 ou 30% e base mínima escolhidas na aba. Quem já está parado há 60+ dias aparece só em Sem comprar.</li>
 <li><b>Cancelado:</b> toneladas canceladas na aba IMPLANTADOS no mês escolhido, vezes o ticket médio histórico do cliente (estimativa, não receita). Respeita mês, segmento, vendedor e cliente. Não tem frota, então não respeita o filtro de Operação.</li>
-<li><b>Cliente / Grupo:</b> grupo cadastrado na base. <b>Vendedor e segmento do cliente:</b> os mais frequentes no histórico.</li>
+<li><b>Cliente / Grupo:</b> grupo cadastrado na base. <b>Vendedor e segmento do cliente:</b> os que mais faturaram do cliente nos 12 meses até o mês escolhido (por valor). Sem compra nesse período, valem os da última compra.</li>
 <li><b>Substitutos:</b> tratados como no painel (valor negativo). Regra ainda a conferir com o BI.</li></ul></details>
 </div></div>
 <div class="pane" id="v-exp"><iframe id="fExp" title="Mapa de Expansão"></iframe></div>
@@ -107,25 +107,34 @@ function buildCM(op){
     a[0]+=f[9];a[1]+=f[10];if(f[6]===1){a[2]+=f[9];a[3]+=f[11]}}
   return cm;
 }
+function buildAttr(M){
+  // vendedor e segmento do cliente = os que mais faturaram nos 12 meses ate o mes de analise.
+  // Sem compra nesse periodo: os da ultima compra antes dele.
+  const dm=DATA.dims,lo=M-11,v12={},s12={},lk={},lv={},ls={};
+  for(const f of DATA.facts){if(f[9]==null||f[9]<=0)continue;const mi=f[0]*12+f[1]-1;if(mi>M)continue;const c=f[3];
+    if(mi>=lo){(v12[c]=v12[c]||{})[f[4]]=((v12[c]||{})[f[4]]||0)+f[9];(s12[c]=s12[c]||{})[f[5]]=((s12[c]||{})[f[5]]||0)+f[9]}
+    const k=f[0]*10000+f[1]*100+f[2];if(lk[c]===undefined||k>lk[c]){lk[c]=k;lv[c]={};ls[c]={}}
+    if(k===lk[c]){lv[c][f[4]]=(lv[c][f[4]]||0)+f[9];ls[c][f[5]]=(ls[c][f[5]]||0)+f[9]}}
+  const top=o=>{let b=null,n=-Infinity;for(const k in o)if(o[k]>n){n=o[k];b=k}return +b};
+  return dm.clientes.map((n,i)=>{const hv=v12[i]||lv[i],hs=s12[i]||ls[i];return {n,s:hs?top(hs):-1,v:hv?top(hv):-1}});
+}
 function initRet(){
   const D=DATA,dm=D.dims,F=D.facts;
   let mx=0,mxd=0;for(const f of F){const mi=f[0]*12+f[1]-1;if(mi>mx){mx=mi;mxd=f[2]}else if(mi===mx&&f[2]>mxd)mxd=f[2]}
   MAXM=mx;CUT=dOrd(Math.floor(mx/12),mx%12,mxd);const dimMonth=new Date(Math.floor(mx/12),mx%12+1,0).getDate();PARCIAL=mxd<dimMonth-1;
   $('#mCorte').innerHTML='Faturamento até <b>'+String(mxd).padStart(2,'0')+'/'+String(mx%12+1).padStart(2,'0')+'/'+Math.floor(mx/12)+'</b>'+(PARCIAL?' · '+ML[mx%12].toLowerCase()+' parcial':'');
   // atributos modais
-  const cs={},cv={};for(const f of F){if(f[9]==null)continue;(cs[f[3]]=cs[f[3]]||{})[f[5]]=((cs[f[3]]||{})[f[5]]||0)+1;(cv[f[3]]=cv[f[3]]||{})[f[4]]=((cv[f[3]]||{})[f[4]]||0)+1}
-  const top=o=>{let b=null,n=-1;for(const k in o)if(o[k]>n){n=o[k];b=k}return +b};
-  ATTR=dm.clientes.map((n,i)=>({n,s:cs[i]?top(cs[i]):-1,v:cv[i]?top(cv[i]):-1}));
+  ATTR=buildAttr(S.mes!=null?S.mes:mx);
   CM[''] = buildCM('');
   // filtros
   const meses=[];for(let m=2026*12;m<=mx;m++)meses.push(m);
   $('#fMes').innerHTML=meses.slice().reverse().map(m=>'<option value="'+m+'">'+ML[m%12]+'/'+Math.floor(m/12)+(m===mx&&PARCIAL?' (parcial)':'')+'</option>').join('');
   S.mes=PARCIAL?mx-1:mx;$('#fMes').value=S.mes;
   $('#fSeg').innerHTML='<option value="">Todos</option>'+dm.segmentos.map((s,i)=>s==='N/D'?'':'<option value="'+i+'">'+esc(s)+'</option>').join('');
-  const vs=[...new Set(ATTR.map(a=>a.v).filter(v=>v>=0))].sort((a,b)=>dm.vendedores[a].localeCompare(dm.vendedores[b]));
+  const vset=new Set();for(const f of F){if(f[9]!=null&&f[0]*12+f[1]-1>=mx-23)vset.add(f[4])}const vs=[...vset].sort((a,b)=>dm.vendedores[a].localeCompare(dm.vendedores[b]));
   $('#fVend').innerHTML='<option value="">Todos</option>'+vs.map(v=>'<option value="'+v+'">'+esc(dm.vendedores[v])+'</option>').join('');
   $('#cliL').innerHTML=dm.clientes.map(n=>'<option value="'+esc(n)+'">').join('');
-  $('#fMes').onchange=e=>{S.mes=+e.target.value;S.sel=null;rr()};
+  $('#fMes').onchange=e=>{S.mes=+e.target.value;S.sel=null;ATTR=buildAttr(S.mes);rr()};
   $('#fOp').onchange=e=>{S.op=e.target.value;S.sel=null;if(!CM[S.op])CM[S.op]=buildCM(S.op);rr()};
   $('#fSeg').onchange=e=>{S.seg=e.target.value;S.sel=null;rr()};
   $('#fBand').onchange=e=>{S.band=e.target.value;S.sel=null;rr()};
