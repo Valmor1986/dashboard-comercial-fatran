@@ -69,7 +69,7 @@ details{background:var(--card);border:1px solid var(--line);border-radius:12px;p
 <li><b>Reduziu consumo:</b> média dos 3 últimos meses (até o mês escolhido) contra a média dos 12 meses anteriores a eles. Queda mínima de 10, 20 ou 30% e base mínima escolhidas na aba. Quem já está parado há 60+ dias aparece só em Sem comprar.</li>
 <li><b>Cancelado:</b> toneladas canceladas na aba IMPLANTADOS no mês escolhido, vezes o ticket médio histórico do cliente (estimativa, não receita). Respeita mês, segmento, vendedor e cliente. Não tem frota, então não respeita o filtro de Operação.</li>
 <li><b>Cliente / Grupo:</b> o cliente é o tomador do serviço (pagador, CIF ou FOB), agrupado pelo grupo cadastrado na base. <b>Vendedor do cliente:</b> o do último CT-e emitido até o fim do mês escolhido, sem rateio. <b>Segmento:</b> o que mais faturou do cliente nos 12 meses até o mês escolhido.</li>
-<li><b>Substitutos:</b> tratados como no painel (valor negativo). Regra ainda a conferir com o BI.</li></ul></details>
+<li><b>Segmento FROTA (Subcontratação):</b> aparece somente na aba Subcontratação e é retirado de todas as outras abas, dos cartões, da ponte e dos cancelamentos. Aba Terceirização: CT-es de frota terceira dos demais segmentos, por cliente ou por transportadora.</li><li><b>Substitutos:</b> tratados como no painel (valor negativo). Regra ainda a conferir com o BI.</li></ul></details>
 </div></div>
 <div class="pane" id="v-exp"><iframe id="fExp" title="Mapa de Expansão"></iframe></div>
 
@@ -99,10 +99,10 @@ const lab=m=>MN[m%12]+'/'+String(Math.floor(m/12)).slice(2);
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const sh=s=>String(s).split(' ').slice(0,2).join(' ');
 const S={mes:null,op:'',seg:'',vend:'',cli:'',tab:'per',sel:null,gb:'v',minRed:0.1,baseRed:10000,minPer:0,fx:'',band:'',sv:'cli',sort:{},resumo:false};
-let SUBF=null,CL={},CM={},ATTR=[],MAXM=0,CUT=0,PARCIAL=false,R=null;
+let FI=-2,FRF=null,SUBF=null,CL={},CM={},ATTR=[],MAXM=0,CUT=0,PARCIAL=false,R=null;
 function buildCM(op){
   const D=DATA,F=D.facts,cm={};
-  for(const f of F){ if(f[9]==null)continue; if(op!==''&&String(f[6])!==op)continue;
+  for(const f of F){ if(f[9]==null||f[5]===FI)continue; if(op!==''&&String(f[6])!==op)continue;
     const mi=f[0]*12+f[1]-1;let c=cm[f[3]];if(!c)c=cm[f[3]]=new Map();let a=c.get(mi);if(!a){a=[0,0,0,0];c.set(mi,a)}
     a[0]+=f[9];a[1]+=f[10];if(f[6]===1){a[2]+=f[9];a[3]+=f[11]}}
   return cm;
@@ -111,7 +111,7 @@ function buildAttr(M){
   // vendedor = o do ULTIMO CT-e emitido ate o fim do mes de analise (empate no dia: maior valor).
   // segmento = o que mais faturou nos 12 meses ate o mes de analise (sem compra: o da ultima).
   const dm=DATA.dims,lo=M-11,v12={},s12={},lk={},lv={},ls={};
-  for(const f of DATA.facts){if(f[9]==null||f[9]<=0)continue;const mi=f[0]*12+f[1]-1;if(mi>M)continue;const c=f[3];
+  for(const f of DATA.facts){if(f[9]==null||f[9]<=0||f[5]===FI)continue;const mi=f[0]*12+f[1]-1;if(mi>M)continue;const c=f[3];
     if(mi>=lo){(v12[c]=v12[c]||{})[f[4]]=((v12[c]||{})[f[4]]||0)+f[9];(s12[c]=s12[c]||{})[f[5]]=((s12[c]||{})[f[5]]||0)+f[9]}
     const k=f[0]*10000+f[1]*100+f[2];if(lk[c]===undefined||k>lk[c]){lk[c]=k;lv[c]={};ls[c]={}}
     if(k===lk[c]){lv[c][f[4]]=(lv[c][f[4]]||0)+f[9];ls[c][f[5]]=(ls[c][f[5]]||0)+f[9]}}
@@ -119,7 +119,7 @@ function buildAttr(M){
   return dm.clientes.map((n,i)=>{const hs=s12[i]||ls[i];return {n,s:hs?top(hs):-1,v:lv[i]?top(lv[i]):-1}});
 }
 function initRet(){
-  const D=DATA,dm=D.dims,F=D.facts;
+  const D=DATA,dm=D.dims,F=D.facts;FI=dm.segmentos.indexOf('FROTA');
   let mx=0,mxd=0;for(const f of F){const mi=f[0]*12+f[1]-1;if(mi>mx){mx=mi;mxd=f[2]}else if(mi===mx&&f[2]>mxd)mxd=f[2]}
   MAXM=mx;CUT=dOrd(Math.floor(mx/12),mx%12,mxd);const dimMonth=new Date(Math.floor(mx/12),mx%12+1,0).getDate();PARCIAL=mxd<dimMonth-1;
   $('#mCorte').innerHTML='Faturamento até <b>'+String(mxd).padStart(2,'0')+'/'+String(mx%12+1).padStart(2,'0')+'/'+Math.floor(mx/12)+'</b>'+(PARCIAL?' · '+ML[mx%12].toLowerCase()+' parcial':'');
@@ -130,7 +130,7 @@ function initRet(){
   const meses=[];for(let m=2026*12;m<=mx;m++)meses.push(m);
   $('#fMes').innerHTML=meses.slice().reverse().map(m=>'<option value="'+m+'">'+ML[m%12]+'/'+Math.floor(m/12)+(m===mx&&PARCIAL?' (parcial)':'')+'</option>').join('');
   S.mes=PARCIAL?mx-1:mx;$('#fMes').value=S.mes;
-  $('#fSeg').innerHTML='<option value="">Todos</option>'+dm.segmentos.map((s,i)=>s==='N/D'?'':'<option value="'+i+'">'+esc(s)+'</option>').join('');
+  $('#fSeg').innerHTML='<option value="">Todos</option>'+dm.segmentos.map((s,i)=>(s==='N/D'||s==='FROTA')?'':'<option value="'+i+'">'+esc(s)+'</option>').join('');
   const vset=new Set();for(const f of F){if(f[9]!=null&&f[0]*12+f[1]-1>=mx-23)vset.add(f[4])}const vs=[...vset].sort((a,b)=>dm.vendedores[a].localeCompare(dm.vendedores[b]));
   $('#fVend').innerHTML='<option value="">Todos</option>'+vs.map(v=>'<option value="'+v+'">'+esc(dm.vendedores[v])+'</option>').join('');
   $('#cliL').innerHTML=dm.clientes.map(n=>'<option value="'+esc(n)+'">').join('');
@@ -147,7 +147,7 @@ function initRet(){
 }
 let LDC={};
 const dOrd=(y,m,d)=>Math.floor(Date.UTC(y,m,d)/864e5);
-function buildLD(op){const o={};for(const f of DATA.facts){if(f[9]==null||f[9]<=0)continue;if(op!==''&&String(f[6])!==op)continue;(o[f[3]]=o[f[3]]||new Set()).add(dOrd(f[0],f[1]-1,f[2]))}
+function buildLD(op){const o={};for(const f of DATA.facts){if(f[9]==null||f[9]<=0||f[5]===FI)continue;if(op!==''&&String(f[6])!==op)continue;(o[f[3]]=o[f[3]]||new Set()).add(dOrd(f[0],f[1]-1,f[2]))}
   for(const k in o)o[k]=[...o[k]].sort((x,y)=>x-y);return o}
 const hasIn=(arr,a,b)=>{let lo=0,hi=arr.length;while(lo<hi){const m=(lo+hi)>>1;if(arr[m]<a)lo=m+1;else hi=m}return lo<arr.length&&arr[lo]<=b};
 function seasonal(arr,L,T){const dl=new Date(L*864e5),dt=new Date(T*864e5),ys=[];
@@ -195,25 +195,31 @@ function compute(){
   sPw=perdBand?per.reduce((t,x)=>t+x.w,0):0;
   // cancelados
   const imp=D.implantados,tc=imp.ticket_por_cliente,ts=imp.ticket_por_segmento,tg=imp.ticket_medio_geral,cn={};
-  for(const f of imp.facts){if(f[0]*12+f[1]-1!==M||!f[6])continue;const c=f[3];if(S.band&&!CL[c])continue;
+  for(const f of imp.facts){if(f[0]*12+f[1]-1!==M||!f[6]||f[4]===FI)continue;const c=f[3];if(S.band&&!CL[c])continue;
     if(S.cli!==''&&c!==S.cli)continue;const a=ATTR[c];if(S.seg!==''&&f[4]!==+S.seg)continue;if(S.vend!==''&&a.v!==+S.vend)continue;
     const r=cn[c]||(cn[c]={c,n:dm.clientes[c],s:f[4],t:0,np:0,emb:{}});r.t+=f[6];r.np++;const e=f[10];r.emb[e]=(r.emb[e]||0)+f[6]}
   const can=Object.values(cn).map(r=>{const tk=(tc[r.c]||ts[r.s]||tg);return Object.assign(r,{tk,val:r.t*tk})});
-  // subcontratacao
-  if(!SUBF){SUBF={};for(const f of D.facts){if(f[6]!==1||f[9]==null)continue;const mi=f[0]*12+f[1]-1;(SUBF[mi]=SUBF[mi]||[]).push(f)}}
-  const scl={},sct={},av3={};let sT=[0,0,0];
-  if(S.op!=='0'){
-    const okc=c=>!((S.cli!==''&&c!==S.cli)||(S.seg!==''&&ATTR[c].s!==+S.seg)||(S.vend!==''&&ATTR[c].v!==+S.vend)||(S.band&&!CL[c]));
-    for(const f of (SUBF[M]||[])){const c=f[3];if(!okc(c))continue;const a=ATTR[c];
-      const r=scl[c]||(scl[c]={c,n:a.n,v:a.v,s:a.s,fat:0,ton:0,pago:0});r.fat+=f[9];r.ton+=f[10];r.pago+=f[11];
-      const t=sct[f[8]]||(sct[f[8]]={n:dm.terceiros[f[8]]||'(sem nome)',fat:0,ton:0,pago:0,cl:new Set()});t.fat+=f[9];t.ton+=f[10];t.pago+=f[11];t.cl.add(c);sT[0]+=f[9];sT[1]+=f[10];sT[2]+=f[11]}
-    for(let m=M-3;m<=M-1;m++)for(const f of (SUBF[m]||[])){if(scl[f[3]])av3[f[3]]=(av3[f[3]]||0)+f[9]/3}}
+  // Terceirizacao (frota terceira, exceto segmento FROTA) e Subcontratacao (somente segmento FROTA)
+  if(!SUBF){SUBF={};FRF={};for(const f of D.facts){if(f[9]==null)continue;const mi=f[0]*12+f[1]-1;
+    if(f[5]===FI)(FRF[mi]=FRF[mi]||[]).push(f);else if(f[6]===1)(SUBF[mi]=SUBF[mi]||[]).push(f)}}
   const fin=r=>{r.mg=r.fat-r.pago;r.mp=r.fat>0?r.mg/r.fat:0;r.tk=r.ton>0?r.fat/r.ton:0;return r};
-  const subC=Object.values(scl).map(r=>{fin(r);r.avg3=av3[r.c]||0;r.vr=r.avg3>0?r.fat/r.avg3-1:-9;return r}).sort((x,y)=>y.fat-x.fat);
-  const subT=Object.values(sct).map(r=>{r.nc=r.cl.size;return fin(r)}).sort((x,y)=>y.fat-x.fat);
+  const topv=o=>{let b=-1,n=-Infinity;for(const k in o)if(o[k]>n){n=o[k];b=+k}return b};
+  const build=(src,okf,isF)=>{
+    const cl={},tr={},av3={},T=[0,0,0];
+    for(const f of (src[M]||[])){if(!okf(f))continue;const c=f[3];
+      const r=cl[c]||(cl[c]={cid:c,c:isF?null:c,n:dm.clientes[c],vv:{},fat:0,ton:0,pago:0});r.fat+=f[9];r.ton+=f[10];r.pago+=f[11];r.vv[f[4]]=(r.vv[f[4]]||0)+f[9];
+      const tk=f[8]<0?-1:f[8];const t=tr[tk]||(tr[tk]={n:tk<0?'Frota própria':(dm.terceiros[tk]||'(sem nome)'),fat:0,ton:0,pago:0,cl:new Set()});t.fat+=f[9];t.ton+=f[10];t.pago+=f[11];t.cl.add(c);T[0]+=f[9];T[1]+=f[10];T[2]+=f[11]}
+    for(let m=M-3;m<=M-1;m++)for(const f of (src[m]||[])){if(cl[f[3]]&&okf(f))av3[f[3]]=(av3[f[3]]||0)+f[9]/3}
+    const C=Object.values(cl).map(r=>{fin(r);r.v=isF?topv(r.vv):ATTR[r.cid].v;r.s=isF?FI:ATTR[r.cid].s;r.avg3=av3[r.cid]||0;r.vr=r.avg3>0?r.fat/r.avg3-1:-9;return r}).sort((x,y)=>y.fat-x.fat);
+    const TT=Object.values(tr).map(r=>{r.nc=r.cl.size;return fin(r)}).sort((x,y)=>y.fat-x.fat);
+    return {C,TT,T}};
+  const okTer=f=>{if(S.op==='0')return false;const c=f[3];return !((S.cli!==''&&c!==S.cli)||(S.seg!==''&&ATTR[c].s!==+S.seg)||(S.vend!==''&&ATTR[c].v!==+S.vend)||(S.band&&!CL[c]))};
+  const okSub=f=>!((S.cli!==''&&f[3]!==S.cli)||(S.vend!==''&&f[4]!==+S.vend)||(S.op!==''&&String(f[6])!==S.op));
+  const bt=build(SUBF,okTer,false),bs=build(FRF,okSub,true);
+  const ter=S.sv==='cli'?bt.C:bt.TT,sub=bs.C,tT=bt.T,sT=bs.T;
   const sortBy=(l,k)=>l.sort((x,y)=>y[k]-x[k]);sortBy(nov,'fat');sortBy(per,'ref');sortBy(saz,'ref');sortBy(red,'dd');sortBy(can,'val');
   const sP=per.reduce((s,x)=>s+x.ref,0),sZ=saz.reduce((s,x)=>s+x.ref,0),sR=red.reduce((s,x)=>s+x.dd,0);
-  R={sub:S.sv==='cli'?subC:subT,sT,nov,per,ina,saz,red,can,refAll,actual,novM,sP,sZ,sPw,sR,sN:nov.reduce((s,x)=>s+x.fat,0),sC:can.reduce((s,x)=>s+x.val,0),tC:can.reduce((s,x)=>s+x.t,0)};
+  R={ter,sub,tT,sT,nov,per,ina,saz,red,can,refAll,actual,novM,sP,sZ,sPw,sR,sN:nov.reduce((s,x)=>s+x.fat,0),sC:can.reduce((s,x)=>s+x.val,0),tC:can.reduce((s,x)=>s+x.t,0)};
 }
 function rr(){compute();kp();wf();vd();tabs();table()}
 function kp(){
@@ -241,13 +247,14 @@ function vd(){
   rows.forEach(([k,v])=>{h+='<tr><td>'+esc(S.gb==='v'?sh(k):k)+'</td><td class="num" style="color:var(--bad)">'+(v[0]?brlc(v[0]):'-')+'</td><td class="num">'+(v[1]?brlc(v[1]):'-')+'</td><td class="num" style="color:var(--ok)">'+(v[2]?brlc(v[2]):'-')+'</td></tr>'});
   $('#vd').innerHTML=(rows.length?h+'</table>':'<p class="note">Sem dados para os filtros.</p>')+'<p class="note">R$ por mês (perdidos e queda) e faturado desde a entrada (novos).</p>';
 }
-const TB=[['per','Sem comprar (perdidos)'],['red','Reduziram o consumo'],['can','Vendas canceladas'],['nov','Clientes novos'],['sub','Subcontratação']];
+const TB=[['per','Sem comprar (perdidos)'],['red','Reduziram o consumo'],['can','Vendas canceladas'],['nov','Clientes novos'],['ter','Terceirização'],['sub','Subcontratação']];
 function tabs(){$('#tabs').innerHTML=TB.map(t=>'<div class="tab'+(S.tab===t[0]?' on':'')+'" data-t="'+t[0]+'">'+t[1]+' ('+R[t[0]].length+')</div>').join('');document.querySelectorAll('.tab').forEach(e=>e.onclick=()=>{S.tab=e.dataset.t;S.sel=null;rr()})}
 function cols(){const dm=DATA.dims,V=x=>sh(dm.vendedores[x.v]||''),G=x=>dm.segmentos[x.s];
   return {per:[['Cliente','n'],['Vendedor','v',V],['Segmento','s',G],['Dias sem comprar','days',x=>nf(x.days),1],['Faixa','fx',x=>FXL[x.fx]],['Última compra','lastd',x=>dstr(x.lastd),1],['Média mensal (12m até a última)','ref',x=>brl(x.ref),1],['Ton/mês','ton',x=>nf(x.ton)+' t',1],['Sazonal (anos com a mesma pausa)','ys',x=>x.ys.length?x.ys.join(', '):'-']],
   red:[['Cliente','n'],['Vendedor','v',V],['Segmento','s',G],['Média 12m antes','pri',x=>brl(x.pri),1],['Média últimos 3m','rec',x=>brl(x.rec),1],['Queda mensal','dd',x=>brl(x.dd),1],['Queda %','pc',x=>nf(x.pc*100)+'%',1],['Faixa','pc',x=>x.pc>=0.3?'30% ou mais':x.pc>=0.2?'20 a 30%':'10 a 20%']],
   can:[['Cliente','n'],['Segmento','s',G],['Programações','np',x=>x.np,1],['Ton canceladas','t',x=>nf(x.t)+' t',1],['Ticket R$/t','tk',x=>nf(x.tk),1],['Receita estimada','val',x=>brl(x.val),1]],
-  sub:S.sv==='cli'?[['Cliente','n'],['Vendedor','v',V],['Segmento','s',G],['Faturado','fat',x=>brl(x.fat),1],['Ton','ton',x=>nf(x.ton)+' t',1],['Ticket R$/t','tk',x=>nf(x.tk),1],['Pago ao terceiro','pago',x=>brl(x.pago),1],['Margem R$','mg',x=>brl(x.mg),1],['Margem %','mp',x=>nf(x.mp*100,1)+'%',1],['Média 3 meses antes','avg3',x=>brl(x.avg3),1],['Variação','vr',x=>x.vr===-9?'-':nf(x.vr*100)+'%',1]]:[['Transportadora (terceiro)','n'],['Clientes','nc',x=>x.nc,1],['Faturado','fat',x=>brl(x.fat),1],['Ton','ton',x=>nf(x.ton)+' t',1],['Pago ao terceiro','pago',x=>brl(x.pago),1],['Margem R$','mg',x=>brl(x.mg),1],['Margem %','mp',x=>nf(x.mp*100,1)+'%',1]],
+  ter:S.sv==='cli'?[['Cliente','n'],['Vendedor','v',V],['Segmento','s',G],['Faturado','fat',x=>brl(x.fat),1],['Ton','ton',x=>nf(x.ton)+' t',1],['Ticket R$/t','tk',x=>nf(x.tk),1],['Pago ao terceiro','pago',x=>brl(x.pago),1],['Margem R$','mg',x=>brl(x.mg),1],['Margem %','mp',x=>nf(x.mp*100,1)+'%',1],['Média 3 meses antes','avg3',x=>brl(x.avg3),1],['Variação','vr',x=>x.vr===-9?'-':nf(x.vr*100)+'%',1]]:[['Transportadora (terceiro)','n'],['Clientes','nc',x=>x.nc,1],['Faturado','fat',x=>brl(x.fat),1],['Ton','ton',x=>nf(x.ton)+' t',1],['Pago ao terceiro','pago',x=>brl(x.pago),1],['Margem R$','mg',x=>brl(x.mg),1],['Margem %','mp',x=>nf(x.mp*100,1)+'%',1]],
+  sub:[['Cliente (transportadora)','n'],['Vendedor','v',V],['Faturado','fat',x=>brl(x.fat),1],['Ton','ton',x=>nf(x.ton)+' t',1],['Ticket R$/t','tk',x=>nf(x.tk),1],['Frete pago','pago',x=>brl(x.pago),1],['Resultado R$','mg',x=>brl(x.mg),1],['Resultado %','mp',x=>nf(x.mp*100,1)+'%',1],['Média 3 meses antes','avg3',x=>brl(x.avg3),1],['Variação','vr',x=>x.vr===-9?'-':nf(x.vr*100)+'%',1]],
   nov:[['Cliente','n'],['Vendedor','v',V],['Segmento','s',G],['1ª compra','first',x=>lab(x.first)],['Faturado desde a entrada','fat',x=>brl(x.fat),1],['Ton','ton',x=>nf(x.ton)+' t',1],['% terceiro','pt',x=>nf(x.pt*100)+'%',1]]}[S.tab]}
 function table(){
   const C=cols();let rows=R[S.tab].slice();let chips='';
@@ -258,13 +265,14 @@ function table(){
   let h=chips+'<div class="opts"><b style="color:var(--navy);font-size:14px">'+TB.find(t=>t[0]===S.tab)[1]+'</b>';
   if(S.tab==='red')h+='<label>Queda mínima <select id="oMinRed">'+[0.1,0.2,0.3].map(v=>'<option value="'+v+'"'+(v===S.minRed?' selected':'')+'>'+v*100+'%</option>').join('')+'</select></label><label>Base mínima (R$/mês) <select id="oBase">'+[5000,10000,20000,50000].map(v=>'<option value="'+v+'"'+(v===S.baseRed?' selected':'')+'>'+brl(v)+'</option>').join('')+'</select></label>';
   if(S.tab==='per')h+='<label>Média mínima <select id="oMinPer">'+[0,5000,10000,20000].map(v=>'<option value="'+v+'"'+(v===S.minPer?' selected':'')+'>'+(v?brl(v)+'/mês':'Todos')+'</option>').join('')+'</select></label>';
-  if(S.tab==='sub'){h+='<span class="seg" id="sseg"><span data-s="cli" class="'+(S.sv==='cli'?'on':'')+'">Por cliente</span><span data-s="ter" class="'+(S.sv==='ter'?'on':'')+'">Por transportadora</span></span>'}
+  if(S.tab==='ter'){h+='<span class="seg" id="sseg"><span data-s="cli" class="'+(S.sv==='cli'?'on':'')+'">Por cliente</span><span data-s="trp" class="'+(S.sv==='trp'?'on':'')+'">Por transportadora</span></span>'}
   h+='<span style="flex:1"></span><button class="btn l" id="bCopy" type="button">Copiar para Excel</button></div>';
   h+='<div class="tw"><table><tr>'+C.map((c,i)=>'<th data-k="'+c[1]+'" class="'+(c[3]?'num':'')+'">'+c[0]+(sk&&sk[0]===c[1]?(sk[1]>0?' ▲':' ▼'):'')+'</th>').join('')+'</tr>';
-  rows.forEach((r,i)=>{h+='<tr class="row'+(S.sel===r.c?' sel':'')+'"'+(r.c==null?'':' data-c="'+r.c+'"')+'>'+C.map(c=>{let v=c[2]?c[2](r):r[c[1]];if(c[1]===main)v='<span class="bar" style="width:'+Math.round(r[main]/mx*70)+'px;background:'+colr+'"></span>'+v;else v=esc(v);return '<td class="'+(c[3]?'num':'')+'">'+v+'</td>'}).join('')+'</tr>'});
+  rows.forEach((r,i)=>{h+='<tr class="row'+(r.c!=null&&S.sel===r.c?' sel':'')+'"'+(r.c==null?'':' data-c="'+r.c+'"')+'>'+C.map(c=>{let v=c[2]?c[2](r):r[c[1]];if(c[1]===main)v='<span class="bar" style="width:'+Math.round(r[main]/mx*70)+'px;background:'+colr+'"></span>'+v;else v=esc(v);return '<td class="'+(c[3]?'num':'')+'">'+v+'</td>'}).join('')+'</tr>'});
   if(!rows.length)h+='<tr><td colspan="'+C.length+'" class="note" style="padding:16px">Nenhum cliente com esses filtros.</td></tr>';
   if(S.tab==='can'&&S.op!=='')h+='</table></div><p class="note">A aba IMPLANTADOS não informa a frota. Os cancelamentos abaixo valem para o total (própria + subcontratação), mesmo com a operação filtrada. Respeitam mês, segmento, vendedor e cliente.</p><table style="display:none">';
-  const hint=S.tab==='sub'?'<p class="note" style="margin:0 0 10px">Subcontratação no mês: <b>'+brl(R.sT[0])+'</b> faturados, '+nf(R.sT[1])+' t, pago ao terceiro '+brl(R.sT[2])+', margem <b>'+brl(R.sT[0]-R.sT[2])+'</b> ('+nf(R.sT[0]?(R.sT[0]-R.sT[2])/R.sT[0]*100:0,1)+'%).'+(S.op==='0'?' Operação filtrada em frota própria: não há subcontratação.':'')+'</p>':S.tab==='per'&&S.band===''?'<p class="note" style="margin:0 0 10px">Mostrando 60 a 179 dias sem comprar. Use "Tempo sem comprar" no topo para ver inativos, sazonais ou clientes ativos.</p>':'';
+  const mgT=T=>T[0]?(T[0]-T[2])/T[0]*100:0,tl=(T,t)=>'<p class="note" style="margin:0 0 10px">'+t+' no mês: <b>'+brl(T[0])+'</b> faturados, '+nf(T[1])+' t, pago ao terceiro '+brl(T[2])+', margem <b>'+brl(T[0]-T[2])+'</b> ('+nf(mgT(T),1)+'%).';
+  const hint=S.tab==='ter'?tl(R.tT,'Terceirização (exceto segmento FROTA)')+(S.op==='0'?' Operação filtrada em frota própria: sem terceirização.':'')+'</p>':S.tab==='sub'?tl(R.sT,'Subcontratação (segmento FROTA)').replace('pago ao terceiro','frete pago').replace('margem','resultado')+' Só esta aba mostra o segmento FROTA. Todos os CT-es desse segmento são de frota própria, então o cliente é a própria transportadora.</p>':S.tab==='per'&&S.band===''?'<p class="note" style="margin:0 0 10px">Mostrando 60 a 179 dias sem comprar. Use "Tempo sem comprar" no topo para ver inativos, sazonais ou clientes ativos.</p>':'';
   $('#panel').innerHTML=hint+h+'</table></div><div id="det"></div>';
   document.querySelectorAll('#panel th').forEach(th=>th.onclick=()=>{const k=th.dataset.k,cur=S.sort[S.tab];S.sort[S.tab]=[k,cur&&cur[0]===k?-cur[1]:(k==='n'||k==='v'||k==='s'?1:-1)];table()});
   document.querySelectorAll('tr.row[data-c]').forEach(e=>e.onclick=()=>{S.sel=+e.dataset.c;table()});
@@ -281,7 +289,7 @@ function detail(c){
   hs.forEach((r,i)=>{const t=r[1]+r[2],hh=t/mx*H,hf=r[1]/mx*H;s+='<rect x="'+(i*bw+2)+'" y="'+(H-hh)+'" width="'+(bw-4)+'" height="'+(hh-hf)+'" fill="#A67F3C"/><rect x="'+(i*bw+2)+'" y="'+(H-hf)+'" width="'+(bw-4)+'" height="'+hf+'" fill="#0C2442"'+(r[0]===M?' stroke="#B3432E" stroke-width="2"':'')+'/>';if(i%3===0)s+='<text x="'+(i*bw+bw/2)+'" y="'+(H+15)+'" text-anchor="middle" font-size="10" fill="#6B7A8B">'+lab(r[0])+'</text>'});s+='</svg>';
   // origens/destinos 12m e margem terceiro
   const o={},d={};let fT=0,pT=0;
-  for(const f of D.facts){if(f[3]!==c||f[9]==null)continue;const mi=f[0]*12+f[1]-1;if(mi<M-11||mi>M)continue;if(S.op!==''&&String(f[6])!==S.op)continue;
+  for(const f of D.facts){if(f[3]!==c||f[9]==null||f[5]===FI)continue;const mi=f[0]*12+f[1]-1;if(mi<M-11||mi>M)continue;if(S.op!==''&&String(f[6])!==S.op)continue;
     o[f[12]]=(o[f[12]]||0)+f[10];d[f[13]]=(d[f[13]]||0)+f[10];if(f[6]===1){fT+=f[9];pT+=f[11]}}
   const tp=(m,nm,uf)=>Object.entries(m).sort((x,y)=>y[1]-x[1]).slice(0,5).map(([k,v])=>'<tr><td>'+esc(nm[k])+' '+esc(uf[k])+'</td><td class="num">'+nf(v)+' t</td></tr>').join('')||'<tr><td class="note">sem dados</td></tr>';
   let embH='';if(S.tab==='can'){const r=R.can.find(x=>x.c===c);if(r){embH='<div><h3>Cancelado por embarcador</h3><table>'+Object.entries(r.emb).sort((x,y)=>y[1]-x[1]).map(([k,v])=>'<tr><td>'+esc(D.implantados.embarcadores[k]||'?')+'</td><td class="num">'+nf(v)+' t</td></tr>').join('')+'</table></div>'}}
