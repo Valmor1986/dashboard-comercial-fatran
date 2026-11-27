@@ -69,7 +69,7 @@ details{background:var(--card);border:1px solid var(--line);border-radius:12px;p
 <li><b>Reduziu consumo:</b> média dos 3 últimos meses (até o mês escolhido) contra a média dos 12 meses anteriores a eles. Queda mínima de 10, 20 ou 30% e base mínima escolhidas na aba. Quem já está parado há 60+ dias aparece só em Sem comprar.</li>
 <li><b>Cancelado:</b> toneladas canceladas na aba IMPLANTADOS no mês escolhido, vezes o ticket médio histórico do cliente (estimativa, não receita). Respeita mês, segmento, vendedor e cliente. Não tem frota, então não respeita o filtro de Operação.</li>
 <li><b>Cliente / Grupo:</b> o cliente é o tomador do serviço (pagador, CIF ou FOB), agrupado pelo grupo cadastrado na base. <b>Vendedor do cliente:</b> o do último CT-e emitido até o fim do mês escolhido, sem rateio. <b>Segmento:</b> o que mais faturou do cliente nos 12 meses até o mês escolhido.</li>
-<li><b>Segmento FROTA (Subcontratação):</b> aparece somente na aba Subcontratação e é retirado de todas as outras abas, dos cartões, da ponte e dos cancelamentos. Aba Terceirização: CT-es de frota terceira dos demais segmentos, por cliente ou por transportadora.</li><li><b>Substitutos:</b> tratados como no painel (valor negativo). Regra ainda a conferir com o BI.</li></ul></details>
+<li><b>Segmento FROTA (Subcontratação):</b> aparece somente na aba Subcontratação e é retirado de todas as outras abas, dos cartões, da ponte e dos cancelamentos. Aba Terceirização: CT-es de frota terceira dos demais segmentos, por cliente ou por transportadora.</li><li><b>Representatividade do terceiro (Terceirização, por transportadora):</b> CT-es e faturamento dele sobre o total da operação no mês (todas as frotas, sem FROTA); CT-es por cliente contra a média da operação; maior dependência = cliente em que ele tem maior parte dos CT-es (ex.: 1 de 5). Sinal: Rever, Observar ou Manter conforme margem contra a média da terceirização e participação de 2%.</li><li><b>Substitutos:</b> tratados como no painel (valor negativo). Regra ainda a conferir com o BI.</li></ul></details>
 </div></div>
 <div class="pane" id="v-exp"><iframe id="fExp" title="Mapa de Expansão"></iframe></div>
 
@@ -99,7 +99,7 @@ const lab=m=>MN[m%12]+'/'+String(Math.floor(m/12)).slice(2);
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const sh=s=>String(s).split(' ').slice(0,2).join(' ');
 const S={mes:null,op:'',seg:'',vend:'',cli:'',tab:'per',sel:null,gb:'v',minRed:0.1,baseRed:10000,minPer:0,fx:'',band:'',sv:'cli',sort:{},resumo:false};
-let FI=-2,FRF=null,SUBF=null,CL={},CM={},ATTR=[],MAXM=0,CUT=0,PARCIAL=false,R=null;
+let FI=-2,ALLF=null,FRF=null,SUBF=null,CL={},CM={},ATTR=[],MAXM=0,CUT=0,PARCIAL=false,R=null;
 function buildCM(op){
   const D=DATA,F=D.facts,cm={};
   for(const f of F){ if(f[9]==null||f[5]===FI)continue; if(op!==''&&String(f[6])!==op)continue;
@@ -200,26 +200,33 @@ function compute(){
     const r=cn[c]||(cn[c]={c,n:dm.clientes[c],s:f[4],t:0,np:0,emb:{}});r.t+=f[6];r.np++;const e=f[10];r.emb[e]=(r.emb[e]||0)+f[6]}
   const can=Object.values(cn).map(r=>{const tk=(tc[r.c]||ts[r.s]||tg);return Object.assign(r,{tk,val:r.t*tk})});
   // Terceirizacao (frota terceira, exceto segmento FROTA) e Subcontratacao (somente segmento FROTA)
-  if(!SUBF){SUBF={};FRF={};for(const f of D.facts){if(f[9]==null)continue;const mi=f[0]*12+f[1]-1;
-    if(f[5]===FI)(FRF[mi]=FRF[mi]||[]).push(f);else if(f[6]===1)(SUBF[mi]=SUBF[mi]||[]).push(f)}}
+  if(!SUBF){SUBF={};FRF={};ALLF={};for(const f of D.facts){if(f[9]==null)continue;const mi=f[0]*12+f[1]-1;
+    if(f[5]===FI)(FRF[mi]=FRF[mi]||[]).push(f);else{(ALLF[mi]=ALLF[mi]||[]).push(f);if(f[6]===1)(SUBF[mi]=SUBF[mi]||[]).push(f)}}}
   const fin=r=>{r.mg=r.fat-r.pago;r.mp=r.fat>0?r.mg/r.fat:0;r.tk=r.ton>0?r.fat/r.ton:0;return r};
   const topv=o=>{let b=-1,n=-Infinity;for(const k in o)if(o[k]>n){n=o[k];b=+k}return b};
   const build=(src,okf,isF)=>{
     const cl={},tr={},av3={},T=[0,0,0];
     for(const f of (src[M]||[])){if(!okf(f))continue;const c=f[3];
-      const r=cl[c]||(cl[c]={cid:c,c:isF?null:c,n:dm.clientes[c],vv:{},fat:0,ton:0,pago:0});r.fat+=f[9];r.ton+=f[10];r.pago+=f[11];r.vv[f[4]]=(r.vv[f[4]]||0)+f[9];
-      const tk=f[8]<0?-1:f[8];const t=tr[tk]||(tr[tk]={n:tk<0?'Frota própria':(dm.terceiros[tk]||'(sem nome)'),fat:0,ton:0,pago:0,cl:new Set()});t.fat+=f[9];t.ton+=f[10];t.pago+=f[11];t.cl.add(c);T[0]+=f[9];T[1]+=f[10];T[2]+=f[11]}
+      const r=cl[c]||(cl[c]={cid:c,c:isF?null:c,n:dm.clientes[c],vv:{},fat:0,ton:0,pago:0});r.ne=(r.ne||0)+1;r.fat+=f[9];r.ton+=f[10];r.pago+=f[11];r.vv[f[4]]=(r.vv[f[4]]||0)+f[9];
+      const tk=f[8]<0?-1:f[8];const t=tr[tk]||(tr[tk]={n:tk<0?'Frota própria':(dm.terceiros[tk]||'(sem nome)'),fat:0,ton:0,pago:0,ne:0,cc:{},cl:new Set()});t.ne++;t.cc[c]=(t.cc[c]||0)+1;t.fat+=f[9];t.ton+=f[10];t.pago+=f[11];t.cl.add(c);T[0]+=f[9];T[1]+=f[10];T[2]+=f[11]}
     for(let m=M-3;m<=M-1;m++)for(const f of (src[m]||[])){if(cl[f[3]]&&okf(f))av3[f[3]]=(av3[f[3]]||0)+f[9]/3}
     const C=Object.values(cl).map(r=>{fin(r);r.v=isF?topv(r.vv):ATTR[r.cid].v;r.s=isF?FI:ATTR[r.cid].s;r.avg3=av3[r.cid]||0;r.vr=r.avg3>0?r.fat/r.avg3-1:-9;return r}).sort((x,y)=>y.fat-x.fat);
-    const TT=Object.values(tr).map(r=>{r.nc=r.cl.size;return fin(r)}).sort((x,y)=>y.fat-x.fat);
-    return {C,TT,T}};
+    const TT=Object.values(tr).map(r=>{r.nc=r.cl.size;fin(r);r.pe=OP.ne?r.ne/OP.ne:0;r.pf=OP.fat?r.fat/OP.fat:0;r.cpc=r.nc?r.ne/r.nc:0;
+      const L=Object.keys(r.cc).map(c=>({c:+c,k:r.cc[c],t:OP.cn[c]||r.cc[c]})).sort((a,b)=>b.k/b.t-a.k/a.t||b.k-a.k);
+      r.dep=L.slice(0,3).map(x=>dm.clientes[x.c]+' ('+x.k+' de '+x.t+')').join('; ');r.dm=L.length?L[0].k/L[0].t:0;return r}).sort((x,y)=>y.fat-x.fat);
+    const mgT=T[0]>0?(T[0]-T[2])/T[0]:0;
+    for(const r of TT){r.sg=isF?'':(r.mp<mgT&&r.pe<0.02?'Rever':(r.mp<mgT?'Observar':'Manter'))}
+    return {C,TT,T,mgT}};
   const okTer=f=>{if(S.op==='0')return false;const c=f[3];return !((S.cli!==''&&c!==S.cli)||(S.seg!==''&&ATTR[c].s!==+S.seg)||(S.vend!==''&&ATTR[c].v!==+S.vend)||(S.band&&!CL[c]))};
   const okSub=f=>!((S.cli!==''&&f[3]!==S.cli)||(S.vend!==''&&f[4]!==+S.vend)||(S.op!==''&&String(f[6])!==S.op));
+  const okAll=f=>{const c=f[3];return !((S.cli!==''&&c!==S.cli)||(S.seg!==''&&ATTR[c].s!==+S.seg)||(S.vend!==''&&ATTR[c].v!==+S.vend)||(S.band&&!CL[c]))};
+  const OP={ne:0,fat:0,cn:{},cf:{}};for(const f of (ALLF[M]||[])){if(!okAll(f))continue;OP.ne++;OP.fat+=f[9];OP.cn[f[3]]=(OP.cn[f[3]]||0)+1}
+  OP.nc=Object.keys(OP.cn).length;OP.mpc=OP.nc?OP.ne/OP.nc:0;
   const bt=build(SUBF,okTer,false),bs=build(FRF,okSub,true);
-  const ter=S.sv==='cli'?bt.C:bt.TT,sub=bs.C,tT=bt.T,sT=bs.T;
+  const ter=S.sv==='cli'?bt.C:bt.TT,sub=bs.C,tT=bt.T,sT=bs.T,OPT=OP;
   const sortBy=(l,k)=>l.sort((x,y)=>y[k]-x[k]);sortBy(nov,'fat');sortBy(per,'ref');sortBy(saz,'ref');sortBy(red,'dd');sortBy(can,'val');
   const sP=per.reduce((s,x)=>s+x.ref,0),sZ=saz.reduce((s,x)=>s+x.ref,0),sR=red.reduce((s,x)=>s+x.dd,0);
-  R={ter,sub,tT,sT,nov,per,ina,saz,red,can,refAll,actual,novM,sP,sZ,sPw,sR,sN:nov.reduce((s,x)=>s+x.fat,0),sC:can.reduce((s,x)=>s+x.val,0),tC:can.reduce((s,x)=>s+x.t,0)};
+  R={ter,sub,tT,sT,OPT,mgT:bt.mgT,nov,per,ina,saz,red,can,refAll,actual,novM,sP,sZ,sPw,sR,sN:nov.reduce((s,x)=>s+x.fat,0),sC:can.reduce((s,x)=>s+x.val,0),tC:can.reduce((s,x)=>s+x.t,0)};
 }
 function rr(){compute();kp();wf();vd();tabs();table()}
 function kp(){
@@ -253,7 +260,7 @@ function cols(){const dm=DATA.dims,V=x=>sh(dm.vendedores[x.v]||''),G=x=>dm.segme
   return {per:[['Cliente','n'],['Vendedor','v',V],['Segmento','s',G],['Dias sem comprar','days',x=>nf(x.days),1],['Faixa','fx',x=>FXL[x.fx]],['Última compra','lastd',x=>dstr(x.lastd),1],['Média mensal (12m até a última)','ref',x=>brl(x.ref),1],['Ton/mês','ton',x=>nf(x.ton)+' t',1],['Sazonal (anos com a mesma pausa)','ys',x=>x.ys.length?x.ys.join(', '):'-']],
   red:[['Cliente','n'],['Vendedor','v',V],['Segmento','s',G],['Média 12m antes','pri',x=>brl(x.pri),1],['Média últimos 3m','rec',x=>brl(x.rec),1],['Queda mensal','dd',x=>brl(x.dd),1],['Queda %','pc',x=>nf(x.pc*100)+'%',1],['Faixa','pc',x=>x.pc>=0.3?'30% ou mais':x.pc>=0.2?'20 a 30%':'10 a 20%']],
   can:[['Cliente','n'],['Segmento','s',G],['Programações','np',x=>x.np,1],['Ton canceladas','t',x=>nf(x.t)+' t',1],['Ticket R$/t','tk',x=>nf(x.tk),1],['Receita estimada','val',x=>brl(x.val),1]],
-  ter:S.sv==='cli'?[['Cliente','n'],['Vendedor','v',V],['Segmento','s',G],['Faturado','fat',x=>brl(x.fat),1],['Ton','ton',x=>nf(x.ton)+' t',1],['Ticket R$/t','tk',x=>nf(x.tk),1],['Pago ao terceiro','pago',x=>brl(x.pago),1],['Margem R$','mg',x=>brl(x.mg),1],['Margem %','mp',x=>nf(x.mp*100,1)+'%',1],['Média 3 meses antes','avg3',x=>brl(x.avg3),1],['Variação','vr',x=>x.vr===-9?'-':nf(x.vr*100)+'%',1]]:[['Transportadora (terceiro)','n'],['Clientes','nc',x=>x.nc,1],['Faturado','fat',x=>brl(x.fat),1],['Ton','ton',x=>nf(x.ton)+' t',1],['Pago ao terceiro','pago',x=>brl(x.pago),1],['Margem R$','mg',x=>brl(x.mg),1],['Margem %','mp',x=>nf(x.mp*100,1)+'%',1]],
+  ter:S.sv==='cli'?[['Cliente','n'],['Vendedor','v',V],['Segmento','s',G],['Faturado','fat',x=>brl(x.fat),1],['Ton','ton',x=>nf(x.ton)+' t',1],['Ticket R$/t','tk',x=>nf(x.tk),1],['Pago ao terceiro','pago',x=>brl(x.pago),1],['Margem R$','mg',x=>brl(x.mg),1],['Margem %','mp',x=>nf(x.mp*100,1)+'%',1],['Média 3 meses antes','avg3',x=>brl(x.avg3),1],['Variação','vr',x=>x.vr===-9?'-':nf(x.vr*100)+'%',1]]:[['Transportadora (terceiro)','n'],['CT-es','ne',x=>x.ne,1],['% dos CT-es da operação','pe',x=>nf(x.pe*100,1)+'%',1],['Faturado','fat',x=>brl(x.fat),1],['% do faturamento da operação','pf',x=>nf(x.pf*100,1)+'%',1],['Clientes','nc',x=>x.nc,1],['CT-es por cliente','cpc',x=>nf(x.cpc,1),1],['Pago ao terceiro','pago',x=>brl(x.pago),1],['Margem %','mp',x=>nf(x.mp*100,1)+'%',1],['Maior dependência (CT-es dele de total do cliente)','dep',x=>x.dep],['Sinal','sg',x=>x.sg]],
   sub:[['Cliente (transportadora)','n'],['Vendedor','v',V],['Faturado','fat',x=>brl(x.fat),1],['Ton','ton',x=>nf(x.ton)+' t',1],['Ticket R$/t','tk',x=>nf(x.tk),1],['Frete pago','pago',x=>brl(x.pago),1],['Resultado R$','mg',x=>brl(x.mg),1],['Resultado %','mp',x=>nf(x.mp*100,1)+'%',1],['Média 3 meses antes','avg3',x=>brl(x.avg3),1],['Variação','vr',x=>x.vr===-9?'-':nf(x.vr*100)+'%',1]],
   nov:[['Cliente','n'],['Vendedor','v',V],['Segmento','s',G],['1ª compra','first',x=>lab(x.first)],['Faturado desde a entrada','fat',x=>brl(x.fat),1],['Ton','ton',x=>nf(x.ton)+' t',1],['% terceiro','pt',x=>nf(x.pt*100)+'%',1]]}[S.tab]}
 function table(){
@@ -272,7 +279,7 @@ function table(){
   if(!rows.length)h+='<tr><td colspan="'+C.length+'" class="note" style="padding:16px">Nenhum cliente com esses filtros.</td></tr>';
   if(S.tab==='can'&&S.op!=='')h+='</table></div><p class="note">A aba IMPLANTADOS não informa a frota. Os cancelamentos abaixo valem para o total (própria + subcontratação), mesmo com a operação filtrada. Respeitam mês, segmento, vendedor e cliente.</p><table style="display:none">';
   const mgT=T=>T[0]?(T[0]-T[2])/T[0]*100:0,tl=(T,t)=>'<p class="note" style="margin:0 0 10px">'+t+' no mês: <b>'+brl(T[0])+'</b> faturados, '+nf(T[1])+' t, pago ao terceiro '+brl(T[2])+', margem <b>'+brl(T[0]-T[2])+'</b> ('+nf(mgT(T),1)+'%).';
-  const hint=S.tab==='ter'?tl(R.tT,'Terceirização (exceto segmento FROTA)')+(S.op==='0'?' Operação filtrada em frota própria: sem terceirização.':'')+'</p>':S.tab==='sub'?tl(R.sT,'Subcontratação (segmento FROTA)').replace('pago ao terceiro','frete pago').replace('margem','resultado')+' Só esta aba mostra o segmento FROTA. Todos os CT-es desse segmento são de frota própria, então o cliente é a própria transportadora.</p>':S.tab==='per'&&S.band===''?'<p class="note" style="margin:0 0 10px">Mostrando 60 a 179 dias sem comprar. Use "Tempo sem comprar" no topo para ver inativos, sazonais ou clientes ativos.</p>':'';
+  const hint=S.tab==='ter'?tl(R.tT,'Terceirização (exceto segmento FROTA)')+(S.op==='0'?' Operação filtrada em frota própria: sem terceirização.':'')+(S.sv==='trp'?' Operação no mês (todas as frotas, sem FROTA): '+nf(R.OPT.ne)+' CT-es, '+brl(R.OPT.fat)+', '+nf(R.OPT.nc)+' clientes, média de '+nf(R.OPT.mpc,1)+' CT-es por cliente. Embarque = CT-e emitido. Sinal: Rever = margem abaixo da média da terceirização ('+nf(R.mgT*100,1)+'%) e menos de 2% dos CT-es; Observar = margem abaixo da média; Manter = margem igual ou acima. É um ponto de partida, a decisão considera segurança e atendimento.':'')+'</p>':S.tab==='sub'?tl(R.sT,'Subcontratação (segmento FROTA)').replace('pago ao terceiro','frete pago').replace('margem','resultado')+' Só esta aba mostra o segmento FROTA. Todos os CT-es desse segmento são de frota própria, então o cliente é a própria transportadora.</p>':S.tab==='per'&&S.band===''?'<p class="note" style="margin:0 0 10px">Mostrando 60 a 179 dias sem comprar. Use "Tempo sem comprar" no topo para ver inativos, sazonais ou clientes ativos.</p>':'';
   $('#panel').innerHTML=hint+h+'</table></div><div id="det"></div>';
   document.querySelectorAll('#panel th').forEach(th=>th.onclick=()=>{const k=th.dataset.k,cur=S.sort[S.tab];S.sort[S.tab]=[k,cur&&cur[0]===k?-cur[1]:(k==='n'||k==='v'||k==='s'?1:-1)];table()});
   document.querySelectorAll('tr.row[data-c]').forEach(e=>e.onclick=()=>{S.sel=+e.dataset.c;table()});
