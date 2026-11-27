@@ -98,7 +98,7 @@ const MN=['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez
 const lab=m=>MN[m%12]+'/'+String(Math.floor(m/12)).slice(2);
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const sh=s=>String(s).split(' ').slice(0,2).join(' ');
-const S={mes:null,op:'',seg:'',vend:'',cli:'',tab:'per',sel:null,gb:'v',minRed:0.1,baseRed:10000,minPer:0,fx:'',band:'',sv:'cli',sort:{},resumo:false};
+const S={mes:null,op:'',seg:'',vend:'',cli:'',tab:'per',sel:null,gb:'v',minRed:0.1,baseRed:10000,minPer:0,fx:'',band:'',sv:'trp',sort:{},resumo:false};
 let FI=-2,ALLF=null,FRF=null,SUBF=null,CL={},CM={},ATTR=[],MAXM=0,CUT=0,PARCIAL=false,R=null;
 function buildCM(op){
   const D=DATA,F=D.facts,cm={};
@@ -272,7 +272,7 @@ function table(){
   let h=chips+'<div class="opts"><b style="color:var(--navy);font-size:14px">'+TB.find(t=>t[0]===S.tab)[1]+'</b>';
   if(S.tab==='red')h+='<label>Queda mínima <select id="oMinRed">'+[0.1,0.2,0.3].map(v=>'<option value="'+v+'"'+(v===S.minRed?' selected':'')+'>'+v*100+'%</option>').join('')+'</select></label><label>Base mínima (R$/mês) <select id="oBase">'+[5000,10000,20000,50000].map(v=>'<option value="'+v+'"'+(v===S.baseRed?' selected':'')+'>'+brl(v)+'</option>').join('')+'</select></label>';
   if(S.tab==='per')h+='<label>Média mínima <select id="oMinPer">'+[0,5000,10000,20000].map(v=>'<option value="'+v+'"'+(v===S.minPer?' selected':'')+'>'+(v?brl(v)+'/mês':'Todos')+'</option>').join('')+'</select></label>';
-  if(S.tab==='ter'){h+='<span class="seg" id="sseg"><span data-s="cli" class="'+(S.sv==='cli'?'on':'')+'">Por cliente</span><span data-s="trp" class="'+(S.sv==='trp'?'on':'')+'">Por transportadora</span></span>'}
+  if(S.tab==='ter'){h+='<span class="seg" id="sseg"><span data-s="cli" class="'+(S.sv==='cli'?'on':'')+'">Por cliente</span><span data-s="trp" class="'+(S.sv==='trp'?'on':'')+'">Por transportadora (representatividade)</span></span>'}
   h+='<span style="flex:1"></span><button class="btn l" id="bCopy" type="button">Copiar para Excel</button></div>';
   h+='<div class="tw"><table><tr>'+C.map((c,i)=>'<th data-k="'+c[1]+'" class="'+(c[3]?'num':'')+'">'+c[0]+(sk&&sk[0]===c[1]?(sk[1]>0?' ▲':' ▼'):'')+'</th>').join('')+'</tr>';
   rows.forEach((r,i)=>{h+='<tr class="row'+(r.c!=null&&S.sel===r.c?' sel':'')+'"'+(r.c==null?'':' data-c="'+r.c+'"')+'>'+C.map(c=>{let v=c[2]?c[2](r):r[c[1]];if(c[1]===main)v='<span class="bar" style="width:'+Math.round(r[main]/mx*70)+'px;background:'+colr+'"></span>'+v;else v=esc(v);return '<td class="'+(c[3]?'num':'')+'">'+v+'</td>'}).join('')+'</tr>'});
