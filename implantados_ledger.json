@@ -72079,6 +72079,20 @@
      "para_ano": 2026,
      "para_mes": 11,
      "detectado_em": "2026-11-26"
+    },
+    {
+     "de_ano": 2026,
+     "de_mes": 11,
+     "para_ano": 2026,
+     "para_mes": 9,
+     "detectado_em": "2026-11-26"
+    },
+    {
+     "de_ano": 2026,
+     "de_mes": 9,
+     "para_ano": 2026,
+     "para_mes": 11,
+     "detectado_em": "2026-11-26"
     }
    ],
    "saiu_do_pipeline_em": null,
@@ -89247,6 +89261,20 @@
      "para_ano": 2026,
      "para_mes": 11,
      "detectado_em": "2026-11-24"
+    },
+    {
+     "de_ano": 2026,
+     "de_mes": 11,
+     "para_ano": 2026,
+     "para_mes": 10,
+     "detectado_em": "2026-11-26"
+    },
+    {
+     "de_ano": 2026,
+     "de_mes": 10,
+     "para_ano": 2026,
+     "para_mes": 11,
+     "detectado_em": "2026-11-26"
     },
     {
      "de_ano": 2026,
